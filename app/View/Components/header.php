@@ -6,20 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Botao extends Component
+class header extends Component
 {
     /**
      * Create a new component instance.
      */
-    public $texto;
-    public $cor;
-    public $icon;
-    public function __construct($cor,$texto, $icon = null)
+    public function __construct()
     {
         //
-        $this->cor=$cor;
-        $this->texto=$texto;
-        $this->icon=$icon;
     }
 
     /**
@@ -27,6 +21,6 @@ class Botao extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.botao');
+        return view('components.header');
     }
 }

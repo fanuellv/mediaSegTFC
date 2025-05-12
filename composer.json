@@ -10,10 +10,20 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "afatmustafa/blade-hugeicons": "^1.0",
+        "blade-ui-kit/blade-zondicons": "^1.6",
+        "codeat3/blade-game-icons": "^1.5",
+        "codeat3/blade-typicons": "^1.7",
+        "hasnayeen/blade-eva-icons": "^2.1",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "tightenco/ziggy": "^2.4"
+        "owenvoke/blade-entypo": "^2.3",
+        "owenvoke/blade-fontawesome": "^2.9",
+        "saade/blade-iconsax": "^1.2",
+        "secondnetwork/blade-tabler-icons": "^3.31",
+        "tightenco/ziggy": "^2.4",
+        "troccoli/blade-health-icons": "^5.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
