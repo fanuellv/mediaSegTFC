@@ -145,7 +145,11 @@ export default function Welcome() {
                     <h1 className="text-xl font-bold text-white">Receba conteúdos gratuitos por e-mail</h1>
                     <p className="text-white w-[75%]">Cadastre-se e receba nossos relatórios, recomendações de seguros e
                         muito mais.</p>
-                    <Botao texto="Começar a receber" cor="bg-white text-[#003162] font-bold" />
+                    <div className='space-x-4 space-y-4 w-full'>
+                        <input type="e-mail" className='bg-white/50 sm:w-120 sm:p-4 p-2 rounded' placeholder='Digite o seu email'/>
+                        <button type="submit" className='bg-white text-[#003162] font-bold p-2 sm:p-4 rounded'>Comerçar a receber</button>
+                        
+                    </div>
                 </div>
                 <div className="absolute right-15 w-35 h-35 bg-center bg-no-repeat bg-cover  rounded-full "
                     style={{backgroundImage: `url('/img/email.svg')`, 

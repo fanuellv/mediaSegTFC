@@ -9,7 +9,7 @@ import logo from "/public/img/logo.svg";
 const Header: React.FC = () => {
   return (
     <header className="fixed z-50 flex h-20 w-full max-w-screen items-center justify-between bg-white px-5 shadow sm:px-15">
-      <img src={logo} alt="Logo" />
+      <Link href={route('home')}><img src={logo} alt="Logo" /></Link>
       <nav className="relative hidden sm:right-40 sm:flex">
         <ul className="flex items-center space-x-4">
           {['A MediaSeg', 'Aprender', 'Blog'].map((item) => (
