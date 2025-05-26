@@ -13,9 +13,10 @@ Route::prefix('cliente')->group(function () {
 
 // LOGIN / LOGOUT
 Route::get('/iniciar-sessao', fn () => Inertia::render('cliente/login'))->name('iniciar');
-Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/iniciar', [LoginController::class, 'showLoginForm'])->name('iniciar');
 
 // PAINEL (APENAS CLIENTES AUTENTICADOS)
 Route::middleware('auth:cliente')->group(function () {

@@ -13,11 +13,11 @@ use Inertia\Inertia;
 class LoginCOntroller extends Controller
 {
     //
-    public function show()
-    {
-        // Mostra o formulário de login
-        return Inertia::render('/iniciar-sessao');
-    }
+    public function showLoginForm()
+{
+    return redirect()->intended('/iniciar-sessao'); // ou return view('auth.iniciar'); se estiver usando Blade
+}
+
 
     public function login(Request $request)
 {

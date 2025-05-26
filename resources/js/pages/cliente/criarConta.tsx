@@ -95,7 +95,7 @@ export default function CreateAccount() {
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-[#0153A5]">Registrar-se</h1>
           <p className="text-sm pt-2">
-            Já tens conta? <a href={route('iniciar')} className="text-blue-400 underline">Iniciar Sessão</a>
+            Já tens conta? <Link href={route('iniciar')} className="text-blue-400 underline">Iniciar Sessão</Link>
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
