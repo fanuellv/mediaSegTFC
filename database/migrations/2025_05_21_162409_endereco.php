@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->foreign('seguradora_id')
                 ->references('id')
-                ->on('seguradora')
+                ->on('seguradoras')
                 ->onDelete('set null');
 
             $table->foreign('cliente_id')

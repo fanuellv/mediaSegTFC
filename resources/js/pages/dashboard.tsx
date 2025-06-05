@@ -1,8 +1,12 @@
+import DefaultLayout from '@/Layouts/DefaultLayout';
+import Loader from '@/components/uiMediaseg/Loader';
+import { useEffect, useState } from 'react';
+
 import Inicio from '@/components/painel/inicio';
 import Sessao from '@/components/ui/navDashboard';
 
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
+
 import { useForm } from '@inertiajs/react';
 
 import { CiSearch } from 'react-icons/ci';
@@ -38,10 +42,19 @@ export default function Dashboard() {
         return sessaoAtiva === nomeSessao
             ? 'text-[#0153A5] font-bold bg-white/40 rounded' // Sessão ativa
             : 'text-gray-400'; // Sessões inativas
-    }
+    };
+    const [loading, setLoading] = useState(true);
+    
+        useEffect(() => {
+            const timeout = setTimeout(() => setLoading(false), 1500);
+            return () => clearTimeout(timeout);
+        }, []);
+    
+        if (loading) return <Loader />;
 
     return (
-        <div className="flex h-screen w-full overflow-y-hidden bg-gray-200 px-10 py-5 gap-2">
+        <DefaultLayout>
+            <div className="flex h-screen w-full overflow-y-hidden bg-gray-200 px-10 py-5 gap-2">
             <div className="w-1/4 space-y-12">
                 <div>
                     <img src="/mediaSeg.svg" alt="" width={40} />
@@ -99,5 +112,6 @@ export default function Dashboard() {
                 </div>
             </div>
         </div>
+        </DefaultLayout>
     );
 }

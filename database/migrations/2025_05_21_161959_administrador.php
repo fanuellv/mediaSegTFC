@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->date('dataRegistro');
             $table->string('senha', 255);
-            $table->string('foto', 255);
+            $table->string('foto', 255)->nullable();
+            $table->timestamps();
         });
     }
 

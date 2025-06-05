@@ -1,0 +1,26 @@
+// pages/painel.tsx
+import LayoutAdm from '@/layouts/app-adm';
+import Seguradora from '@/components/ui/seguradora';
+
+const Painel: React.FC = () => {
+    return (
+        <LayoutAdm>
+            {(sessaoAtiva:string) => {
+                switch (sessaoAtiva) {
+                    case 'Seguradoras':
+                        return <Seguradora />;
+                    case 'Planos':
+                        return <div>Conteúdo dos Planos</div>;
+                    case 'Relatórios':
+                        return <div>Conteúdo dos Relatórios</div>;
+                    case 'Aprender':
+                        return <div>Conteúdo do Aprender</div>;
+                    default:
+                        return <div>Escolha uma sessão</div>;
+                }
+            }}
+        </LayoutAdm>
+    );
+};
+
+export default Painel;
