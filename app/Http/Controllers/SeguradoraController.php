@@ -39,7 +39,7 @@ class SeguradoraController extends Controller
 
         $data = $request->validate([
             'nome' => 'required|string|max:100',
-            'nif' => 'required|string|max:14|unique:seguradora,nif,' . $id,
+            'nif' => 'required|string|max:14|unique:seguradoras,nif,' . $id,
             'telefone' => 'required|string|max:20',
             'foto' => 'nullable|image',
             'endereco' => 'required|string|max:100',
