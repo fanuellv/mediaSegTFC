@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('nome', 100);
             $table->string('descricao', 255)->nullable();
             $table->decimal('valor', 10, 2);
-            $table->time('duracao');
+            $table->string('duracao');
             
             $table->unsignedBigInteger('seguradora_id');
             $table->unsignedBigInteger('apolice_id')->nullable();
-            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('cliente_id')->nullable();
         
             $table->timestamps();
         

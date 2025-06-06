@@ -1,6 +1,7 @@
 // pages/painel.tsx
 import LayoutAdm from '@/layouts/app-adm';
 import Seguradora from '@/components/ui/seguradora';
+import Plano from '@/components/ui/plano';
 
 const Painel: React.FC = () => {
     return (
@@ -10,7 +11,7 @@ const Painel: React.FC = () => {
                     case 'Seguradoras':
                         return <Seguradora />;
                     case 'Planos':
-                        return <div>Conteúdo dos Planos</div>;
+                        return <Plano/>;
                     case 'Relatórios':
                         return <div>Conteúdo dos Relatórios</div>;
                     case 'Aprender':
