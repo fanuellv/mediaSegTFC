@@ -22,6 +22,8 @@ class AdminController extends Controller
             'dataRegistro' => 'required|date',
             'senha' => 'required|string|min:6',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'nome.required' => 'O campo nome é obrigatório',
         ]);
 
         // Upload da imagem, se existir
@@ -52,6 +54,9 @@ class AdminController extends Controller
     $request->validate([
         'nome_usuario' => 'required',
         'senha' => 'required',
+    ],[
+        'nome_usuario.required' => 'O campo nome do usuário é obrigatório',
+        'senha.required' => 'O campo senha é obrigatório',
     ]);
 
     if (Auth::guard('admin')->attempt([

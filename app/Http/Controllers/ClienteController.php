@@ -29,6 +29,19 @@ class ClienteController extends Controller
             'senha' => 'required|string|min:6',
             'telefone' => 'required|string|max:50',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'nome.required' => 'O campo nome é obrigatório.',
+            'nome.string' => 'O nome deve conter apenas texto.',
+            'nome.max' => 'O nome não pode exceder 255 caracteres.',
+            'sobrenome.required' => 'O campo sobrenome é obrigatório.',
+            'nome_usuario.required' => 'O campo sobrenome é obrigatório.',
+            'email.required' => 'O campo sobrenome é obrigatório.',
+            'dataRegistro.required' => 'O campo sobrenome é obrigatório.',
+            'nif.required' => 'O campo sobrenome é obrigatório.',
+            'senha.required' => 'O campo sobrenome é obrigatório.',
+            'telefone.required' => 'O campo sobrenome é obrigatório.',
+            
+
         ]);
 
         // Upload da imagem, se existir

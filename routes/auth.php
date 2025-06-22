@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\SeguradoraController;
 
 // ROTAS DE CRIAÇÃO DE CONTA
 Route::prefix('cliente')->group(function () {
@@ -23,6 +24,7 @@ Route::get('/iniciar', [LoginController::class, 'showLoginForm'])->name('iniciar
 // PAINEL (APENAS CLIENTES AUTENTICADOS)
 Route::middleware('auth:cliente')->group(function () {
     Route::get('/painel', fn () => Inertia::render('dashboard'))->name('painel');
+    Route::get('/seguradoras', [SeguradoraController::class, 'index']);
 });
 
 

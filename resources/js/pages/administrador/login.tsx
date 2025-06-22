@@ -26,8 +26,7 @@ const Login: React.FC = () => {
                     type="text"
                     placeholder="Nome do utilizador"
                 />
-                {errors.nome_usuario && <div className="text-red-500">{errors.nome_usuario}</div>}
-                {flashError && <div className="text-center text-sm text-red-500">{flashError}</div>}
+                {flashError && <div className="text-center text text-red-500">{flashError}</div>}
                 <input
                     value={data.senha}
                     onChange={(e) => setData('senha', e.target.value)}

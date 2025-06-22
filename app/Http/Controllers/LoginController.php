@@ -24,6 +24,9 @@ class LoginCOntroller extends Controller
     $credentials = $request->validate([
         'nif' => ['required'],
         'senha' => ['required'],
+    ],[
+        'nif.required' => 'O campo nif é obrigatório.',
+        'senha.required' => 'O campo senha é obrigatório.',
     ]);
 
     $cliente = ClienteModel::where('nif', $credentials['nif'])->first();
