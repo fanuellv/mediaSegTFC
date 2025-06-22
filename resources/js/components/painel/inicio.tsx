@@ -3,7 +3,7 @@ import SimuladorPlanoForm from '../ui/simuladorPlano';
 
 export default function Inicio() {
     return (
-        <div className="flex h-screen w-full gap-4">
+        <div className="flex h-[92vh] w-full gap-4">
             <div className="flex w-3/5 flex-col gap-4">
                 {/*Contratacao */}
                 <div className="h-3/5 rounded-2xl bg-white p-4">
@@ -12,11 +12,22 @@ export default function Inicio() {
                     <SimuladorPlanoForm />
                 </div>
 
-                <div className="h-2/5 overflow-x-hidden overflow-y-auto rounded-2xl bg-white">
-                    <h1 className="sticky top-0 z-10 w-full bg-white p-4 font-bold">Lista de Seguradoras</h1>
-                    <div className="p-4">
-                        <ListSeguradora />
+                <div className="flex h-2/5 flex-col rounded-2xl bg-white p-4">
+                    {/* Título fixo */}
+                    <div className="sticky top-0 z-10 w-full bg-white pb-2 font-bold">
+                        <h1>Lista de Seguradoras</h1>
+                    </div>
+
+                    {/* Lista com scroll */}
+                    <div
+                        className="flex-1 overflow-y-auto"
+                        style={{
+                            scrollbarWidth: 'none', // Firefox
+                            msOverflowStyle: 'none', // IE 10+
+                        }}
+                    >
                         
+                        <ListSeguradora />
                     </div>
                 </div>
             </div>

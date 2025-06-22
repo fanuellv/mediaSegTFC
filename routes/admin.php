@@ -1,9 +1,18 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+// LOGIN ADMIN
+Route::get('/iniciar-adm', fn () => Inertia::render('administrador/login'))->name('loginAdm');
+Route::post('/admin/login', [AdminController::class, 'login']);
+
+// ROTAS AUTENTICADAS
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/dashboard', fn () => Inertia::render('painel'))->name('painel.admin');
+});
 
 //seguradora
 Route::middleware(['auth:admin'])->group(function () {
