@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 
 // ROTAS DE CRIAÇÃO DE CONTA
@@ -22,4 +23,5 @@ Route::get('/iniciar', [LoginController::class, 'showLoginForm'])->name('iniciar
 Route::middleware('auth:cliente')->group(function () {
     Route::get('/painel', fn () => Inertia::render('dashboard'))->name('painel');
     Route::get('/seguradoras', [SeguradoraController::class, 'index']);
+    Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
 });

@@ -11,9 +11,11 @@ interface SeguradoraData {
 
 export default function ListSeguradora() {
     const [lista, setLista] = useState<SeguradoraData[]>([]);
+    const [loading, setLoading] = useState(true);
 
     async function buscarSeguradoras() {
         try {
+            setLoading(true);
             console.log('🔍 Buscando seguradoras...');
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
@@ -37,35 +39,55 @@ export default function ListSeguradora() {
             setLista(dados);
         } catch (error) {
             console.error('❌ Erro ao buscar seguradoras:', error);
-        }
+        } finally {
+            setLoading(false);
+          }
     }
 
     useEffect(() => {
         buscarSeguradoras();
     }, []);
+    
+    if (loading) {
+        return (
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+          </div>
+        );
+      }
+      
 
     return (
+        <>
+    {loading ? (
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      </div>
+    ) : (
         <div>
-            <ul>
-                {lista.map((seguradora) => (
-                    <li key={seguradora.id} className="flex h-auto items-center gap-4 border-b py-4 hover:bg-gray-50">
-                        <div className="h-20 w-20 overflow-hidden">
-                            {seguradora.foto ? (
-                                <img src={`/storage/${seguradora.foto}`} alt={seguradora.nome} className="h-full w-full object-contain" />
-                            ) : (
-                                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-sm text-gray-500">Sem imagem</div>
-                            )}
-                        </div>
-                        <div className="flex-1">
-                            <strong className="block text-lg">{seguradora.nome}</strong>
-                            <span className="text-sm text-gray-600">{seguradora.descricao}</span>
-                        </div>
-                        <div>
-                            <button className="rounded bg-blue-950 p-2 text-white hover:bg-blue-800">Ver mais</button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <ul>
+            {lista.map((seguradora) => (
+                <li key={seguradora.id} className="flex h-auto items-center gap-4 border-b py-4 hover:bg-gray-50">
+                    <div className="h-20 w-20 overflow-hidden">
+                        {seguradora.foto ? (
+                            <img src={`/storage/${seguradora.foto}`} alt={seguradora.nome} className="h-full w-full object-contain" />
+                        ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-gray-200 text-sm text-gray-500">Sem imagem</div>
+                        )}
+                    </div>
+                    <div className="flex-1">
+                        <strong className="block text-lg">{seguradora.nome}</strong>
+                        <span className="text-sm text-gray-600">{seguradora.descricao}</span>
+                    </div>
+                    <div>
+                        <button className="rounded bg-blue-950 p-2 text-white hover:bg-blue-800">Ver mais</button>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </div>
+    )}
+  </>
+        
     );
 }

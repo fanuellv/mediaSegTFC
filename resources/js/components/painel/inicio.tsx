@@ -1,3 +1,4 @@
+import ListaPlanos from '../ui/listaPlanos';
 import ListSeguradora from '../ui/listaSeguradoras';
 import SimuladorPlanoForm from '../ui/simuladorPlano';
 
@@ -26,14 +27,27 @@ export default function Inicio() {
                             msOverflowStyle: 'none', // IE 10+
                         }}
                     >
-                        
                         <ListSeguradora />
                     </div>
                 </div>
             </div>
             <div className="flex w-2/5 flex-col gap-4">
-                <div className="h-3/5 rounded-2xl bg-white p-4">
-                    <h1 className="mb-4 font-bold">Planos em Alta</h1>
+                <div className="flex h-3/5 flex-col rounded-2xl bg-white p-4">
+                    {/* Título fixo */}
+                    <div className="sticky top-0 z-10 w-full bg-white pb-2 font-bold">
+                        <h1 className="mb-4 font-bold">Planos em Alta</h1>
+                    </div>
+
+                    {/* Lista com scroll */}
+                    <div
+                        className="flex-1 overflow-y-auto"
+                        style={{
+                            scrollbarWidth: 'none', // Firefox
+                            msOverflowStyle: 'none', // IE 10+
+                        }}
+                    >
+                        <ListaPlanos />
+                    </div>
                 </div>
 
                 <div className="h-2/5 rounded-2xl bg-white p-4">
