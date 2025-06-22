@@ -46,7 +46,7 @@ export default function ListaPlanos() {
             {planos.map((plano) => (
                 <div key={plano.id} className="flex items-center gap-4 border-b bg-white p-4 shadow hover:shadow-md space-y-4">
                     {/* Foto da seguradora (se houver) */}
-                    <div className="h-15 w-15 flex-shrink-0 overflow-hidden rounded-full bg-gray-100">
+                    <div className="h-15 w-15 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                         {plano.seguradora?.foto ? (
                             <img src={`/storage/${plano.seguradora.foto}`} alt={plano.seguradora.nome} className="h-full w-full object-cover" />
                         ) : (
