@@ -44,7 +44,7 @@ export default function ListaPlanos() {
     return (
         <div className="space-y-4">
             {planos.map((plano) => (
-                <div key={plano.id} className="flex items-center gap-4 border-b bg-white p-4 shadow hover:shadow-md space-y-4">
+                <div key={plano.id} className="flex items-center gap-4 border-b bg-white p-4  hover:shadow-md space-y-4">
                     {/* Foto da seguradora (se houver) */}
                     <div className="h-15 w-15 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                         {plano.seguradora?.foto ? (
@@ -61,9 +61,9 @@ export default function ListaPlanos() {
                             {plano.descricao} • {plano.duracao}
                         </p>
                         {/* Ação */}
-                        <div className='flex gap-2'>
-                            <p className="text-md mt-1 font-semibold text-blue-700">{plano.valor} Kz</p>
-                            <button className="rounded-lg bg-blue-700 px-4 py-2 text-white hover:bg-blue-800">Adquirir</button>
+                        <div className='flex gap-4 mt-2'>
+                            <p className="text-md mt-1 font-semibold text-[#0153A5]">{plano.valor} Kz</p>
+                            <button className="text-sm rounded-lg bg-[#0153A5] px-4 py-2 text-white hover:bg-blue-600">Adquirir</button>
                         </div>
                     </div>
                 </div>

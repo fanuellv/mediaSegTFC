@@ -80,7 +80,7 @@ export default function ListSeguradora() {
                         <span className="text-sm text-gray-600">{seguradora.descricao}</span>
                     </div>
                     <div>
-                        <button className="rounded bg-blue-950 p-2 text-white hover:bg-blue-800">Ver mais</button>
+                        <button className="rounded bg-[#0153A5] px-4 py-2 text-white hover:bg-blue-600">Ver mais</button>
                     </div>
                 </li>
             ))}

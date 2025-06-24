@@ -93,7 +93,7 @@ export default function Dashboard() {
                 {/* Área que divide verticalmente: Header fixo + Conteúdo com scroll */}
                 <div className="flex h-screen w-3/4 flex-col pr-4">
                     {/* HEADER FIXO */}
-                    <header className="sticky z-20 flex flex-shrink-0 items-center justify-between gap-6 bg-gray-200 px-4 py-2">
+                    <header className="sticky flex flex-shrink-0 items-center justify-between gap-6 bg-gray-200 px-4 py-2">
                         <h1 className="text-2xl font-bold text-[#0153A5]">{sessaoAtiva}</h1>
                         <div className="flex gap-4">
                             <div className="relative flex items-center">

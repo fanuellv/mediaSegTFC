@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 
@@ -24,4 +25,6 @@ Route::middleware('auth:cliente')->group(function () {
     Route::get('/painel', fn () => Inertia::render('dashboard'))->name('painel');
     Route::get('/seguradoras', [SeguradoraController::class, 'index']);
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
+    Route::get('/comentarios', [ComentarioController::class, 'index']);
+    Route::post('/comentarios', [ComentarioController::class, 'store']);
 });
