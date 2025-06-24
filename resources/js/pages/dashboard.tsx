@@ -55,12 +55,12 @@ export default function Dashboard() {
     return (
         <DefaultLayout>
             <div className="flex h-screen w-full gap-2 overflow-hidden bg-gray-200 px-10 py-5">
-                {/* MENU LATERAL FIXO */}
-                <div className="sticky top-0 h-screen w-1/4 space-y-12">
+                {/* MENU LATERAL FIXO - DESKTOP */}
+                <div className="sticky top-0 hidden h-screen w-1/4 flex-col p-4 sm:flex">
                     <div>
-                        <img src="/mediaSeg.svg" alt="" width={40} />
+                        <img src="/mediaSeg.svg" alt="Logo" width={40} />
                     </div>
-                    <div className="space-y-5 pr-10">
+                    <div className="mt-10 space-y-4">
                         <Sessao titulo="Inicio" icon={TbSmartHome} onClick={() => setSessaoAtiva('Inicio')} classe={colorChange('Inicio')} />
                         <Sessao titulo="Seguros" icon={MdOutlineSecurity} onClick={() => setSessaoAtiva('Seguros')} classe={colorChange('Seguros')} />
                         <Sessao
@@ -88,6 +88,21 @@ export default function Dashboard() {
                             <RiLogoutCircleLine className="text-2xl text-gray-400" />
                         </button>
                     </div>
+                </div>
+
+                {/* MENU LATERAL FIXO - MOBILE */}
+                <div className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around bg-white px-4 py-2 shadow sm:hidden">
+                    <Sessao titulo="Inicio" icon={TbSmartHome} onClick={() => setSessaoAtiva('Inicio')} classe={colorChange('Inicio')} modo="mobile" />
+                    <Sessao titulo="Seguros" icon={MdOutlineSecurity} onClick={() => setSessaoAtiva('Seguros')} classe={colorChange('Seguros')} modo="mobile" />
+                    <Sessao titulo="Pagamentos" icon={MdPayment} onClick={() => setSessaoAtiva('Pagamentos')} classe={colorChange('Pagamentos')} modo="mobile" />
+                    <Sessao
+                        titulo="Meus Planos"
+                        icon={RiBillLine}
+                        onClick={() => setSessaoAtiva('Meus Planos')}
+                        classe={colorChange('Meus Planos')}
+                        modo="mobile"
+                    />
+                    <Sessao titulo="Menu" icon={HiOutlineMenuAlt3} onClick={() => setSessaoAtiva('Menu')} classe={colorChange('Menu')} modo="mobile" />
                 </div>
 
                 {/* Área que divide verticalmente: Header fixo + Conteúdo com scroll */}
