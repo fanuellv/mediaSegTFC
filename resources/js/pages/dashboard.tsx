@@ -9,7 +9,6 @@ import { usePage } from '@inertiajs/react';
 
 import { useForm } from '@inertiajs/react';
 
-import { CiSearch } from 'react-icons/ci';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { MdOutlineNotificationsActive, MdOutlineSchool, MdOutlineSecurity, MdPayment } from 'react-icons/md';
 import { RiBillLine, RiLogoutCircleLine } from 'react-icons/ri';
@@ -54,7 +53,7 @@ export default function Dashboard() {
 
     return (
         <DefaultLayout>
-            <div className="flex h-screen w-full gap-2 overflow-hidden bg-gray-200 px-10 py-5">
+            <div className="flex h-screen w-full gap-2 overflow-hidden bg-gray-200 py-5 sm:px-10">
                 {/* MENU LATERAL FIXO - DESKTOP */}
                 <div className="sticky top-0 hidden h-screen w-1/4 flex-col p-4 sm:flex">
                     <div>
@@ -92,9 +91,27 @@ export default function Dashboard() {
 
                 {/* MENU LATERAL FIXO - MOBILE */}
                 <div className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around bg-white px-4 py-2 shadow sm:hidden">
-                    <Sessao titulo="Inicio" icon={TbSmartHome} onClick={() => setSessaoAtiva('Inicio')} classe={colorChange('Inicio')} modo="mobile" />
-                    <Sessao titulo="Seguros" icon={MdOutlineSecurity} onClick={() => setSessaoAtiva('Seguros')} classe={colorChange('Seguros')} modo="mobile" />
-                    <Sessao titulo="Pagamentos" icon={MdPayment} onClick={() => setSessaoAtiva('Pagamentos')} classe={colorChange('Pagamentos')} modo="mobile" />
+                    <Sessao
+                        titulo="Inicio"
+                        icon={TbSmartHome}
+                        onClick={() => setSessaoAtiva('Inicio')}
+                        classe={colorChange('Inicio')}
+                        modo="mobile"
+                    />
+                    <Sessao
+                        titulo="Seguros"
+                        icon={MdOutlineSecurity}
+                        onClick={() => setSessaoAtiva('Seguros')}
+                        classe={colorChange('Seguros')}
+                        modo="mobile"
+                    />
+                    <Sessao
+                        titulo="Pagamentos"
+                        icon={MdPayment}
+                        onClick={() => setSessaoAtiva('Pagamentos')}
+                        classe={colorChange('Pagamentos')}
+                        modo="mobile"
+                    />
                     <Sessao
                         titulo="Meus Planos"
                         icon={RiBillLine}
@@ -102,30 +119,33 @@ export default function Dashboard() {
                         classe={colorChange('Meus Planos')}
                         modo="mobile"
                     />
-                    <Sessao titulo="Menu" icon={HiOutlineMenuAlt3} onClick={() => setSessaoAtiva('Menu')} classe={colorChange('Menu')} modo="mobile" />
+                    <Sessao
+                        titulo="Menu"
+                        icon={HiOutlineMenuAlt3}
+                        onClick={() => setSessaoAtiva('Menu')}
+                        classe={colorChange('Menu')}
+                        modo="mobile"
+                    />
                 </div>
 
                 {/* Área que divide verticalmente: Header fixo + Conteúdo com scroll */}
-                <div className="flex h-screen w-3/4 flex-col pr-4">
+                <div className="flex h-screen w-full flex-col rounded-xl sm:w-3/4">
                     {/* HEADER FIXO */}
-                    <header className="sticky flex flex-shrink-0 items-center justify-between gap-6 bg-gray-200 px-4 py-2">
-                        <h1 className="text-2xl font-bold text-[#0153A5]">{sessaoAtiva}</h1>
-                        <div className="flex gap-4">
-                            <div className="relative flex items-center">
-                                <CiSearch className="absolute left-3 text-gray-500" />
-                                <input
-                                    type="text"
-                                    className="h-10 w-100 rounded bg-gray-100 pr-4 pl-10 text-gray-500"
-                                    placeholder="pesquisar sobre seguros"
-                                />
-                            </div>
-                            <div className="text-1xl flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-600">
+                    <header className="sticky top-0 z-10 flex items-center justify-between  px-4 py-3">
+                        <h1 className="text-xl font-bold text-[#0153A5] sm:text-2xl">{sessaoAtiva}</h1>
+
+                        <div className="flex items-center gap-4">
+                            {/* Ícone de notificação */}
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-gray-600 transition hover:shadow-md">
                                 <MdOutlineNotificationsActive />
                             </div>
+
+                            {/* Foto e nome do cliente */}
                             <div className="flex items-center gap-2">
-                                <div className="h-10 w-10 rounded-full bg-white" />
-                                <p className="text-sm leading-tight">
-                                    Seja bem-vindo <br />
+                                <div className="h-10 w-10 rounded-full bg-white shadow-inner" />
+                                <p className="hidden text-sm leading-tight sm:block">
+                                    Seja bem-vindo
+                                    <br />
                                     <span className="font-bold">
                                         {cliente?.nome} {cliente?.sobrenome}
                                     </span>
@@ -135,7 +155,7 @@ export default function Dashboard() {
                     </header>
 
                     {/* CONTEÚDO COM SCROLL */}
-                    <div className="flex-1 space-y-4 overflow-y-hidden px-4">
+                    <div className="flex-1 space-y-4 overflow-y-auto sm:overflow-hidden rounded-b-xl bg-gray-50 sm:bg-transparent px-4 py-4">
                         {sessaoAtiva === 'Inicio' && <Inicio />}
                         {sessaoAtiva === 'Seguros' && <div>Conteúdo dos Seguros</div>}
                         {sessaoAtiva === 'Pagamentos' && <div>Conteúdo dos Pagamentos</div>}

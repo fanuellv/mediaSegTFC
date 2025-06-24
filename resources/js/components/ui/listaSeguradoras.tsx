@@ -41,53 +41,60 @@ export default function ListSeguradora() {
             console.error('❌ Erro ao buscar seguradoras:', error);
         } finally {
             setLoading(false);
-          }
+        }
     }
 
     useEffect(() => {
         buscarSeguradoras();
     }, []);
-    
+
     if (loading) {
         return (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-          </div>
+            <div className="flex h-full w-full items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+            </div>
         );
-      }
-      
+    }
 
     return (
         <>
-    {loading ? (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-      </div>
-    ) : (
-        <div>
-        <ul>
-            {lista.map((seguradora) => (
-                <li key={seguradora.id} className="flex h-auto items-center gap-4 border-b py-4 hover:bg-gray-50">
-                    <div className="h-20 w-20 overflow-hidden">
-                        {seguradora.foto ? (
-                            <img src={`/storage/${seguradora.foto}`} alt={seguradora.nome} className="h-full w-full object-contain" />
-                        ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gray-200 text-sm text-gray-500">Sem imagem</div>
-                        )}
-                    </div>
-                    <div className="flex-1">
-                        <strong className="block text-lg">{seguradora.nome}</strong>
-                        <span className="text-sm text-gray-600">{seguradora.descricao}</span>
-                    </div>
-                    <div>
-                        <button className="rounded bg-[#0153A5] px-4 py-2 text-white hover:bg-blue-600">Ver mais</button>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    </div>
-    )}
-  </>
-        
+            {loading ? (
+                <div className="flex h-full w-full items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+                </div>
+            ) : (
+                <div className="w-full overflow-x-hidden">
+                    <ul className="divide-y">
+                        {lista.map((seguradora) => (
+                            <li
+                                key={seguradora.id}
+                                className="flex flex-col gap-4 px-2 py-4 hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
+                                        {seguradora.foto ? (
+                                            <img src={`/storage/${seguradora.foto}`} alt={seguradora.nome} className="h-full w-full object-contain" />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <strong className="block text-base sm:text-lg">{seguradora.nome}</strong>
+                                        <span className="text-sm text-gray-600">{seguradora.descricao}</span>
+                                    </div>
+                                </div>
+
+                                <div className="sm:ml-auto sm:self-center">
+                                    <button className="w-full rounded bg-[#0153A5] px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto">
+                                        Ver mais
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </>
     );
 }
