@@ -131,89 +131,85 @@ export default function SimuladorPlanoForm() {
     }
 
     return (
-      <div className="w-full overflow-hidden">
-      <form onSubmit={handleSubmit} className="space-y-6 w-full">
-        {/* Seguradora */}
-        <div className="relative flex flex-col gap-1 w-full">
-          <label htmlFor="seguradora" className="text-sm font-medium text-gray-700">
-            Seguradora
-          </label>
-          <select
-            id="seguradora"
-            className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            value={seguradoraSelecionada}
-            onChange={(e) => setSeguradoraSelecionada(e.target.value)}
-          >
-            <option value="" disabled>
-              Selecione a seguradora
-            </option>
-            {seguradoras.map((s) => (
-              <option key={s.id} value={s.id.toString()}>
-                {s.nome}
-              </option>
-            ))}
-          </select>
-          <CgSelect className="pointer-events-none absolute top-[38px] right-4 text-gray-500" />
+        <div className="w-full overflow-hidden">
+            <form onSubmit={handleSubmit} className="w-full space-y-6">
+                {/* Seguradora */}
+                <div className="relative flex w-full flex-col gap-1">
+                    <label htmlFor="seguradora" className="text-sm font-medium text-gray-700">
+                        Seguradora
+                    </label>
+                    <select
+                        id="seguradora"
+                        className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        value={seguradoraSelecionada}
+                        onChange={(e) => setSeguradoraSelecionada(e.target.value)}
+                    >
+                        <option value="" disabled>
+                            Selecione a seguradora
+                        </option>
+                        {seguradoras.map((s) => (
+                            <option key={s.id} value={s.id.toString()}>
+                                {s.nome}
+                            </option>
+                        ))}
+                    </select>
+                    <CgSelect className="pointer-events-none absolute top-[38px] right-4 text-gray-500" />
+                </div>
+
+                {/* Planos */}
+                <div className="relative flex w-full flex-col gap-1">
+                    <label htmlFor="plano" className="text-sm font-medium text-gray-700">
+                        Planos disponíveis
+                    </label>
+                    <select
+                        id="plano"
+                        className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100"
+                        value={planoSelecionado}
+                        onChange={(e) => setPlanoSelecionado(e.target.value)}
+                        disabled={!planos.length}
+                    >
+                        <option value="" disabled>
+                            Selecione o plano
+                        </option>
+                        {planos.length === 0 && <option disabled>Nenhum plano disponível</option>}
+                        {planos.map((p) => (
+                            <option key={p.id} value={p.id.toString()}>
+                                {p.nome} - {p.valor} kz
+                            </option>
+                        ))}
+                    </select>
+                    <CgSelect className="pointer-events-none absolute top-[38px] right-4 text-gray-500" />
+                </div>
+
+                {/* Informações adicionais */}
+                <div className="flex w-full flex-col gap-1">
+                    <label htmlFor="info" className="text-sm font-medium text-gray-700">
+                        Informações adicionais
+                    </label>
+                    <textarea
+                        id="info"
+                        disabled
+                        placeholder="Notas adicionais"
+                        className="h-15 w-full resize-none rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm shadow-sm"
+                        value={info}
+                        onChange={(e) => setInfo(e.target.value)}
+                    />
+                </div>
+
+                {/* Botões */}
+                <div className="flex w-full gap-4">
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        className="w-1/2 rounded bg-gray-200 p-3 font-semibold text-gray-700 transition hover:bg-gray-300"
+                    >
+                        Limpar
+                    </button>
+                    <button type="submit" className="w-1/2 rounded bg-[#0153A5] p-3 font-semibold text-white transition hover:bg-blue-800">
+                        Simular
+                    </button>
+                </div>
+            </form>
         </div>
-    
-        {/* Planos */}
-        <div className="relative flex flex-col gap-1 w-full">
-          <label htmlFor="plano" className="text-sm font-medium text-gray-700">
-            Planos disponíveis
-          </label>
-          <select
-            id="plano"
-            className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100"
-            value={planoSelecionado}
-            onChange={(e) => setPlanoSelecionado(e.target.value)}
-            disabled={!planos.length}
-          >
-            <option value="" disabled>
-              Selecione o plano
-            </option>
-            {planos.length === 0 && <option disabled>Nenhum plano disponível</option>}
-            {planos.map((p) => (
-              <option key={p.id} value={p.id.toString()}>
-                {p.nome} - {p.valor} kz
-              </option>
-            ))}
-          </select>
-          <CgSelect className="pointer-events-none absolute top-[38px] right-4 text-gray-500" />
-        </div>
-    
-        {/* Informações adicionais */}
-        <div className="flex flex-col gap-1 w-full">
-          <label htmlFor="info" className="text-sm font-medium text-gray-700">
-            Informações adicionais
-          </label>
-          <textarea
-            id="info"
-            disabled
-            placeholder="Notas adicionais"
-            className="w-full h-24 resize-none rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm shadow-sm"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
-        </div>
-    
-        {/* Botões */}
-        <div className="flex gap-4 w-full">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="w-1/2 rounded bg-gray-200 p-3 font-semibold text-gray-700 transition hover:bg-gray-300"
-          >
-            Limpar
-          </button>
-          <button
-            type="submit"
-            className="w-1/2 rounded bg-[#0153A5] p-3 font-semibold text-white transition hover:bg-blue-800"
-          >
-            Simular
-          </button>
-        </div>
-      </form>
-    </div>
-    
     );
 }
