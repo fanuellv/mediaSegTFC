@@ -13,6 +13,8 @@ import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { MdOutlineNotificationsActive, MdOutlineSchool, MdOutlineSecurity, MdPayment } from 'react-icons/md';
 import { RiBillLine, RiLogoutCircleLine } from 'react-icons/ri';
 import { TbSmartHome } from 'react-icons/tb';
+import Servico from '@/components/painel/Servico';
+import Pagamento from '@/components/painel/Pagamento';
 
 interface Cliente {
     nome: string;
@@ -157,8 +159,8 @@ export default function Dashboard() {
                     {/* CONTEÚDO COM SCROLL */}
                     <div className="flex-1 space-y-4 overflow-y-auto sm:overflow-hidden rounded-b-xl bg-gray-50 sm:bg-transparent px-4 py-4">
                         {sessaoAtiva === 'Inicio' && <Inicio />}
-                        {sessaoAtiva === 'Seguros' && <div>Conteúdo dos Seguros</div>}
-                        {sessaoAtiva === 'Pagamentos' && <div>Conteúdo dos Pagamentos</div>}
+                        {sessaoAtiva === 'Seguros' && <Servico/>}
+                        {sessaoAtiva === 'Pagamentos' && <Pagamento/>}
                         {sessaoAtiva === 'Meus Planos' && <div>Conteúdo dos Planos</div>}
                         {sessaoAtiva === 'Aprender' && <div>Conteúdo de Aprendizado</div>}
                         {sessaoAtiva === 'Menu' && <div>Outros conteúdos do Menu</div>}

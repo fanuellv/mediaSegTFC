@@ -59,11 +59,11 @@ export default function ListSeguradora() {
     return (
         <>
             {loading ? (
-                <div className="flex h-full w-full items-center justify-center">
+                <div className="flex bg-white rounded h-full w-full items-center justify-center">
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
                 </div>
             ) : (
-                <div className="w-full overflow-x-hidden">
+                <div className="w-full overflow-x-hidden bg-white rounded">
                     <ul className="divide-y">
                         {lista.map((seguradora) => (
                             <li

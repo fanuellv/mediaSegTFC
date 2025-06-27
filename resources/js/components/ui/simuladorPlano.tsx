@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CgSelect } from 'react-icons/cg';
+import { useCallback } from 'react';
 
 interface Plano {
     id: number;
@@ -29,6 +30,18 @@ export default function SimuladorPlanoForm() {
 
     const seguradoraId = Number(seguradoraSelecionada);
     const planoId = Number(planoSelecionado);
+
+    const informacao = useCallback(() => {
+        const plano = planos.find((p) => p.id === planoId);
+        const seguradora = seguradoras.find((s) => s.id === seguradoraId);
+      
+        if (!plano || !seguradora) return '';
+      
+        return `${plano.nome}, da seguradora ${seguradora.nome}, ${plano.descricao}`;
+      }, [planos, planoId, seguradoras, seguradoraId]);
+
+    
+      
 
     // Buscar seguradoras
     async function buscarSeguradoras() {
@@ -129,10 +142,18 @@ export default function SimuladorPlanoForm() {
         setInfo('');
         setPlanos([]);
     }
+    
+    useEffect(() => {
+        const texto = informacao();
+        setInfo(texto);
+      }, [planoSelecionado, informacao]);
+      
 
     return (
-        <div className="w-full overflow-hidden">
-            <form onSubmit={handleSubmit} className="w-full space-y-6">
+        <div className="h-full w-full">
+            
+            <form onSubmit={handleSubmit} className="flex h-full flex-col space-y-6">
+            <h1 className="mb-4 text-lg font-bold">Contratação de Plano</h1>
                 {/* Seguradora */}
                 <div className="relative flex w-full flex-col gap-1">
                     <label htmlFor="seguradora" className="text-sm font-medium text-gray-700">
@@ -174,7 +195,7 @@ export default function SimuladorPlanoForm() {
                         {planos.length === 0 && <option disabled>Nenhum plano disponível</option>}
                         {planos.map((p) => (
                             <option key={p.id} value={p.id.toString()}>
-                                {p.nome} - {p.valor} kz
+                                {p.nome} 
                             </option>
                         ))}
                     </select>
@@ -188,16 +209,16 @@ export default function SimuladorPlanoForm() {
                     </label>
                     <textarea
                         id="info"
-                        disabled
                         placeholder="Notas adicionais"
-                        className="h-15 w-full resize-none rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm shadow-sm"
+                        className="h-20 w-full resize-none rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm shadow-sm"
                         value={info}
                         onChange={(e) => setInfo(e.target.value)}
+                        disabled
                     />
                 </div>
 
-                {/* Botões */}
-                <div className="flex w-full gap-4">
+                {/* Botões no final */}
+                <div className="mt-auto flex w-full gap-4">
                     <button
                         type="button"
                         onClick={handleReset}

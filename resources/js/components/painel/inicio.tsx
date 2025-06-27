@@ -13,7 +13,7 @@ export default function Inicio() {
             <div className="flex w-full flex-col gap-4 sm:w-3/5">
                 {/* Contratação de Plano */}
                 <div className="rounded-2xl bg-white p-4 sm:h-[60%]">
-                    <h1 className="mb-4 text-lg font-bold">Contratação de Plano</h1>
+                    
                     <SimuladorPlanoForm />
                 </div>
 
@@ -47,7 +47,7 @@ export default function Inicio() {
                 </div>
 
                 {/* Comentários */}
-                <div className="flex flex-col rounded-2xl bg-white p-4 sm:h-[40%]">
+                <div className="relative bottom-15 sm:bottom-0 flex flex-col rounded-2xl bg-white p-4 sm:h-[40%]">
                     <div className="top-0 z-10 flex items-center justify-between bg-white pb-2">
                         <h1 className="text-lg font-bold">Comentários</h1>
                         <button onClick={() => setMostrarModal(true)} className="rounded bg-[#0153A5] px-3 py-1 text-sm text-white hover:bg-blue-600">
