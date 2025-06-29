@@ -1,44 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use Illuminate\Database\Schema\Blueprint;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-
-namespace App\Http\Controllers;
-
-use App\Models\Simulacao;
-use App\Services\Cotacao\CotadorInterface;
-use Illuminate\Http\Request;
-use App\Services\Cotacao\CotadorResolver;
+use App\Services\Cotacao\CotacaoService;
 
 class SimulacaoController extends Controller
 {
-    public function store(Request $request)
+    protected CotacaoService $cotacaoService;
+
+    public function __construct(CotacaoService $cotacaoService)
     {
-        $validated = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'tipo_seguro_id' => 'required|exists:tipo_seguro,id',
-            'dados' => 'required|array',
-        ]);
+        $this->cotacaoService = $cotacaoService;
+    }
 
-        $tipoSeguro = strtolower(\App\Models\TipoSeguro::find($validated['tipo_seguro_id'])->nome);
+    public function calcular(Request $request)
+    {
+        $dados = $request->all();
+        $tipo = $dados['tipo'];
 
-        $cotador = CotadorResolver::resolver($tipoSeguro);
-        $valorCalculado = $cotador->calcular($validated['dados']);
-
-        $simulacao = Simulacao::create([
-            'cliente_id' => $validated['cliente_id'],
-            'tipo_seguro_id' => $validated['tipo_seguro_id'],
-            'data' => now(),
-            'valor_calculado' => $valorCalculado,
-            'status' => 'simulado',
-        ]);
-
-        return response()->json([
-            'mensagem' => 'Simulação criada com sucesso',
-            'simulacao' => $simulacao
-        ], 201);
+        try {
+            $valor = $this->cotacaoService->calcular($tipo, $dados);
+            return response()->json(['valor' => $valor]);
+        } catch (\Exception $e) {
+            return response()->json(['erro' => $e->getMessage()], 400);
+        }
     }
 }
