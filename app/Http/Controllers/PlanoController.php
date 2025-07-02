@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanoModel;
+use App\Models\tipoSeguro;
 use Illuminate\Http\Request;
 
 class PlanoController extends Controller

@@ -18,12 +18,17 @@ class PlanoModel extends Model
         'valor',
         'duracao',
         'seguradora_id',
+        'tipo_id'
     ];
 
     // Relações opcionais
     public function seguradora()
     {
         return $this->belongsTo(SeguradoraModel::class, 'seguradora_id');
+    }
+    public function tipo()
+    {
+        return $this->belongsTo(tipoSeguro::class, 'tipo_id');
     }
 
     public function apolice()

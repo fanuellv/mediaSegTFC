@@ -3,7 +3,7 @@ import ComentarioModal from '../ui/Comentario';
 import ComentariosLista from '../ui/ComentarioLista';
 import ListaPlanos from '../ui/listaPlanos';
 import ListSeguradora from '../ui/listaSeguradoras';
-import SimuladorPlanoForm from '../ui/simuladorPlano';
+import Simulador from '../ui/simulador/Simulador';
 
 export default function Inicio() {
     const [mostrarModal, setMostrarModal] = useState(false);
@@ -13,7 +13,7 @@ export default function Inicio() {
             <div className="flex w-full flex-col gap-4 sm:w-3/5">
                 {/* Contratação de Plano */}
                 <div className="rounded-2xl bg-white p-4 sm:h-[60%]">
-                    <SimuladorPlanoForm />
+                    <Simulador/>
                 </div>
 
                 {/* Lista de Seguradoras */}

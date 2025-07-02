@@ -1,5 +1,5 @@
 
-import SimuladorPlanoForm from '../ui/simuladorPlano';
+import SimuladorPlanoForm from '../ui/simulador/simuladorPlano';
 
 export default function Pagamento() {
     return (

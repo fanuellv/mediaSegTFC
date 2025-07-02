@@ -1,15 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CgSelect } from 'react-icons/cg';
-import { useCallback } from 'react';
+import { DadosSimulacao, Plano } from '@/types/DadosSimulacao';
 
-interface Plano {
-    id: number;
-    nome: string;
-    descricao: string;
-    valor: string;
-    duracao: string;
-    seguradora_id?: number;
-}
 
 interface Seguradora {
     id: number;
@@ -21,7 +13,14 @@ interface Seguradora {
     foto: string | null;
 }
 
-export default function SimuladorPlanoForm() {
+
+
+interface Props {
+    onAvancar: () => void;
+    setDados: (novos: Partial<DadosSimulacao>) => void;
+}
+
+export default function SimuladorPlanoForm({ onAvancar, setDados }: Props) {
     const [seguradoras, setSeguradoras] = useState<Seguradora[]>([]);
     const [planos, setPlanos] = useState<Plano[]>([]);
     const [seguradoraSelecionada, setSeguradoraSelecionada] = useState('');
@@ -34,14 +33,11 @@ export default function SimuladorPlanoForm() {
     const informacao = useCallback(() => {
         const plano = planos.find((p) => p.id === planoId);
         const seguradora = seguradoras.find((s) => s.id === seguradoraId);
-      
-        if (!plano || !seguradora) return '';
-      
-        return `${plano.nome}, da seguradora ${seguradora.nome}, ${plano.descricao}`;
-      }, [planos, planoId, seguradoras, seguradoraId]);
 
-    
-      
+        if (!plano || !seguradora) return '';
+
+        return `${plano.nome}, da seguradora ${seguradora.nome}, ${plano.descricao}`;
+    }, [planos, planoId, seguradoras, seguradoraId]);
 
     // Buscar seguradoras
     async function buscarSeguradoras() {
@@ -125,14 +121,38 @@ export default function SimuladorPlanoForm() {
 
         const planoSelecionadoInfo = planos.find((p) => p.id === planoId);
 
-        const dados = {
+        if (!planoSelecionadoInfo || !planoSelecionadoInfo.tipo_id) {
+            alert('Plano inválido ou sem tipo definido.');
+            return;
+        }
+
+        // Mapear tipo_id numérico para string
+        const tipoMapeado = {
+            4: 'vida',
+            5: 'saude',
+            6: 'automovel',
+        } as const;
+
+        const tipoSeguro = tipoMapeado[planoSelecionadoInfo.tipo_id as keyof typeof tipoMapeado];
+
+
+        if (!tipoSeguro) {
+            alert('Tipo de seguro desconhecido.');
+            return;
+        }
+
+        // Enviar dados para próxima etapa
+        setDados({
             seguradora_id: seguradoraId,
             plano_id: planoId,
-            valor: planoSelecionadoInfo?.valor ?? '',
-            info,
-        };
+            tipo_id: planoSelecionadoInfo.tipo_id,
+            tipo: tipoSeguro,
+            plano: planoSelecionadoInfo,
+        });
 
-        console.log('📤 Enviando dados da simulação:', dados);
+        onAvancar();
+
+        console.log('📤 Enviando dados da simulação:');
         // Aqui você pode enviar os dados com fetch POST se quiser
     }
 
@@ -142,18 +162,16 @@ export default function SimuladorPlanoForm() {
         setInfo('');
         setPlanos([]);
     }
-    
+
     useEffect(() => {
         const texto = informacao();
         setInfo(texto);
-      }, [planoSelecionado, informacao]);
-      
+    }, [planoSelecionado, informacao]);
 
     return (
         <div className="h-full w-full">
-            
             <form onSubmit={handleSubmit} className="flex h-full flex-col space-y-6">
-            <h1 className="mb-4 text-lg font-bold">Contratação de Plano</h1>
+                <h1 className="mb-4 text-lg font-bold">Contratação de Plano</h1>
                 {/* Seguradora */}
                 <div className="relative flex w-full flex-col gap-1">
                     <label htmlFor="seguradora" className="text-sm font-medium text-gray-700">
@@ -195,7 +213,7 @@ export default function SimuladorPlanoForm() {
                         {planos.length === 0 && <option disabled>Nenhum plano disponível</option>}
                         {planos.map((p) => (
                             <option key={p.id} value={p.id.toString()}>
-                                {p.nome} 
+                                {p.nome}
                             </option>
                         ))}
                     </select>

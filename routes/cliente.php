@@ -7,6 +7,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
+use App\Http\Controllers\SimulacaoController;
 
 // ROTAS DE CRIAÇÃO DE CONTA
 Route::prefix('cliente')->group(function () {
@@ -27,4 +28,9 @@ Route::middleware('auth:cliente')->group(function () {
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
     Route::get('/comentarios', [ComentarioController::class, 'index']);
     Route::post('/comentarios', [ComentarioController::class, 'store']);
+
+    
+    Route::get('/tipos-seguro', [SimulacaoController::class, 'tiposDeSeguro']);
+
 });
+Route::post('/simular', [SimulacaoController::class, 'calcular']);

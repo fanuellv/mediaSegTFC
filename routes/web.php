@@ -4,7 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SimulacaoController;
 use App\Http\Controllers\TesteController;
+
+
+
+
 
 // ROTAS PÚBLICAS
 Route::get('/', fn () => Inertia::render('welcome'))->name('home');

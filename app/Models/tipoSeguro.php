@@ -7,11 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class tipoSeguro extends Model
 {
     //
-    protected $fillable = [
-        'Vida',
-        'Saude',
-        'Automovel',
-    ];
+    protected $fillable = ['nome']; // 'nome' é o nome da coluna na tabela
 
     protected $table = 'TipoSeguro';
 }
