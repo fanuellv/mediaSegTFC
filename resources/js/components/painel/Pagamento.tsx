@@ -1,5 +1,5 @@
 
-import SimuladorPlanoForm from '../ui/simulador/simuladorPlano';
+import Simulador from '../ui/simulador/Simulador';
 
 export default function Pagamento() {
     return (
@@ -11,7 +11,7 @@ export default function Pagamento() {
                     msOverflowStyle: 'none', // IE 10+
                 }}
             >
-                <SimuladorPlanoForm/>
+                <Simulador/>
             </div>
         </div>
     );

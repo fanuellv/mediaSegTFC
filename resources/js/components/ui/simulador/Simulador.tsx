@@ -26,7 +26,7 @@ export default function Simulador() {
   };
 
   return (
-    <div className="w-full rounded-xl">
+    <div className="h-full flex flex-col rounded-xl">
       {etapa === 1 && (
         <SimuladorPlanoForm
           onAvancar={() => setEtapa(2)}
