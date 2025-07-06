@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ApoliceModel;
 use App\Models\PlanoModel;
+use App\Models\Simulacao;
 use App\Models\tipoSeguro;
 use Illuminate\Http\Request;
 use App\Services\Cotacao\CotacaoService;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 
 class SimulacaoController extends Controller
@@ -19,6 +22,26 @@ class SimulacaoController extends Controller
     {
         $this->cotacaoService = $cotacaoService;
     }
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'cliente_id' => 'required|exists:cliente,id',
+        'tipo_seguro_id' => 'required|exists:tipo_seguro,id',
+        'valor_calculado' => 'required|numeric',
+        'status' => 'required|string',
+    ]);
+
+    $simulacao = Simulacao::create([
+        'cliente_id' => $request->cliente_id,
+        'tipo_seguro_id' => $request->tipo_seguro_id,
+        'data' => now(),
+        'valor_calculado' => $request->valor_calculado,
+        'status' => $request->status,
+    ]);
+
+    return response()->json($simulacao);
+}
 
     public function calcular(Request $request)
 {
@@ -62,6 +85,32 @@ class SimulacaoController extends Controller
 
         return response()->json(['erro' => 'Erro ao calcular cotação. ' . $e->getMessage()], 500);
     }
+
+    
+}
+public function adquirir(Request $request)
+{
+    $dados = $request->all();
+    $plano = PlanoModel::findOrFail($dados['plano_id']);
+
+    $apolice = ApoliceModel::create([
+        'cliente_id' => $user->id ?? 1,
+        'plano_id' => $plano->id,
+        'numero' => strtoupper(Str::random(10)),
+        'data_inicio' => now(),
+        'data_fim' => now()->addYear(),
+        'valor_total' => $dados['valor'] ?? 0,
+    ]);
+
+    // 🔧 Gerar único PDF com apólice e fatura
+    $pdf = Pdf::loadView('documentos.apolice_fatura', ['apolice' => $apolice]);
+
+    $path = "pdfs/apolice_fatura_{$apolice->id}.pdf";
+    Storage::put("public/{$path}", $pdf->output());
+
+    return response()->json([
+        'documento_url' => Storage::url($path),
+    ]);
 }
 
 

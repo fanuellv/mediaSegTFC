@@ -156,8 +156,8 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', null), // Ou coloca '.localhost' para testes locais
-    
+    'domain' => null, // ou coloca o domínio correto, se usares subdomínios
+//'same_site' => 'lax', // ou 'strict', dependendo do teu ambiente
 
 
     /*

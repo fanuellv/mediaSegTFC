@@ -30,6 +30,8 @@ Route::middleware('auth:cliente')->group(function () {
     Route::post('/comentarios', [ComentarioController::class, 'store']);
     Route::post('/simular', [SimulacaoController::class, 'calcular']);
     Route::get('/tipos-seguro', [SimulacaoController::class, 'tiposDeSeguro']);
+    Route::get('/apolice/pdf/{id}', [SimulacaoController::class, 'adquirir']);
+
 
 });
 

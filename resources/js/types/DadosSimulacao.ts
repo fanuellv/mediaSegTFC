@@ -34,5 +34,7 @@ export interface Plano {
   
     // Resultado
     valor?: number;
+
+    simulacao_id?: number;
   }
   

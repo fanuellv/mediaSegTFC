@@ -1,5 +1,6 @@
 import { DadosSimulacao } from "@/types/DadosSimulacao";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Seguradora {
   id: number;
@@ -11,10 +12,18 @@ interface Props {
   setDados: (novos: Partial<DadosSimulacao>) => void;
   seguradoras: Seguradora[];
   onVoltar: () => void;
+  onAvancar: () => void; // ⬅️ nova prop
 }
 
-export default function Resultado({ dados, setDados, seguradoras, onVoltar }: Props) {
+export default function Resultado({
+  dados,
+  setDados,
+  seguradoras,
+  onVoltar,
+  onAvancar,
+}: Props) {
   const [info, setInfo] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (dados.plano && dados.seguradora_id) {
@@ -26,22 +35,46 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar }: Pr
     }
   }, [dados, seguradoras]);
 
-  const adquirirPlano = () => {
-    alert("Plano adquirido com sucesso!");
-    // Exemplo de reset:
-    setDados({
-      idade: 0,
-      fumante: false,
-      profissao: "normal",
-      seguradora_id: 0,
-      tipo_id: 0,
-      plano: undefined,
-      plano_id: undefined,
-      ano_veiculo: undefined,
-      tem_franquia: undefined,
-      tipo_uso: undefined,
-      valor: undefined,
-    });
+  const adquirirPlano = async () => {
+    setLoading(true);
+    try {
+      const payload = {
+        cliente_id: 1, // ou auth ID real
+        tipo_seguro_id: dados.tipo_id,
+        valor_calculado: dados.valor,
+        status: "concluída", // ou outro valor apropriado
+      };
+
+      await axios.post("http://127.0.0.1:8000/simulacao", payload, {
+        headers: {
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      });
+
+      alert("Plano adquirido com sucesso!");
+      onAvancar(); // ⬅️ avança para página de sucesso/download
+
+      // Reset opcional
+      setDados({
+        idade: 0,
+        fumante: false,
+        profissao: "normal",
+        seguradora_id: 0,
+        tipo_id: 0,
+        plano: undefined,
+        plano_id: undefined,
+        ano_veiculo: undefined,
+        tem_franquia: undefined,
+        tipo_uso: undefined,
+        valor: undefined,
+      });
+    } catch (err) {
+      console.error("❌ Erro ao salvar simulação:", err);
+      alert("Erro ao adquirir plano.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,10 +100,11 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar }: Pr
 
       <div className="flex flex-col gap-4 pt-4">
         <button
-          className="w-full rounded bg-[#0153A5] p-3 font-semibold text-white transition hover:bg-blue-500"
+          className="w-full rounded bg-[#0153A5] p-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-60"
           onClick={adquirirPlano}
+          disabled={loading}
         >
-          Adquirir Plano
+          {loading ? "Processando..." : "Adquirir Plano"}
         </button>
 
         <button
