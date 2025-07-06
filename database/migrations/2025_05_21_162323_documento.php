@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('apolice_id')->nullable();
             $table->foreign('apolice_id')
                 ->references('id')
-                ->on('apolice')
+                ->on('apolices')
                 ->onDelete('set null');
 
             $table->timestamps();

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         Administrador::class,
         Seguradora::class,
         tipoSeguro::class,
+        PlanoSeguro::class,
     ]);
 }
 

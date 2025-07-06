@@ -8,6 +8,8 @@ use App\Models\PlanoModel;
 use App\Models\tipoSeguro;
 use Illuminate\Http\Request;
 use App\Services\Cotacao\CotacaoService;
+use Illuminate\Support\Str;
+
 
 class SimulacaoController extends Controller
 {
@@ -40,18 +42,19 @@ class SimulacaoController extends Controller
         $planoSelecionado = PlanoModel::with('tipo')->find($planoId);
 
         // Gerar a apólice (contrato de seguro)
-    $apolice = ApoliceModel::create([
-        'cliente_id' => auth()->id() ?? 1,
-        'plano_id' => $plano->id,
-        'numero' => strtoupper(Str::random(10)),
-        'data_inicio' => now(),
-        'data_fim' => now()->addYear(),
-        'fatura_id' => $fatura->id,
-    ]);
+        $apolice = ApoliceModel::create([
+            'cliente_id' => $user->id ?? 1,
+            'plano_id' => $planoSelecionado->id,
+            'numero' => strtoupper(Str::random(10)),
+            'data_inicio' => now(),
+            'data_fim' => now()->addYear(),
+            'valor_total' => $valor,
+        ]);
 
         return response()->json([
             'valor' => $valor,
             'plano' => $planoSelecionado,
+            'apolice_id' => $apolice->id,
         ]);
     } catch (\Exception $e) {
         // Log do erro para depuração

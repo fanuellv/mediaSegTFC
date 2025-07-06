@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('duracao');
             
             $table->unsignedBigInteger('seguradora_id');
-            $table->unsignedBigInteger('apolice_id')->nullable();
+            
             $table->unsignedBigInteger('cliente_id')->nullable();
         
             $table->timestamps();
@@ -30,10 +30,7 @@ return new class extends Migration
                 ->on('seguradoras')
                 ->onDelete('cascade');
         
-            $table->foreign('apolice_id')
-                ->references('id')
-                ->on('apolice')
-                ->onDelete('set null');
+            
         
             $table->foreign('cliente_id')
                 ->references('id')

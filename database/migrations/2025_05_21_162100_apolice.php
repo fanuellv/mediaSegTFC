@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('numero')->unique(); // Número da apólice
             $table->unsignedBigInteger('cliente_id');
             $table->unsignedBigInteger('plano_id');
-            $table->unsignedBigInteger('fatura_id')->nullable();
 
             $table->date('data_inicio');
             $table->date('data_fim');
@@ -26,8 +25,8 @@ return new class extends Migration {
 
             // Chaves estrangeiras
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
-            $table->foreign('plano_id')->references('id')->on('planos')->onDelete('cascade');
-            $table->foreign('fatura_id')->references('id')->on('faturas')->onDelete('set null');
+            $table->foreign('plano_id')->references('id')->on('plano_seguro')->onDelete('cascade');
+            
         });
     }
 
