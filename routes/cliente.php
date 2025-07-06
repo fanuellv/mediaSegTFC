@@ -29,8 +29,9 @@ Route::middleware('auth:cliente')->group(function () {
     Route::get('/comentarios', [ComentarioController::class, 'index']);
     Route::post('/comentarios', [ComentarioController::class, 'store']);
 
-    
+    Route::post('/simular', [SimulacaoController::class, 'calcular']);
     Route::get('/tipos-seguro', [SimulacaoController::class, 'tiposDeSeguro']);
 
 });
-Route::post('/simular', [SimulacaoController::class, 'calcular']);
+
+

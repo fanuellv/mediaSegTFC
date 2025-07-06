@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApoliceModel;
 use App\Models\PlanoModel;
 use App\Models\tipoSeguro;
 use Illuminate\Http\Request;
@@ -37,6 +38,16 @@ class SimulacaoController extends Controller
         $valor = $this->cotacaoService->calcular($tipo, $dados);
 
         $planoSelecionado = PlanoModel::with('tipo')->find($planoId);
+
+        // Gerar a apólice (contrato de seguro)
+    $apolice = ApoliceModel::create([
+        'cliente_id' => auth()->id() ?? 1,
+        'plano_id' => $plano->id,
+        'numero' => strtoupper(Str::random(10)),
+        'data_inicio' => now(),
+        'data_fim' => now()->addYear(),
+        'fatura_id' => $fatura->id,
+    ]);
 
         return response()->json([
             'valor' => $valor,

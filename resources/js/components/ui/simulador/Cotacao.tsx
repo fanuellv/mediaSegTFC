@@ -53,21 +53,21 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
     const simular = async () => {
         setErro(null);
         setLoadingSimulacao(true);
-    
+
         try {
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             const plano_id = dados.plano?.id || dados.plano_id;
-    
+
             if (!plano_id) {
                 setErro('❌ Nenhum plano foi selecionado.');
                 return;
             }
-    
+
             const payload = {
                 ...dados,
                 plano_id,
             };
-    
+
             const response = await axios.post('http://127.0.0.1:8000/simular', payload, {
                 headers: {
                     Accept: 'application/json',
@@ -75,7 +75,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 },
                 withCredentials: true, // 🔴 ESSENCIAL para enviar os cookies da sessão
             });
-    
+
             const { valor, plano } = response.data;
             setDados({ ...dados, valor, plano });
             onAvancar();
@@ -90,7 +90,6 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
             setLoadingSimulacao(false);
         }
     };
-    
 
     // 🔵 Spinner durante o carregamento inicial
     if (loadingInicial) {
@@ -102,64 +101,138 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
     }
 
     return (
-        <div className="space-y-4 h-full w-full">
+        <div className="relative flex h-full w-full flex-col justify-between space-y-4 p-4">
             {/* 🔵 Overlay spinner durante a simulação */}
             {loadingSimulacao && (
-                <div className="absolute w-full h-full inset-0 z-10 flex items-center justify-center bg-white backdrop-blur-sm">
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm">
                     <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
                 </div>
             )}
 
-            <h2 className="text-lg font-bold">Preencha os dados para cotação</h2>
+            <div className="space-y-4">
+                <h2 className="text-lg font-bold text-gray-800">Preencha os dados para cotação</h2>
 
-            {tipoSelecionado && (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') && (
-                <>
-                    <label>Idade:</label>
-                    <input type="number" name="idade" value={dados.idade} onChange={handleChange} className="w-full rounded border p-2" />
+                {tipoSelecionado && (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') && (
+                    <>
+                        {/* Idade */}
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="idade" className="text-sm font-medium text-gray-700">
+                                Idade:
+                            </label>
+                            <input
+                                type="number"
+                                id="idade"
+                                name="idade"
+                                value={dados.idade}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            />
+                        </div>
 
-                    <label>Profissão:</label>
-                    <select name="profissao" value={dados.profissao} onChange={handleChange} className="w-full rounded border p-2">
-                        <option value="normal">Normal</option>
-                        <option value="risco">De risco</option>
-                    </select>
+                        {/* Profissão */}
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="profissao" className="text-sm font-medium text-gray-700">
+                                Profissão:
+                            </label>
+                            <select
+                                id="profissao"
+                                name="profissao"
+                                value={dados.profissao}
+                                onChange={handleChange}
+                                className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100"
+                            >
+                                <option value="normal">Normal</option>
+                                <option value="risco">De risco</option>
+                            </select>
+                        </div>
 
-                    <label>
-                        <input type="checkbox" name="fumante" checked={dados.fumante} onChange={handleChange} className="mr-2" />
-                        Fumante
-                    </label>
-                </>
-            )}
+                        {/* Fumante */}
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="fumante"
+                                name="fumante"
+                                checked={dados.fumante}
+                                onChange={handleChange}
+                                className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="fumante" className="text-sm font-medium text-gray-700">
+                                Fumante
+                            </label>
+                        </div>
+                    </>
+                )}
 
-            {tipoSelecionado === 'automovel' && (
-                <>
-                    <label>Ano do veículo:</label>
-                    <input
-                        type="number"
-                        name="ano_veiculo"
-                        value={dados.ano_veiculo || ''}
-                        onChange={handleChange}
-                        className="w-full rounded border p-2"
-                    />
+                {tipoSelecionado === 'automovel' && (
+                    <>
+                        {/* Ano do veículo */}
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="ano_veiculo" className="text-sm font-medium text-gray-700">
+                                Ano do veículo:
+                            </label>
+                            <input
+                                type="number"
+                                id="ano_veiculo"
+                                name="ano_veiculo"
+                                value={dados.ano_veiculo || ''}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            />
+                        </div>
 
-                    <label>Tem franquia:</label>
-                    <input type="checkbox" name="tem_franquia" checked={dados.tem_franquia || false} onChange={handleChange} className="ml-2" />
+                        {/* Tem franquia */}
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="tem_franquia"
+                                name="tem_franquia"
+                                checked={dados.tem_franquia || false}
+                                onChange={handleChange}
+                                className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="tem_franquia" className="text-sm font-medium text-gray-700">
+                                Tem franquia
+                            </label>
+                        </div>
 
-                    <label>Tipo de uso:</label>
-                    <select name="tipo_uso" value={dados.tipo_uso || ''} onChange={handleChange} className="w-full rounded border p-2">
-                        <option value="">Selecione</option>
-                        <option value="pessoal">Pessoal</option>
-                        <option value="comercial">Comercial</option>
-                    </select>
-                </>
-            )}
+                        {/* Tipo de uso */}
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="tipo_uso" className="text-sm font-medium text-gray-700">
+                                Tipo de uso:
+                            </label>
+                            <select
+                                id="tipo_uso"
+                                name="tipo_uso"
+                                value={dados.tipo_uso || ''}
+                                onChange={handleChange}
+                                className="w-full appearance-none rounded-lg border border-gray-300 bg-white p-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100"
+                            >
+                                <option value="">Selecione</option>
+                                <option value="pessoal">Pessoal</option>
+                                <option value="comercial">Comercial</option>
+                            </select>
+                        </div>
+                    </>
+                )}
 
-            {erro && <div className="text-red-600">{erro}</div>}
+                {/* Mensagem de erro */}
+                {erro && <div className="text-sm font-medium text-red-600">{erro}</div>}
+            </div>
 
-            <div className="mt-auto flex w-full gap-4 pt-4">
-                <button onClick={onVoltar} className="w-1/2 rounded bg-gray-300 p-2 hover:bg-gray-400" disabled={loadingSimulacao}>
+            {/* Botões de ação */}
+            <div className="flex w-full gap-4 pt-4">
+                <button
+                    onClick={onVoltar}
+                    disabled={loadingSimulacao}
+                    className="w-1/2 rounded bg-gray-300 p-3 text-sm font-semibold text-gray-800 transition hover:bg-gray-400 disabled:opacity-50"
+                >
                     Voltar
                 </button>
-                <button onClick={simular} disabled={loadingSimulacao} className="w-1/2 rounded bg-blue-600 p-2 text-white hover:bg-blue-700">
+                <button
+                    onClick={simular}
+                    disabled={loadingSimulacao}
+                    className="w-1/2 rounded bg-[#0153A5] p-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                >
                     {loadingSimulacao ? 'Simulando...' : 'Ver Cotação'}
                 </button>
             </div>
