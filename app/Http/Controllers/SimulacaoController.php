@@ -26,11 +26,12 @@ class SimulacaoController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'cliente_id' => 'required|exists:cliente,id',
-        'tipo_seguro_id' => 'required|exists:tipo_seguro,id',
+        'cliente_id' => 'required|exists:clientes,id',
+        'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
         'valor_calculado' => 'required|numeric',
         'status' => 'required|string',
     ]);
+    
 
     $simulacao = Simulacao::create([
         'cliente_id' => $request->cliente_id,

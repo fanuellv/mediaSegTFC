@@ -42,7 +42,7 @@ export default function Resultado({
         cliente_id: 1, // ou auth ID real
         tipo_seguro_id: dados.tipo_id,
         valor_calculado: dados.valor,
-        status: "concluída", // ou outro valor apropriado
+        status: "simulado", // ou outro valor apropriado
       };
 
       await axios.post("http://127.0.0.1:8000/simulacao", payload, {

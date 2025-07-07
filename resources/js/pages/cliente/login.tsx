@@ -19,22 +19,24 @@ const Login: React.FC = () => {
         e.preventDefault();
         console.log('Enviando login com:', data);
 
-post('/login', {
-  onError: (errors) => {
-    console.log('❌ Erros:', errors);
-  },
-});
-
+        post('/login', {
+            onError: (errors) => {
+                console.log('❌ Erros:', errors);
+            },
+        });
     };
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const timeout = setTimeout(() => setLoading(false), 1500);
-        return () => clearTimeout(timeout);
+    
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-  console.log('CSRF Token:', token);
+        console.log('CSRF Token:', token);
+    
+        return () => clearTimeout(timeout);
     }, []);
+    
 
     if (loading) return <Loader />;
 
