@@ -89,25 +89,18 @@ class SimulacaoController extends Controller
 
     
 }
-public function adquirir(Request $request)
+
+
+public function gerarPdf($id)
 {
-    $dados = $request->all();
-    $plano = PlanoModel::findOrFail($dados['plano_id']);
+    $apolice = ApoliceModel::with(['cliente', 'plano'])->findOrFail($id);
 
-    $apolice = ApoliceModel::create([
-        'cliente_id' => $user->id ?? 1,
-        'plano_id' => $plano->id,
-        'numero' => strtoupper(Str::random(10)),
-        'data_inicio' => now(),
-        'data_fim' => now()->addYear(),
-        'valor_total' => $dados['valor'] ?? 0,
-    ]);
-
-    // 🔧 Gerar único PDF com apólice e fatura
     $pdf = Pdf::loadView('documentos.apolice_fatura', ['apolice' => $apolice]);
 
-    $path = "pdfs/apolice_fatura_{$apolice->id}.pdf";
-    Storage::put("public/{$path}", $pdf->output());
+    $path = 'pdfs/apolice_fatura_' . $apolice->id . '.pdf';
+
+    // Aqui salva igual fizeste na foto
+    Storage::disk('public')->put($path, $pdf->output());
 
     return response()->json([
         'documento_url' => Storage::url($path),
@@ -115,6 +108,19 @@ public function adquirir(Request $request)
 }
 
 
+public function adquirirPdf($apoliceId)
+{
+    $path = "public/pdfs/apolice_fatura_{$apoliceId}.pdf";
+    $fullPath = storage_path("app/{$path}");
+
+    if (!file_exists($fullPath)) {
+        return response()->json(['erro' => 'Documento não encontrado.'], 404);
+    }
+
+    return response()->file($fullPath, [
+        'Content-Type' => 'application/pdf',
+    ]);
+}
 
     public function tiposDeSeguro()
 {

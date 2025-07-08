@@ -23,8 +23,8 @@
     </div>
 
     <div class="bloco">
-        <p><span class="bold">Início:</span> {{ $apolice->data_inicio->format('d/m/Y') }}</p>
-        <p><span class="bold">Término:</span> {{ $apolice->data_fim->format('d/m/Y') }}</p>
+        <p><span class="bold">Início:</span> {{ \Carbon\Carbon::parse($apolice->data_inicio)->format('d/m/Y') }}</p>
+        <p><span class="bold">Término:</span> {{ \Carbon\Carbon::parse($apolice->data_fim)->format('d/m/Y') }}</p>
     </div>
 
     <div class="bloco">

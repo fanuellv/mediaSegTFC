@@ -11,29 +11,16 @@ export default function Extrair({ dados, onVoltar }: Props) {
 
   const extrairDocumento = async () => {
     try {
+      if (!dados.documento_url) {
+        alert("Documento ainda não está disponível.");
+        return;
+      }
+
       setCarregando(true);
-
-      const response = await fetch(`http://127.0.0.1:8000/apolice/pdf/${dados.simulacao_id}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/pdf",
-        },
-      });
-      
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "apolice-fatura.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
+      window.open(dados.documento_url, "_blank");
     } catch (err) {
       console.error("❌ Erro ao gerar PDF:", err);
-      alert("Erro ao gerar o documento.");
+      alert("Erro ao buscar documento.");
     } finally {
       setCarregando(false);
     }
@@ -54,7 +41,7 @@ export default function Extrair({ dados, onVoltar }: Props) {
           onClick={extrairDocumento}
           disabled={carregando}
         >
-          {carregando ? "Gerando PDF..." : "Extrair Apólice e Fatura"}
+          {carregando ? "Abrindo PDF..." : "Extrair Apólice e Fatura"}
         </button>
 
         <button

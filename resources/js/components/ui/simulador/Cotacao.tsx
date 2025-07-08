@@ -94,7 +94,13 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
             }
 
             const result = await response.json();
-            setDados({ ...dados, valor: result.valor, plano: result.plano });
+            setDados({
+                ...dados,
+                valor: result.valor,
+                plano: result.plano,
+                apolice_id: result.apolice_id, // <-- ADICIONA ISTO
+              });
+              
             onAvancar();
         } catch (err: unknown) {
             console.error('❌ Erro na simulação:', err);

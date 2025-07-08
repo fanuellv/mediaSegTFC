@@ -36,5 +36,9 @@ export interface Plano {
     valor?: number;
 
     simulacao_id?: number;
+
+    apolice_id?: number;
+
+    documento_url?:string;
   }
   

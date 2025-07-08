@@ -38,44 +38,54 @@ export default function Resultado({
   const adquirirPlano = async () => {
     setLoading(true);
     try {
+      // 1. Salvar simulação
       const payload = {
-        cliente_id: 1, // ou auth ID real
+        cliente_id: 1, // ou pegar do auth
         tipo_seguro_id: dados.tipo_id,
         valor_calculado: dados.valor,
-        status: "simulado", // ou outro valor apropriado
+        status: "simulado",
       };
-
-      await axios.post("http://127.0.0.1:8000/simulacao", payload, {
+  
+      const simulacaoResponse = await axios.post("http://127.0.0.1:8000/simulacao", payload, {
         headers: {
           Accept: "application/json",
         },
         withCredentials: true,
       });
-
-      alert("Plano adquirido com sucesso!");
-      onAvancar(); // ⬅️ avança para página de sucesso/download
-
-      // Reset opcional
+  
+      const simulacao = simulacaoResponse.data;
+  
+      // 2. Gerar PDF
+      const gerarResponse = await axios.post(
+        `http://127.0.0.1:8000/apolice/pdf/gerar/${simulacao.id}`,
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+  
+      const { documento_url } = gerarResponse.data;
+  
+      // 3. Salvar URL no estado global para próximo componente (se quiser)
       setDados({
-        idade: 0,
-        fumante: false,
-        profissao: "normal",
-        seguradora_id: 0,
-        tipo_id: 0,
-        plano: undefined,
-        plano_id: undefined,
-        ano_veiculo: undefined,
-        tem_franquia: undefined,
-        tipo_uso: undefined,
-        valor: undefined,
+        ...dados,
+        apolice_id: simulacao.id,
+        documento_url,
       });
+  
+      alert("Plano adquirido e documento gerado!");
+      onAvancar();
     } catch (err) {
-      console.error("❌ Erro ao salvar simulação:", err);
-      alert("Erro ao adquirir plano.");
+      console.error("❌ Erro ao adquirir plano ou gerar documento:", err);
+      alert("Erro ao adquirir o plano ou gerar o PDF.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="relative flex h-full w-full flex-col justify-between space-y-6 p-6">
