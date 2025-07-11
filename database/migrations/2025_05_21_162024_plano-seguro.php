@@ -16,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 100);
             $table->string('descricao', 255)->nullable();
+            $table->string('cobertura', 255)->nullable();
             $table->decimal('valor', 10, 2);
             $table->string('duracao');
+            
             
             $table->unsignedBigInteger('seguradora_id');
             

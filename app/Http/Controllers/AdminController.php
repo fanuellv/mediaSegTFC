@@ -63,7 +63,8 @@ class AdminController extends Controller
         'nome_usuario' => $request->nome_usuario,
         'password' => $request->senha, // O Laravel usará getAuthPassword() automaticamente
     ])) {
-        return redirect()->route('painel');
+        return redirect()->route('painel.admin');
+
     }
 
     return back()->withErrors(['nome_usuario' => 'Credenciais inválidas']);

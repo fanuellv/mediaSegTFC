@@ -13,7 +13,11 @@ const Login: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/login'); // Rota definida no Laravel
+        post('/admin/login', {
+            preserveState: true,
+            preserveScroll: true,
+          });
+          
     };
     return (
         <div className="flex h-screen flex-col items-center justify-center space-y-8">

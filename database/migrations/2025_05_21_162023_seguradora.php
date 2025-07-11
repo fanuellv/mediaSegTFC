@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('telefone', 20);
             $table->string('foto')->nullable(); // caminho da imagem
             $table->string('endereco', 100);
+            $table->string('email', 100)->nullable();
             $table->text('descricao');
             $table->unsignedBigInteger('administrador_id');
             $table->timestamps();
