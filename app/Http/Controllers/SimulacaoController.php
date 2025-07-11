@@ -94,8 +94,13 @@ class SimulacaoController extends Controller
 public function gerarPdf($id)
 {
     $apolice = ApoliceModel::with(['cliente', 'plano'])->findOrFail($id);
+    $plano_seguro = $apolice->plano; // já está carregado com with('plano')
 
-    $pdf = Pdf::loadView('documentos.apolice_fatura', ['apolice' => $apolice]);
+
+    $pdf = Pdf::loadView('documentos.apolice_fatura', [
+        'apolice' => $apolice,
+        'plano_seguro' => $plano_seguro,
+    ]);
 
     $path = 'pdfs/apolice_fatura_' . $apolice->id . '.pdf';
 

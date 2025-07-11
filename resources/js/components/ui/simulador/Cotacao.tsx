@@ -153,7 +153,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 name="profissao"
                                 value={dados.profissao}
                                 onChange={handleChange}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 appearance-none"
                             >
                                 <option value="normal">Normal</option>
                                 <option value="risco">De risco</option>
@@ -207,7 +207,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 name="tipo_uso"
                                 value={dados.tipo_uso || ''}
                                 onChange={handleChange}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 appearance-none"
                             >
                                 <option value="">Selecione</option>
                                 <option value="pessoal">Pessoal</option>
