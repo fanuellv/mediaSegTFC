@@ -44,7 +44,11 @@ export default function Resultado({
         tipo_seguro_id: dados.tipo_id,
         valor_calculado: dados.valor,
         status: "simulado",
+        plano_id: dados.plano?.id, // ⬅️ adiciona isso
       };
+      console.log("Plano ID:", dados.plano?.id);
+      console.error("plano id:", dados.plano?.id);
+
   
       const simulacaoResponse = await axios.post("http://127.0.0.1:8000/simulacao", payload, {
         headers: {

@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->foreign('simulacao_id')
                 ->references('id')
-                ->on('simulacao_pagamento')
+                ->on('simulacoes')
                 ->onDelete('cascade');
 
             $table->foreign('plano_id')

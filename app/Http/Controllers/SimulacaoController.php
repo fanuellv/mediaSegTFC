@@ -7,11 +7,14 @@ use App\Models\ApoliceModel;
 use App\Models\PlanoModel;
 use App\Models\Simulacao;
 use App\Models\tipoSeguro;
+use App\Models\ItemSimulado;
 use Illuminate\Http\Request;
 use App\Services\Cotacao\CotacaoService;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 
 class SimulacaoController extends Controller
@@ -24,25 +27,51 @@ class SimulacaoController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'cliente_id' => 'required|exists:clientes,id',
-        'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
-        'valor_calculado' => 'required|numeric',
-        'status' => 'required|string',
-    ]);
+    {
+        Log::debug('Entrou no método store da SimulacaoController', [
+            'cliente_id' => $request->cliente_id,
+            'tipo_seguro_id' => $request->tipo_seguro_id,
+            'valor_calculado' => $request->valor_calculado,
+            'status' => $request->status,
+            'plano_id' => $request->plano_id,
+        ]);
+    
+        $validated = $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
+            'valor_calculado' => 'required|numeric',
+            'status' => 'required|string',
+            'plano_id' => 'required|exists:plano_seguro,id',
+        ]);
+    
+        $simulacao = Simulacao::create([
+            'cliente_id' => $validated['cliente_id'],
+            'tipo_seguro_id' => $validated['tipo_seguro_id'],
+            'data' => now(),
+            'valor_calculado' => $validated['valor_calculado'],
+            'status' => $validated['status'],
+        ]);
+    
+        // Criar o item simulado associado
+        ItemSimulado::create([
+            'simulacao_id' => $simulacao->id,
+            'plano_id' => $validated['plano_id'],
+        ]);
+    
+        // ✅ Retornar apenas os dados relevantes
+        return response()->json([
+            'id' => $simulacao->id,
+            'cliente_id' => $simulacao->cliente_id,
+            'tipo_seguro_id' => $simulacao->tipo_seguro_id,
+            'valor_calculado' => $simulacao->valor_calculado,
+            'status' => $simulacao->status,
+        ]);
+    }
     
 
-    $simulacao = Simulacao::create([
-        'cliente_id' => $request->cliente_id,
-        'tipo_seguro_id' => $request->tipo_seguro_id,
-        'data' => now(),
-        'valor_calculado' => $request->valor_calculado,
-        'status' => $request->status,
-    ]);
 
-    return response()->json($simulacao);
-}
+    
+
 
     public function calcular(Request $request)
 {

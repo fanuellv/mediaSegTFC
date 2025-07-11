@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Simulacao extends Model
 {
+
+    protected $table = 'simulacoes';
     protected $fillable = [
         'cliente_id',
         'tipo_seguro_id',
@@ -18,7 +20,7 @@ class Simulacao extends Model
         'status'
     ];
 
-    protected $table = 'simulacoes';
+    
 
     public function cliente()
     {
