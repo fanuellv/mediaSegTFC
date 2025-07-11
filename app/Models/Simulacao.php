@@ -31,5 +31,9 @@ class Simulacao extends Model
     {
         return $this->belongsTo(TipoSeguro::class);
     }
+    public function itens()
+    {
+        return $this->hasMany(ItemSimulado::class, 'simulacao_id');
+    }
 }
 

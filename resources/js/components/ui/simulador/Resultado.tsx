@@ -58,6 +58,7 @@ export default function Resultado({
       });
   
       const simulacao = simulacaoResponse.data;
+      console.log("✅ ID da simulação retornada:", simulacao.id);
   
       // 2. Gerar PDF
       const gerarResponse = await axios.post(

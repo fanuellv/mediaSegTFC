@@ -122,24 +122,28 @@ class SimulacaoController extends Controller
 
 public function gerarPdf($id)
 {
-    $apolice = ApoliceModel::with(['cliente', 'plano'])->findOrFail($id);
-    $plano_seguro = $apolice->plano; // já está carregado com with('plano')
+    $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora'])->findOrFail($id);
 
+    $plano = $simulacao->itens->first()->plano ?? null;
+
+    if (!$plano) {
+        abort(404, 'Plano associado à simulação não encontrado.');
+    }
 
     $pdf = Pdf::loadView('documentos.apolice_fatura', [
-        'apolice' => $apolice,
-        'plano_seguro' => $plano_seguro,
+        'apolice' => $simulacao,
+        'plano_seguro' => $plano,
     ]);
 
-    $path = 'pdfs/apolice_fatura_' . $apolice->id . '.pdf';
+    $path = 'pdfs/apolice_fatura_' . $simulacao->id . '.pdf';
 
-    // Aqui salva igual fizeste na foto
     Storage::disk('public')->put($path, $pdf->output());
 
     return response()->json([
         'documento_url' => Storage::url($path),
     ]);
 }
+
 
 
 public function adquirirPdf($apoliceId)
