@@ -3,37 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanoModel;
-use App\Models\tipoSeguro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PlanoController extends Controller
 {
-    //
-    public function index(Request $request)
-{
-    $seguradoraId = $request->query('seguradora_id');
-
-    if ($seguradoraId) {
-        $planos = PlanoModel::where('seguradora_id', $seguradoraId)->get();
-    } else {
-        $planos = PlanoModel::all(); // Opcional: pode retornar vazio ou dar erro se preferir
+    private function estaAutenticado()
+    {
+        return Auth::guard('admin')->check() || Auth::guard('cliente')->check();
     }
 
-    return response()->json($planos);
-}
+    public function index(Request $request)
+    {
+        if (!$this->estaAutenticado()) {
+            return response()->json(['message' => 'Não autenticado'], 401);
+        }
 
+        $seguradoraId = $request->query('seguradora_id');
+
+        if ($seguradoraId) {
+            $planos = PlanoModel::where('seguradora_id', $seguradoraId)->get();
+        } else {
+            $planos = PlanoModel::all();
+        }
+
+        return response()->json($planos);
+    }
 
     public function store(Request $request)
     {
+        if (!$this->estaAutenticado()) {
+            return response()->json(['message' => 'Não autenticado'], 401);
+        }
+
         $data = $request->validate([
             'nome' => 'required|string|max:100',
             'descricao' => 'nullable|string|max:255',
             'valor' => 'required|numeric',
-           'duracao' => 'required|string|max:50',
-
+            'duracao' => 'required|string|max:50',
             'seguradora_id' => 'required|exists:seguradoras,id',
-          //  'apolice_id' => 'nullable|exists:apolice,id',
-           // 'cliente_id' => 'required|exists:clientes,id',
         ]);
 
         $plano = PlanoModel::create($data);
@@ -43,21 +51,27 @@ class PlanoController extends Controller
 
     public function show($id)
     {
+        if (!$this->estaAutenticado()) {
+            return response()->json(['message' => 'Não autenticado'], 401);
+        }
+
         return PlanoModel::findOrFail($id);
     }
 
     public function update(Request $request, $id)
     {
+        if (!$this->estaAutenticado()) {
+            return response()->json(['message' => 'Não autenticado'], 401);
+        }
+
         $plano = PlanoModel::findOrFail($id);
 
         $data = $request->validate([
             'nome' => 'required|string|max:100',
             'descricao' => 'nullable|string|max:255',
             'valor' => 'required|numeric',
-            'duracao' => 'required|date_format:H:i:s',
+            'duracao' => 'required|string|max:50',
             'seguradora_id' => 'required|exists:seguradoras,id',
-            'apolice_id' => 'nullable|exists:apolice,id',
-            'cliente_id' => 'required|exists:clientes,id',
         ]);
 
         $plano->update($data);
@@ -67,6 +81,10 @@ class PlanoController extends Controller
 
     public function destroy($id)
     {
+        if (!$this->estaAutenticado()) {
+            return response()->json(['message' => 'Não autenticado'], 401);
+        }
+
         $plano = PlanoModel::findOrFail($id);
         $plano->delete();
 

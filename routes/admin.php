@@ -16,7 +16,6 @@ Route::middleware('auth:admin')->group(function () {
 
 //seguradora
 Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/seguradoras', [SeguradoraController::class, 'index']);
     Route::post('/seguradoras', [SeguradoraController::class, 'store']);
     Route::put('/seguradoras/{id}', [SeguradoraController::class, 'update']);
     Route::delete('/seguradoras/{id}', [SeguradoraController::class, 'destroy']);
@@ -25,7 +24,6 @@ Route::middleware(['auth:admin'])->group(function () {
 
 //planos
 Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
     Route::post('/planos', [PlanoController::class, 'store']);       // Criar plano
     Route::get('/planos/{id}', [PlanoController::class, 'show']);    // Mostrar plano específico
     Route::put('/planos/{id}', [PlanoController::class, 'update']);  // Atualizar plano

@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PlanoController;
+use App\Http\Controllers\SeguradoraController;
 use App\Http\Controllers\SimulacaoController;
 use App\Http\Controllers\TesteController;
 
@@ -26,6 +31,14 @@ Route::prefix('usuarios')->group(function () {
     Route::get('/create', fn () => Inertia::render('cliente/cadastro'));
     Route::post('/', [TesteController::class, 'store']);
 });
+
+// web.php
+Route::middleware(['web'])->group(function () {
+    Route::get('/seguradoras', [SeguradoraController::class, 'index']);
+    Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
+});
+
+
 
 
 // OUTROS ARQUIVOS DE ROTA

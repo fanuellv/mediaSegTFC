@@ -37,6 +37,7 @@ export default function Seguradora() {
                     Accept: 'application/json',
                     'X-CSRF-TOKEN': token || '',
                 },
+                credentials: 'include', // <-- MUITO IMPORTANTE
             });
 
             if (!response.ok) {
