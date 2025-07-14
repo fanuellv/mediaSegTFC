@@ -36,11 +36,12 @@
         }
 
         .borda {
-            background-color: #eee;
-            border: 1px solid #aaa;
+            background-color: bg-[#0153A5];
+            border: 1px solid bg-[#0153A5];
             border-radius: 6px;
             padding: 4px 8px;
             margin-bottom: 4px;
+            color: #0000;
         }
 
         table {
@@ -248,6 +249,7 @@ Desejamos-lhe saúde e tranquilidade.
             <td>
                 @switch(strtolower($plano_seguro->tipo->nome))
                     @case('automovel')
+                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
                         <p><span class="bold">Marca/Modelo:</span> {{ $apolice->veiculo->marca ?? '---' }}
                             {{ $apolice->veiculo->modelo ?? '---' }}</p>
                         <p><span class="bold">Matrícula:</span> {{ $apolice->veiculo->matricula ?? '---' }}</p>
@@ -257,6 +259,7 @@ Desejamos-lhe saúde e tranquilidade.
                     @break
 
                     @case('vida')
+                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
                     <p><span class="bold">Idade:</span>
                         {{
                             \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
@@ -269,12 +272,13 @@ Desejamos-lhe saúde e tranquilidade.
                     @break
 
                     @case('saude')
+                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
                     <p><span class="bold">Idade:</span>
                         {{
                             \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
                         }} anos
                     </p>
-                        <p><span class="bold">Plano de Cobertura:</span> {{ $apolice->plano->nome ?? '---' }}</p>
+                        <p><span class="bold">Descrição Plano:</span> {{ $plano_seguro->descricao ?? '---' }}</p>
                     @break
                 @endswitch
             </td>
@@ -292,10 +296,10 @@ Desejamos-lhe saúde e tranquilidade.
         <tr>
             <td>
                 <p>Linha Cliente:
-                    {{ $plano_seguro->seguradora->nome ?? '---' }}{{ ' ' }}{{ $plano_seguro->seguradora->telefone ?? '---' }}
+                    {{ $plano_seguro->seguradora->nome ?? '---' }}{{ ' Contacto telefónico ' }}{{ $plano_seguro->seguradora->telefone ?? '---' }}
                 </p>
                 <p>Email: {{ $plano_seguro->seguradora->email ?? '---' }}</p>
-                <p>Localização: {{ $plano_seguro->seguradora->localizacao ?? '---' }}</p>
+                <p>Localização: {{ $plano_seguro->seguradora->endereco ?? '---' }}</p>
             </td>
         </tr>
     </table>
