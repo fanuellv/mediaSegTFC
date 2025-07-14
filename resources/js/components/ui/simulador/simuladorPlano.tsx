@@ -128,9 +128,9 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Props) {
 
         // Mapear tipo_id numérico para string
         const tipoMapeado = {
-            4: 'vida',
-            5: 'saude',
-            6: 'automovel',
+            1: 'vida',
+            2: 'saude',
+            3: 'automovel',
         } as const;
 
         const tipoSeguro = tipoMapeado[planoSelecionadoInfo.tipo_id as keyof typeof tipoMapeado];

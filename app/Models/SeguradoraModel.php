@@ -16,6 +16,7 @@ class SeguradoraModel extends Model
         'nif',
         'telefone',
         'foto',
+        'email',
         'endereco',
         'descricao',
         'administrador_id',

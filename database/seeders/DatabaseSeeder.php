@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
 {
     $this->call([
         utilizador::class,
-        tipoSeguro::class,
         Administrador::class,
         Seguradora::class,
         tipoSeguro::class,

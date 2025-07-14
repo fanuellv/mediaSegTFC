@@ -7,6 +7,7 @@ interface SeguradoraData {
   telefone: string;
   endereco: string;
   descricao: string;
+  email:string;
   foto: string | null;
 }
 
@@ -16,6 +17,7 @@ interface FormData {
   telefone: string;
   endereco: string;
   descricao: string;
+  email:string;
   foto: File | null;
 }
 
@@ -32,6 +34,7 @@ export default function ModalSeguradora({ onClose, onSubmit, seguradoraEditar }:
     telefone: seguradoraEditar?.telefone || '',
     endereco: seguradoraEditar?.endereco || '',
     descricao: seguradoraEditar?.descricao || '',
+    email: seguradoraEditar?.email || '',
     foto: null,
   });
 
@@ -43,18 +46,21 @@ export default function ModalSeguradora({ onClose, onSubmit, seguradoraEditar }:
         telefone: seguradoraEditar.telefone,
         endereco: seguradoraEditar.endereco,
         descricao: seguradoraEditar.descricao,
+        email: seguradoraEditar.email,
         foto: null, // resetar foto no editar, pois arquivo não vem da API
       });
     }
   }, [seguradoraEditar]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value, files } = e.target;
+    const { name, value, files, type } = e.target;
+  
     setForm((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: type === 'file' ? (files ? files[0] : null) : value,
     }));
   }
+  
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -104,6 +110,15 @@ export default function ModalSeguradora({ onClose, onSubmit, seguradoraEditar }:
           value={form.endereco}
           onChange={handleChange}
           placeholder="Endereço"
+          className="mb-2 w-full p-2 border"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
           className="mb-2 w-full p-2 border"
           required
         />

@@ -41,8 +41,12 @@ class PlanoController extends Controller
             'descricao' => 'nullable|string|max:255',
             'valor' => 'required|numeric',
             'duracao' => 'required|string|max:50',
+            'cobertura' => 'required|string|max:100',
             'seguradora_id' => 'required|exists:seguradoras,id',
+            'tipo_id' => 'required|exists:TipoSeguro,id', // 👈 ADICIONA ISSO
         ]);
+        //dd($request->all());
+
 
         $plano = PlanoModel::create($data);
 
@@ -71,7 +75,9 @@ class PlanoController extends Controller
             'descricao' => 'nullable|string|max:255',
             'valor' => 'required|numeric',
             'duracao' => 'required|string|max:50',
+            'cobertura' => 'required|string|max:100',
             'seguradora_id' => 'required|exists:seguradoras,id',
+            'tipo_id' => 'required|exists:TipoSeguro,id', // 👈 ADICIONA ISSO
         ]);
 
         $plano->update($data);

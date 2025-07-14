@@ -30,6 +30,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Plano de vida completo com benefícios adicionais.',
             'valor' => 20000,
             'duracao' => '12 meses',
+            'cobertura' => 'Morte, invalidez, doenças graves e funeral.',
             'seguradora_id' => $nossa->id,
         ]);
 
@@ -39,6 +40,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Cobertura hospitalar e consultas ilimitadas.',
             'valor' => 30000,
             'duracao' => '12 meses',
+            'cobertura' => 'Consultas, exames, internamento e parto.',
             'seguradora_id' => $nossa->id,
         ]);
 
@@ -48,6 +50,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Proteção total contra sinistros e roubos.',
             'valor' => 25000,
             'duracao' => '12 meses',
+            'cobertura' => 'Danos próprios, roubo, reboque e carro extra.',
             'seguradora_id' => $nossa->id,
         ]);
 
@@ -58,6 +61,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Cobertura de vida com prêmio acessível.',
             'valor' => 12000,
             'duracao' => '6 meses',
+            'cobertura' => 'Morte, invalidez por acidente e doenças graves.',
             'seguradora_id' => $mundial->id,
         ]);
 
@@ -67,6 +71,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Plano básico para veículos particulares.',
             'valor' => 15000,
             'duracao' => '12 meses',
+            'cobertura' => 'Acidentes, roubo, terceiros e assistência.',
             'seguradora_id' => $mundial->id,
         ]);
 
@@ -77,6 +82,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Cobertura médica e hospitalar básica.',
             'valor' => 18000,
             'duracao' => '12 meses',
+            'cobertura' => 'Consultas, exames, urgência e internamento.',
             'seguradora_id' => $fortaleza->id,
         ]);
 
@@ -86,6 +92,7 @@ class PlanoSeguro extends Seeder
             'descricao' => 'Plano completo com assistência em estrada.',
             'valor' => 22000,
             'duracao' => '12 meses',
+            'cobertura' => 'Danos, roubo, vidros e assistência em estrada.',
             'seguradora_id' => $fortaleza->id,
         ]);
     }

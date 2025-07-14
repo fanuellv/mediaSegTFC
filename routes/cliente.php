@@ -32,4 +32,6 @@ Route::middleware(['web','auth:cliente'])->group(function () {
     Route::post('/simular', [SimulacaoController::class, 'calcular']);
     Route::get('/tipos-seguro', [SimulacaoController::class, 'tiposDeSeguro']);
     Route::get('/apolice/pdf/{id}', [SimulacaoController::class, 'adquirir']);
+    Route::post('/apolice/pdf/gerar/{id}', [SimulacaoController::class, 'gerarPdf']);
+    
 });

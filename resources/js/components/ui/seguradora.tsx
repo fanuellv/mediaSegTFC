@@ -6,6 +6,7 @@ interface FormData {
   nif: string;
   telefone: string;
   endereco: string;
+  email: string;
   descricao: string;
   foto: File | null;
 }
@@ -16,6 +17,7 @@ interface SeguradoraData {
     nif: string;
     telefone: string;
     endereco: string;
+    email: string;
   descricao: string;
     foto: string | null;
 }
@@ -62,6 +64,7 @@ export default function Seguradora() {
         formData.append('nif', form.nif);
         formData.append('telefone', form.telefone);
         formData.append('endereco', form.endereco);
+        formData.append('email', form.email);
 formData.append('descricao', form.descricao);
 
         if (form.foto) formData.append('foto', form.foto);
@@ -107,6 +110,7 @@ formData.append('descricao', form.descricao);
       formData.append('nif', form.nif);
       formData.append('telefone', form.telefone);
       formData.append('endereco', form.endereco);
+      formData.append('email', form.email);
       formData.append('descricao', form.descricao);
       if (form.foto) formData.append('foto', form.foto);
     
@@ -195,6 +199,7 @@ formData.append('descricao', form.descricao);
           <th className="px-4 py-3">NIF</th>
           <th className="px-4 py-3">Telefone</th>
           <th className="px-4 py-3">Endereço</th>
+          <th className="px-4 py-3">Email</th>
           <th className="px-4 py-3 text-center">Acções</th>
         </tr>
       </thead>
@@ -215,6 +220,7 @@ formData.append('descricao', form.descricao);
             <td className="px-4 py-3">{seg.nif}</td>
             <td className="px-4 py-3">{seg.telefone}</td>
             <td className="px-4 py-3">{seg.endereco}</td>
+            <td className="px-4 py-3">{seg.email}</td>
             <td className="px-4 py-3 text-center">
               <button
                 onClick={() => editarSeguradora(seg)}

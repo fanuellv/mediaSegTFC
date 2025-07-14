@@ -6,11 +6,20 @@ interface FormData {
     descricao: string;
     valor: string;
     duracao: string;
+    cobertura:string;
     seguradora_id?: number;
+    tipo_id:number;
 }
 
 interface PlanoData extends FormData {
     id: number;
+    nome: string;
+    descricao: string;
+    valor: string;
+    duracao: string;
+    cobertura:string;
+    seguradora_id?: number;
+    tipo_id:number;
 }
 
 interface Seguradora {
@@ -62,7 +71,10 @@ export default function Seguradora() {
         formData.append('descricao', form.descricao);
         formData.append('valor', form.valor);
         formData.append('duracao', form.duracao);
+        formData.append('cobertura', form.cobertura);
         formData.append('seguradora_id', String(seguradoraSelecionada));
+        formData.append('tipo_id', String(form.tipo_id));
+
 
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         const res = await fetch('/planos', {
@@ -82,13 +94,19 @@ export default function Seguradora() {
     }
 
     async function atualizarPlano(form: FormData, id: number) {
+        if (!seguradoraSelecionada) return;
+    
         const formData = new FormData();
         formData.append('nome', form.nome);
         formData.append('descricao', form.descricao);
         formData.append('valor', form.valor);
         formData.append('duracao', form.duracao);
+        formData.append('cobertura', form.cobertura);
+        formData.append('seguradora_id', String(seguradoraSelecionada)); // ✅ Adiciona isso
         formData.append('_method', 'PUT');
+        formData.append('tipo_id', String(form.tipo_id));
 
+    
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         const res = await fetch(`/planos/${id}`, {
             method: 'POST',
@@ -98,13 +116,14 @@ export default function Seguradora() {
             },
             body: formData,
         });
-
+    
         if (res.ok && seguradoraSelecionada) {
             buscarPlanos(seguradoraSelecionada);
         } else {
             console.error(await res.text());
         }
     }
+    
 
     async function eliminarPlano(id: number) {
         if (!confirm('Deseja mesmo eliminar este plano?')) return;
@@ -172,9 +191,11 @@ export default function Seguradora() {
     <thead className="bg-gray-100 text-xs font-semibold text-gray-600 uppercase">
       <tr>
         <th className="px-5 py-3">Nome</th>
+        <th className="px-5 py-3">Tipo Seguro</th>
         <th className="px-5 py-3">Descrição</th>
         <th className="px-5 py-3">Valor</th>
         <th className="px-5 py-3">Duração</th>
+        <th className="px-5 py-3">Cobertura</th>
         <th className="px-5 py-3 text-center">Ações</th>
       </tr>
     </thead>
@@ -183,9 +204,11 @@ export default function Seguradora() {
     planos.map((plano) => (
       <tr key={plano.id}>
         <td className="px-5 py-4 font-medium">{plano.nome}</td>
+        <td className="px-5 py-4 font-medium">{plano.tipo_id}</td>
         <td className="px-5 py-4">{plano.descricao}</td>
         <td className="px-5 py-4">{plano.valor}</td>
         <td className="px-5 py-4">{plano.duracao}</td>
+        <td className="px-5 py-4">{plano.cobertura}</td>
         <td className="space-x-3 px-5 py-4 text-center">
           <button onClick={() => editarPlano(plano)} className="text-sm text-blue-600 hover:underline">
             Editar

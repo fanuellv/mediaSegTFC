@@ -32,6 +32,7 @@ class SeguradoraController extends Controller
             'nif' => 'required|string|max:14|unique:seguradoras,nif',
             'telefone' => 'required|string|max:20',
             'endereco' => 'required|string|max:100',
+            'email' => 'required|string|max:100',
             'descricao' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'administrador_id' => 'required|exists:administrador,id',
@@ -58,6 +59,7 @@ class SeguradoraController extends Controller
             'telefone' => 'required|string|max:20',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'endereco' => 'required|string|max:100',
+            'email' => 'required|string|max:100',
             'descricao' => 'required|string',
         ]);
 
