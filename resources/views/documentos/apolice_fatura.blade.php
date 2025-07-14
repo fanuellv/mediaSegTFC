@@ -219,7 +219,9 @@ Desejamos-lhe saúde e tranquilidade.
                 @endswitch
 
             </td>
-            <td>Kz {{ number_format($apolice->valor_total, 2, ',', '.') }}</td>
+            <td>Kz {{ number_format((float) $apolice->valor_calculado, 2, ',', '.') }}</td>
+
+            </td>
         </tr>
     </table>
 
@@ -255,13 +257,23 @@ Desejamos-lhe saúde e tranquilidade.
                     @break
 
                     @case('vida')
-                        <p><span class="bold">Idade:</span> {{ $apolice->idade ?? '---' }}</p>
+                    <p><span class="bold">Idade:</span>
+                        {{
+                            \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
+                        }} anos
+                    </p>
+                    
+                    
                         <p><span class="bold">Profissão:</span> {{ ucfirst($apolice->profissao ?? '---') }}</p>
                         <p><span class="bold">Fumante:</span> {{ $apolice->fumante ? 'Sim' : 'Não' }}</p>
                     @break
 
                     @case('saude')
-                        <p><span class="bold">Idade do Beneficiário:</span> {{ $apolice->idade ?? '---' }}</p>
+                    <p><span class="bold">Idade:</span>
+                        {{
+                            \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
+                        }} anos
+                    </p>
                         <p><span class="bold">Plano de Cobertura:</span> {{ $apolice->plano->nome ?? '---' }}</p>
                     @break
                 @endswitch

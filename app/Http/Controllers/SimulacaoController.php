@@ -125,6 +125,8 @@ public function gerarPdf($id)
     $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora'])->findOrFail($id);
 
     $plano = $simulacao->itens->first()->plano ?? null;
+    $valor_total = $simulacao->valor_calculado;
+
 
     if (!$plano) {
         abort(404, 'Plano associado à simulação não encontrado.');
@@ -133,6 +135,12 @@ public function gerarPdf($id)
     $pdf = Pdf::loadView('documentos.apolice_fatura', [
         'apolice' => $simulacao,
         'plano_seguro' => $plano,
+        'valor_total' => $simulacao->valor_calculado, // <- corrigido aqui
+    ]);
+    Log::debug('Valor total', [
+        
+        'valor_total' => $simulacao->valor_calculado, // <- corrigido aqui
+    
     ]);
 
     $path = 'pdfs/apolice_fatura_' . $simulacao->id . '.pdf';
