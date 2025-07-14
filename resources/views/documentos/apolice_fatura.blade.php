@@ -116,14 +116,14 @@
 
                     <div>
                         <p><span class="borda">Dados do Documento</span></p>
-                        <p><span class="bold">Nº Apólice:</span> {{ $apolice->numero ?? '---' }}</p>
+                        <p><span class="bold">Nº Apólice:</span> {{ $apolice->id ?? '---' }}</p>
                         <p><span class="bold">Data de Emissão:</span>
                             {{ \Carbon\Carbon::parse($apolice->created_at ?? now())->format('d/m/Y') }}</p>
                         <p><span class="bold">Período:</span>
                             {{ \Carbon\Carbon::parse($apolice->data_inicio)->format('d/m/Y') }} a
                             {{ \Carbon\Carbon::parse($apolice->data_fim)->format('d/m/Y') }}</p>
                         <p><span class="bold">Fracionamento:</span> Trimestral</p>
-                        <p><span class="bold">Nº Fatura/Recibo:</span> {{ $apolice->numero_fatura ?? '---' }}</p>
+                        <p><span class="bold">Nº Fatura/Recibo:</span> {{ $apolice->id ?? '---' }}</p>
                     </div>
                 </td>
                 <td style="text-align: right;">
@@ -138,17 +138,18 @@
 
     <div class="caixa-info" style="font-size: 9px;">
         @switch(strtolower($plano_seguro->tipo->nome))
-        @case('automovel')
-        <div style="white-space: pre-wrap;">
-            Caro (a) Cliente,<br>
-            Para circular em segurança, emitimos a fatura e o <strong>Certificado Provisório de Seguro</strong>, que deve acompanhar até o recebimento da <strong>Carta Verde</strong>.<br><br>
-            Em caso de dúvidas:<br>
-            - Linha Cliente: 940125778 (dias úteis das 9h às 21h)<br>
-            - Email: mediaseg.ao@gmail.com<br>
-            - Área do Cliente na plataforma<br><br>
-            Desejamos-lhe uma boa experiência de seguro!
-        </div>
-        @break
+            @case('automovel')
+                <div style="white-space: pre-wrap;">
+                    Caro (a) Cliente,<br>
+                    Para circular em segurança, emitimos a fatura e o <strong>Certificado Provisório de Seguro</strong>, que
+                    deve acompanhar até o recebimento da <strong>Carta Verde</strong>.<br><br>
+                    Em caso de dúvidas:<br>
+                    - Linha Cliente: 940125778 (dias úteis das 9h às 21h)<br>
+                    - Email: mediaseg.ao@gmail.com<br>
+                    - Área do Cliente na plataforma<br><br>
+                    Desejamos-lhe uma boa experiência de seguro!
+                </div>
+            @break
 
             @case('vida')
                 <pre style="white-space: pre-wrap;">
@@ -193,7 +194,31 @@ Desejamos-lhe saúde e tranquilidade.
         </tr>
         <tr>
             <td>{{ ucfirst($plano_seguro->tipo->nome) ?? '---' }}</td>
-            <td>{{ ucfirst($plano_seguro->tipo->segurado) ?? '---' }}</td>
+            <td>
+                @switch(strtolower($plano_seguro->tipo->nome))
+                    @case('automovel')
+                        <div>
+                            Automovel
+                        </div>
+                    @break
+
+                    @case('saude')
+                        <div>
+                            Saude
+                        </div>
+                    @break
+
+                    @case('vida')
+                        <div>
+                            vida
+                        </div>
+                    @break
+
+                    @default
+                        <p>Tipo de seguro não especificado.</p>
+                @endswitch
+
+            </td>
             <td>Kz {{ number_format($apolice->valor_total, 2, ',', '.') }}</td>
         </tr>
     </table>
@@ -242,8 +267,8 @@ Desejamos-lhe saúde e tranquilidade.
                 @endswitch
             </td>
             <td style="border: 1px">
-                <p><span class="bold">Plano: {{$apolice->plano->nome ?? '---'}}</span></p>
-                <p><span class="bold">Cobertura: {{$apolice->plano->cobertura ?? '---'}}</span></p>
+                <p><span class="bold">Plano: {{ $plano_seguro->nome ?? '---' }}</span></p>
+                <p><span class="bold">Cobertura: {{ $plano_seguro->cobertura ?? '---' }}</span></p>
                 <p><span class="bold">Válido de:</span>
                     {{ \Carbon\Carbon::parse($apolice->data_inicio)->format('d/m/Y') }} até
                     {{ \Carbon\Carbon::parse($apolice->data_fim)->format('d/m/Y') }}</p>
@@ -269,4 +294,3 @@ Desejamos-lhe saúde e tranquilidade.
 </body>
 
 </html>
-
