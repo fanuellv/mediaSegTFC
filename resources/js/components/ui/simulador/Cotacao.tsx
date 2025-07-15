@@ -47,15 +47,32 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-
+    
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
             setDados({ [name]: checked });
+        } else if (type === 'number') {
+            setDados({ [name]: value === '' ? null : parseFloat(value) });
         } else {
-            setDados({
-                [name]: ['idade', 'seguradora_id', 'tipo_id', 'ano_veiculo'].includes(name) ? parseInt(value) : value,
-            });
+            setDados({ [name]: value });
         }
+    };
+    
+
+    const camposValidos = (): boolean => {
+        if (!dados.plano_id) return false;
+
+        if (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') {
+            return typeof dados.idade === 'number' && dados.idade > 0 && !!dados.profissao && typeof dados.fumante === 'boolean';
+        }
+
+        if (tipoSelecionado === 'automovel') {
+            return (
+                typeof dados.ano_veiculo === 'number' && dados.ano_veiculo > 1900 && !!dados.tipo_uso // `tem_franquia` é opcional
+            );
+        }
+
+        return false;
     };
 
     const simular = async () => {
@@ -75,6 +92,8 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 ...dados,
                 plano_id,
             };
+            console.log('📤 Payload enviado:', payload);
+
 
             const response = await fetch('/simular', {
                 method: 'POST',
@@ -99,12 +118,12 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 valor: result.valor,
                 plano: result.plano,
                 apolice_id: result.apolice_id, // <-- ADICIONA ISTO
-              });
-              
+            });
+
             onAvancar();
         } catch (err: unknown) {
             console.error('❌ Erro na simulação:', err);
-        
+
             if (err instanceof Error) {
                 setErro(err.message);
             } else {
@@ -135,7 +154,9 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 {tipoSelecionado && (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') && (
                     <>
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="idade" className="text-sm font-medium text-gray-700">Idade:</label>
+                            <label htmlFor="idade" className="text-sm font-medium text-gray-700">
+                                Idade:
+                            </label>
                             <input
                                 type="number"
                                 id="idade"
@@ -143,17 +164,21 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 value={dados.idade}
                                 onChange={handleChange}
                                 className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                required
                             />
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="profissao" className="text-sm font-medium text-gray-700">Profissão:</label>
+                            <label htmlFor="profissao" className="text-sm font-medium text-gray-700">
+                                Profissão:
+                            </label>
                             <select
                                 id="profissao"
                                 name="profissao"
                                 value={dados.profissao}
                                 onChange={handleChange}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 appearance-none"
+                                required
+                                className="w-full appearance-none rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="normal">Normal</option>
                                 <option value="risco">De risco</option>
@@ -167,52 +192,111 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 name="fumante"
                                 checked={dados.fumante}
                                 onChange={handleChange}
+                                required
                                 className="h-5 w-5 rounded border-gray-300 text-blue-600"
                             />
-                            <label htmlFor="fumante" className="text-sm font-medium text-gray-700">Fumante</label>
+                            <label htmlFor="fumante" className="text-sm font-medium text-gray-700">
+                                Fumante
+                            </label>
                         </div>
                     </>
                 )}
 
                 {tipoSelecionado === 'automovel' && (
                     <>
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="ano_veiculo" className="text-sm font-medium text-gray-700">Ano do veículo:</label>
-                            <input
-                                type="number"
-                                id="ano_veiculo"
-                                name="ano_veiculo"
-                                value={dados.ano_veiculo || ''}
-                                onChange={handleChange}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
+                        <div className='space-y-2'>
+                            <div className="flex w-full gap-4">
+                                <div className="flex w-1/2 flex-col gap-1">
+                                    <label htmlFor="ano_veiculo" className="text-sm font-medium text-gray-700">
+                                        Ano do veículo:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="ano_veiculo"
+                                        name="ano_veiculo"
+                                        value={dados.ano_veiculo || ''}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
 
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="tem_franquia"
-                                name="tem_franquia"
-                                checked={dados.tem_franquia || false}
-                                onChange={handleChange}
-                                className="h-5 w-5 rounded border-gray-300 text-blue-600"
-                            />
-                            <label htmlFor="tem_franquia" className="text-sm font-medium text-gray-700">Tem franquia</label>
-                        </div>
+                                <div className="flex w-1/2 flex-col gap-1">
+                                    <label htmlFor="marca_modelo" className="text-sm font-medium text-gray-700">
+                                        Marca / Modelo:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="marca_modelo"
+                                        name="marca_modelo"
+                                        value={dados.marca_modelo || ''}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
 
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="tipo_uso" className="text-sm font-medium text-gray-700">Tipo de uso:</label>
-                            <select
-                                id="tipo_uso"
-                                name="tipo_uso"
-                                value={dados.tipo_uso || ''}
-                                onChange={handleChange}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 appearance-none"
-                            >
-                                <option value="">Selecione</option>
-                                <option value="pessoal">Pessoal</option>
-                                <option value="comercial">Comercial</option>
-                            </select>
+                            <div className="flex w-full gap-4">
+                                <div className="flex w-1/2 flex-col gap-1">
+                                    <label htmlFor="matricula" className="text-sm font-medium text-gray-700">
+                                        Matrícula:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="matricula"
+                                        name="matricula"
+                                        value={dados.matricula || ''}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+
+                                <div className="flex w-1/2 flex-col gap-1">
+                                    <label htmlFor="valor_veiculo" className="text-sm font-medium text-gray-700">
+                                        Valor do veículo (Kz):
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="valor_veiculo"
+                                        name="valor_veiculo"
+                                        value={dados.valor_veiculo || ''}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="tem_franquia"
+                                    name="tem_franquia"
+                                    checked={dados.tem_franquia || false}
+                                    onChange={handleChange}
+                                    className="h-5 w-5 rounded border-gray-300 text-blue-600"
+                                />
+                                <label htmlFor="tem_franquia" className="text-sm font-medium text-gray-700">
+                                    Tem franquia <span className="text-xs text-gray-500">(Escolher franquia reduz o preço do seguro.)</span>
+                                </label>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="tipo_uso" className="text-sm font-medium text-gray-700">
+                                    Tipo de uso:
+                                </label>
+                                <select
+                                    id="tipo_uso"
+                                    name="tipo_uso"
+                                    value={dados.tipo_uso || ''}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full appearance-none rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="">Selecione</option>
+                                    <option value="pessoal">Pessoal</option>
+                                    <option value="comercial">Comercial</option>
+                                </select>
+                            </div>
                         </div>
                     </>
                 )}
@@ -229,7 +313,13 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                     Voltar
                 </button>
                 <button
-                    onClick={simular}
+                    onClick={() => {
+                        if (camposValidos()) {
+                            simular();
+                        } else {
+                            setErro('Preencha todos os campos obrigatórios antes de continuar.');
+                        }
+                    }}
                     disabled={loadingSimulacao}
                     className="w-1/2 rounded bg-[#0153A5] p-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                 >

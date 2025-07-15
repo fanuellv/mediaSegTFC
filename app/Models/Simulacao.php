@@ -17,7 +17,11 @@ class Simulacao extends Model
         'tipo_seguro_id',
         'data',
         'valor_calculado',
-        'status'
+        'status',
+        'extras',
+    ];
+    protected $casts = [
+        'extras' => 'array', // importante!
     ];
 
     

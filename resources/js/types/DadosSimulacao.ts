@@ -20,7 +20,7 @@ export interface Plano {
     tipo: "vida" | "saude" | "automovel";
     idade: number;
     fumante: boolean;
-    profissao: "normal" | "risco";
+    profissao?: "normal" | "risco";
     seguradora_id: number;
     tipo_id: number;
   
@@ -40,5 +40,9 @@ export interface Plano {
     apolice_id?: number;
 
     documento_url?:string;
+
+    marca_modelo?:string;
+    valor_veiculo?:string;
+    matricula?:string;
   }
   

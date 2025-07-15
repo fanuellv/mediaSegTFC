@@ -20,9 +20,11 @@ class CotadorAutomovel implements CotadorInterface
             $base += 3000;
         }
 
-        if ($dados['tem_franquia'] === false) {
+        $temFranquia = $dados['tem_franquia'] ?? true; // assume true se não vier
+        if ($temFranquia === false) {
             $base += 5000;
         }
+
 
         if ($dados['tipo_uso'] === 'comercial') {
             $base += 4000;

@@ -36,12 +36,12 @@
         }
 
         .borda {
-            background-color: bg-[#0153A5];
-            border: 1px solid bg-[#0153A5];
+            background-color: #0153A5;
+            border: 1px solid #0153A5;
             border-radius: 6px;
             padding: 4px 8px;
             margin-bottom: 4px;
-            color: #0000;
+            color: #ffff;
         }
 
         table {
@@ -140,16 +140,17 @@
     <div class="caixa-info" style="font-size: 9px;">
         @switch(strtolower($plano_seguro->tipo->nome))
             @case('automovel')
-                <div style="white-space: pre-wrap;">
-                    Caro (a) Cliente,<br>
-                    Para circular em segurança, emitimos a fatura e o <strong>Certificado Provisório de Seguro</strong>, que
-                    deve acompanhar até o recebimento da <strong>Carta Verde</strong>.<br><br>
-                    Em caso de dúvidas:<br>
-                    - Linha Cliente: 940125778 (dias úteis das 9h às 21h)<br>
-                    - Email: mediaseg.ao@gmail.com<br>
-                    - Área do Cliente na plataforma<br><br>
-                    Desejamos-lhe uma boa experiência de seguro!
-                </div>
+                <pre style="white-space: pre-wrap;">
+Caro (a) Cliente,
+Para circular em segurança, emitimos a fatura e o <strong>Certificado Provisório de Seguro</strong>, que
+deve acompanhar até o recebimento da <strong>Carta Verde</strong>.
+Em caso de dúvidas:
+- Linha Cliente: 940125778 (dias úteis das 9h às 21h)
+- Email: mediaseg.ao@gmail.com
+- Área do Cliente na plataforma
+
+Desejamos-lhe uma boa experiência de seguro!
+                </pre>
             @break
 
             @case('vida')
@@ -249,37 +250,51 @@ Desejamos-lhe saúde e tranquilidade.
             <td>
                 @switch(strtolower($plano_seguro->tipo->nome))
                     @case('automovel')
-                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
-                        <p><span class="bold">Marca/Modelo:</span> {{ $apolice->veiculo->marca ?? '---' }}
-                            {{ $apolice->veiculo->modelo ?? '---' }}</p>
-                        <p><span class="bold">Matrícula:</span> {{ $apolice->veiculo->matricula ?? '---' }}</p>
-                        <p><span class="bold">Tipo de Uso:</span> {{ $apolice->tipo_uso ?? '---' }}</p>
-                        <p><span class="bold">Franquia:</span> {{ $apolice->tem_franquia ? 'Sim' : 'Não' }}</p>
-                        <p><span class="bold">Ano do Veículo:</span> {{ $apolice->ano_veiculo ?? '---' }}</p>
+                        <p><span class="bold">Beneficiário:
+                                {{ $apolice->cliente->nome }}{{ ' ' }}{{ $apolice->cliente->sobrenome }}</span></p>
+                        @if (isset($extras['marca_modelo']))
+                            <p><strong>Marca / Modelo:</strong> {{ $extras['marca_modelo'] }}</p>
+                        @endif
+                        @if (isset($extras['matricula']))
+                            <p><strong>Matrícula:</strong> {{ $extras['matricula'] }}</p>
+                        @endif
+                        @php
+                            $valorVeiculo = is_numeric($extras['valor_veiculo'] ?? null)
+                                ? (float) $extras['valor_veiculo']
+                                : 0;
+                        @endphp
+
+                        Valor do veículo: Kz {{ number_format($valorVeiculo, 2, ',', '.') }}
+
+                        @if (isset($extras['tem_franquia']))
+                            <p><strong>Tem Franquia:</strong> {{ $extras['tem_franquia'] ? 'Sim' : 'Não' }}</p>
+                        @endif
+                        @if (isset($extras['tipo_uso']))
+                            <p><strong>Tipo de Uso:</strong> {{ ucfirst($extras['tipo_uso']) }}</p>
+                        @endif
                     @break
 
                     @case('vida')
-                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
-                    <p><span class="bold">Idade:</span>
-                        {{
-                            \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
-                        }} anos
-                    </p>
-                    
-                    
+                        <p><span class="bold">Beneficiário:
+                                {{ $apolice->cliente->nome }}{{ ' ' }}{{ $apolice->cliente->sobrenome }}</span></p>
+                        <p><span class="bold">Idade:</span>
+                            {{ \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age }} anos
+                        </p>
+
+
                         <p><span class="bold">Profissão:</span> {{ ucfirst($apolice->profissao ?? '---') }}</p>
                         <p><span class="bold">Fumante:</span> {{ $apolice->fumante ? 'Sim' : 'Não' }}</p>
                     @break
 
                     @case('saude')
-                    <p><span class="bold">Beneficiário: {{$apolice->cliente->nome}}{{' '}}{{$apolice->cliente->sobrenome}}</span></p>
-                    <p><span class="bold">Idade:</span>
-                        {{
-                            \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age
-                        }} anos
-                    </p>
+                        <p><span class="bold">Beneficiário:
+                                {{ $apolice->cliente->nome }}{{ ' ' }}{{ $apolice->cliente->sobrenome }}</span></p>
+                        <p><span class="bold">Idade:</span>
+                            {{ \Carbon\Carbon::parse($apolice->cliente->dataRegistro)->age }} anos
+                        </p>
                         <p><span class="bold">Descrição Plano:</span> {{ $plano_seguro->descricao ?? '---' }}</p>
                     @break
+
                 @endswitch
             </td>
             <td style="border: 1px">
