@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Seguradora } from '@/types/DadosSimulacao';
 interface SeguradoraData {
     id: number;
     nome: string;
@@ -9,7 +10,12 @@ interface SeguradoraData {
     foto: string | null;
 }
 
-export default function ListSeguradora() {
+interface Props {
+    onAvancar: () => void;
+    setSeguradora: React.Dispatch<React.SetStateAction<Seguradora | null>>;
+}
+
+export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
     const [lista, setLista] = useState<SeguradoraData[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -86,7 +92,11 @@ export default function ListSeguradora() {
                                 </div>
 
                                 <div className="sm:ml-auto sm:self-center">
-                                    <button className="w-full rounded bg-[#0153A5] px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto">
+                                    <button 
+                                    onClick={() => {
+                                        setSeguradora(seguradora);
+                                        onAvancar();
+                                    }}className="w-full rounded bg-[#0153A5] px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto">
                                         Ver mais
                                     </button>
                                 </div>

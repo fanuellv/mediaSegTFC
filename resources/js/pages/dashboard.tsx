@@ -12,8 +12,8 @@ import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { MdOutlineNotificationsActive, MdOutlineSchool, MdOutlineSecurity, MdPayment } from 'react-icons/md';
 import { RiBillLine, RiLogoutCircleLine } from 'react-icons/ri';
 import { TbSmartHome } from 'react-icons/tb';
-import Servico from '@/components/painel/Servico/Servico';
 import Pagamento from '@/components/painel/Pagamento';
+import Etapa from '@/components/painel/Servico/Etapa';
 
 interface Cliente {
     nome: string;
@@ -104,7 +104,7 @@ export default function Dashboard() {
                     {/* CONTEÚDO COM BASE NA ABA */}
                     <div className="flex-1 space-y-4 overflow-y-auto rounded-b-xl bg-gray-50 px-4 py-4 sm:bg-transparent sm:overflow-hidden">
                         {sessaoAtiva === 'Inicio' && <Inicio />}
-                        {sessaoAtiva === 'Seguros' && <Servico />}
+                        {sessaoAtiva === 'Seguros' && <Etapa />}
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}
                         {sessaoAtiva === 'Meus Planos' && <div>Conteúdo dos Planos</div>}
                         {sessaoAtiva === 'Aprender' && <div>Conteúdo de Aprendizado</div>}

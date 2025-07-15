@@ -14,6 +14,15 @@ export interface Plano {
       nome: string;
     };
   }
+export interface Seguradora {
+  id: number;
+  nome: string;
+  nif: string;
+  telefone: string;
+  endereco: string;
+  descricao: string;
+  foto: string | null;
+  }
   
   
   export interface DadosSimulacao {
