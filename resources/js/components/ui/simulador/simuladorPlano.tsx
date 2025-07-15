@@ -18,13 +18,22 @@ interface Seguradora {
 interface Props {
     onAvancar: () => void;
     setDados: (novos: Partial<DadosSimulacao>) => void;
+    dadosIniciais: DadosSimulacao; // ✅ Adiciona esta linha
 }
 
-export default function SimuladorPlanoForm({ onAvancar, setDados }: Props) {
+export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais }: Props) {
+
+    //const [form, setForm] = useState<DadosSimulacao>(dadosIniciais); // ✅ usa os dadosIniciais
     const [seguradoras, setSeguradoras] = useState<Seguradora[]>([]);
     const [planos, setPlanos] = useState<Plano[]>([]);
-    const [seguradoraSelecionada, setSeguradoraSelecionada] = useState('');
-    const [planoSelecionado, setPlanoSelecionado] = useState('');
+    const [seguradoraSelecionada, setSeguradoraSelecionada] = useState(
+        dadosIniciais.seguradora_id ? dadosIniciais.seguradora_id.toString() : ''
+      );
+      
+      const [planoSelecionado, setPlanoSelecionado] = useState(
+        dadosIniciais.plano_id ? dadosIniciais.plano_id.toString() : ''
+      );
+      
     const [info, setInfo] = useState('');
 
     const seguradoraId = Number(seguradoraSelecionada);
@@ -102,6 +111,12 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Props) {
                 const dados = await response.json();
                 console.log('✅ Planos encontrados:', dados);
                 setPlanos(dados);
+
+                // Se já existir plano_id vindo dos dadosIniciais, mantêm ele selecionado
+if (dadosIniciais.plano_id) {
+    setPlanoSelecionado(dadosIniciais.plano_id.toString());
+  }
+  
             } catch (error) {
                 console.error('❌ Erro ao buscar planos:', error);
                 setPlanos([]);

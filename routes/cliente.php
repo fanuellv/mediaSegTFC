@@ -8,6 +8,7 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 use App\Http\Controllers\SimulacaoController;
+use Illuminate\Http\Request;
 
 Route::prefix('cliente')->group(function () {
     Route::get('/create', fn () => Inertia::render('cliente/criarConta'))->name('cliente.create');
@@ -30,6 +31,12 @@ Route::middleware(['web','auth:cliente'])->group(function () {
         Route::get('/inicio', fn () => Inertia::render('dashboard', ['aba' => 'Inicio']))->name('dashboard.inicio');
         Route::get('/seguros', fn () => Inertia::render('dashboard', ['aba' => 'Seguros']))->name('dashboard.seguros');
         Route::get('/pagamentos', fn () => Inertia::render('dashboard', ['aba' => 'Pagamentos']))->name('dashboard.pagamentos');
+        Route::get('/dashboard/pagamentos', function (Request $request) {
+            return Inertia::render('dashboard', [
+                'aba' => 'Pagamentos',
+                'seguradora_id' => $request->query('seguradora_id') // pode ser nulo
+            ]);
+        })->name('dashboard.pagamentos');
         Route::get('/meus-planos', fn () => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
         Route::get('/aprender', fn () => Inertia::render('dashboard', ['aba' => 'Aprender']))->name('dashboard.aprender');
         Route::get('/menu', fn () => Inertia::render('dashboard', ['aba' => 'Menu']))->name('dashboard.menu');
