@@ -5,10 +5,12 @@ import Selecionada from './Selecionada';
 //import Servico from './Servico';
 import { router } from '@inertiajs/react';
 
-
-function adquirir(seguradora: Seguradora | null) {
-    if (!seguradora) return;
-    router.get('/dashboard/pagamentos', { seguradora_id: seguradora.id });
+interface Plano {
+    id: number;
+    nome: string;
+    preco: number;
+    descricao: string;
+    foto?: string | null;
 }
 
 
@@ -17,17 +19,24 @@ function adquirir(seguradora: Seguradora | null) {
 export default function Etapa() {
     const [etapa, setEtapa] = useState(1);
 
-    
-
-    //const [seguradoras, setSeguradoras] = useState<Seguradora[]>([]);
     const [seguradoraSelecionada, setSeguradoraSelecionada] = useState<Seguradora | null>(null);
+    const [planoSelecionado, setPlanoSelecionado] = useState<Plano | null>(null);
 
 
+    function adquirir() {
+        if (!seguradoraSelecionada || !planoSelecionado) return;
+
+        router.get('/dashboard/pagamentos', {
+            seguradora_id: seguradoraSelecionada.id,
+            plano_id: planoSelecionado.id,
+        });
+    }
+    
     return (
         <div className="flex w-full bg-white rounded-2xl p-4 h-full sm:h-[88vh] flex-col">
             {etapa === 1 && <ListSeguradora setSeguradora={setSeguradoraSelecionada} onAvancar={() => setEtapa(2)} />}
 
-            {etapa === 2 && <Selecionada seguradora={seguradoraSelecionada} onVoltar={() => setEtapa(1)} adquirir={() => adquirir(seguradoraSelecionada)}/>}
+            {etapa === 2 && <Selecionada seguradora={seguradoraSelecionada} onVoltar={() => setEtapa(1)} adquirir={() => adquirir()} setPlanoSelecionado={setPlanoSelecionado} />}
         </div>
     );
 

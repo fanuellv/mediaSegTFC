@@ -1,7 +1,6 @@
 import { Seguradora } from '@/types/DadosSimulacao';
 import { useEffect, useState } from 'react';
 
-
 interface Plano {
     id: number;
     nome: string;
@@ -12,11 +11,12 @@ interface Plano {
 
 interface Props {
     seguradora: Seguradora | null;
-    adquirir: () => void;
+    adquirir: (plano: Plano) => void; // <- agora recebe o plano
     onVoltar: () => void;
+    setPlanoSelecionado: (plano: Plano) => void; // ✅ Adicionado
 }
 
-export default function Selecionada({ seguradora, adquirir, onVoltar }: Props) {
+export default function Selecionada({ seguradora, adquirir, onVoltar,setPlanoSelecionado }: Props) {
     const [planos, setPlanos] = useState<Plano[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -57,7 +57,9 @@ export default function Selecionada({ seguradora, adquirir, onVoltar }: Props) {
         return (
             <div className="p-4">
                 <p className="text-red-500">Nenhuma seguradora selecionada.</p>
-                <button onClick={onVoltar} className="mt-2 rounded bg-gray-300 px-4 py-2">Voltar</button>
+                <button onClick={onVoltar} className="mt-2 rounded bg-gray-300 px-4 py-2">
+                    Voltar
+                </button>
             </div>
         );
     }
@@ -94,22 +96,25 @@ export default function Selecionada({ seguradora, adquirir, onVoltar }: Props) {
                     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                         {planos.map((plano) => (
                             <div key={plano.id} className="flex gap-4 rounded border bg-gray-50 p-4">
-                                <div className="h-20 w-20 flex-shrink-0 rounded bg-gray-100 overflow-hidden">
+                                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                                     {plano.foto ? (
                                         <img src={`/storage/${plano.foto}`} alt={plano.nome} className="h-full w-full object-contain" />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
                                     )}
                                 </div>
-                                <div className="flex flex-col justify-between w-full">
+                                <div className="flex w-full flex-col justify-between">
                                     <div>
                                         <h4 className="text-base font-semibold">{plano.nome}</h4>
                                         <p className="text-sm text-gray-600">{plano.descricao}</p>
-                                        <p className="text-sm font-semibold text-[#0153A5] mt-1">Kz {plano.preco}</p>
+                                        <p className="mt-1 text-sm font-semibold text-[#0153A5]">Kz {plano.preco}</p>
                                     </div>
                                     <div className="mt-2 self-end">
                                         <button
-                                            onClick={adquirir}
+                                            onClick={() => {
+                                                setPlanoSelecionado(plano); // opcional, se ainda quiser guardar no estado
+                                                adquirir(plano); // ✅ Corrigido: passa o plano
+                                            }}
                                             className="rounded bg-[#0153A5] px-4 py-1.5 text-sm text-white hover:bg-blue-600"
                                         >
                                             Adquirir
@@ -123,7 +128,9 @@ export default function Selecionada({ seguradora, adquirir, onVoltar }: Props) {
             </div>
 
             <div className="flex justify-end">
-                <button onClick={onVoltar} className="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300">Voltar</button>
+                <button onClick={onVoltar} className="rounded bg-gray-200 px-4 py-2 text-sm hover:bg-gray-300">
+                    Voltar
+                </button>
             </div>
         </div>
     );

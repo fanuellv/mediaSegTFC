@@ -34,7 +34,8 @@ Route::middleware(['web','auth:cliente'])->group(function () {
         Route::get('/dashboard/pagamentos', function (Request $request) {
             return Inertia::render('dashboard', [
                 'aba' => 'Pagamentos',
-                'seguradora_id' => $request->query('seguradora_id') // pode ser nulo
+                'seguradora_id' => request('seguradora_id'), // pode ser nulo
+                'plano_id' => request('plano_id'),
             ]);
         })->name('dashboard.pagamentos');
         Route::get('/meus-planos', fn () => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
