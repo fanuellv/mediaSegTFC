@@ -27,10 +27,7 @@ export interface Plano {
     plano?: Plano;
     plano_id?: number; // ✅ Agora suportado para integração no backend
   
-    // Campos para seguro automóvel
-    ano_veiculo?: number;
-    tem_franquia?: boolean;
-    tipo_uso?: "pessoal" | "comercial";
+   
   
     // Resultado
     valor?: number;
@@ -41,8 +38,12 @@ export interface Plano {
 
     documento_url?:string;
 
-    marca_modelo?:string;
-    valor_veiculo?:string;
-    matricula?:string;
+    // Automóvel
+  ano_veiculo?: number;
+  tem_franquia?: boolean;
+  tipo_uso?: "pessoal" | "comercial";
+  marca_modelo?: string;
+  valor_veiculo?: number;
+  matricula?: string;
   }
   

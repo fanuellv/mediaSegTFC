@@ -18,11 +18,9 @@ class Simulacao extends Model
         'data',
         'valor_calculado',
         'status',
-        'extras',
+        
     ];
-    protected $casts = [
-        'extras' => 'array', // importante!
-    ];
+
 
     
 
@@ -39,5 +37,11 @@ class Simulacao extends Model
     {
         return $this->hasMany(ItemSimulado::class, 'simulacao_id');
     }
+
+    public function detalhes()
+{
+    return $this->hasOne(SimulacaoDetalhe::class);
+}
+
 }
 

@@ -249,30 +249,35 @@ Desejamos-lhe saúde e tranquilidade.
         <tr>
             <td>
                 @switch(strtolower($plano_seguro->tipo->nome))
-                    @case('automovel')
-                        <p><span class="bold">Beneficiário:
-                                {{ $apolice->cliente->nome }}{{ ' ' }}{{ $apolice->cliente->sobrenome }}</span></p>
-                        @if (isset($extras['marca_modelo']))
-                            <p><strong>Marca / Modelo:</strong> {{ $extras['marca_modelo'] }}</p>
-                        @endif
-                        @if (isset($extras['matricula']))
-                            <p><strong>Matrícula:</strong> {{ $extras['matricula'] }}</p>
-                        @endif
-                        @php
-                            $valorVeiculo = is_numeric($extras['valor_veiculo'] ?? null)
-                                ? (float) $extras['valor_veiculo']
-                                : 0;
-                        @endphp
-
-                        Valor do veículo: Kz {{ number_format($valorVeiculo, 2, ',', '.') }}
-
-                        @if (isset($extras['tem_franquia']))
-                            <p><strong>Tem Franquia:</strong> {{ $extras['tem_franquia'] ? 'Sim' : 'Não' }}</p>
-                        @endif
-                        @if (isset($extras['tipo_uso']))
-                            <p><strong>Tipo de Uso:</strong> {{ ucfirst($extras['tipo_uso']) }}</p>
-                        @endif
-                    @break
+                @case('automovel')
+                <p><span class="bold">Beneficiário:
+                    {{ $apolice->cliente->nome }} {{ $apolice->cliente->sobrenome }}</span></p>
+            
+                @if (!empty($simulacao->detalhes?->marca_modelo))
+                    <p><strong>Marca / Modelo:</strong> {{ $simulacao->detalhes->marca_modelo }}</p>
+                @endif
+            
+                @if (!empty($simulacao->detalhes?->matricula))
+                    <p><strong>Matrícula:</strong> {{ $simulacao->detalhes->matricula }}</p>
+                @endif
+            
+                @php
+                    $valorVeiculo = is_numeric($simulacao->detalhes?->valor_veiculo)
+                        ? (float) $simulacao->detalhes->valor_veiculo
+                        : 0;
+                @endphp
+            
+                <p><strong>Valor do veículo:</strong> Kz {{ number_format($valorVeiculo, 2, ',', '.') }}</p>
+            
+                @if (!is_null($simulacao->detalhes?->tem_franquia))
+                    <p><strong>Tem Franquia:</strong> {{ $simulacao->detalhes->tem_franquia ? 'Sim' : 'Não' }}</p>
+                @endif
+            
+                @if (!empty($simulacao->detalhes?->tipo_uso))
+                    <p><strong>Tipo de Uso:</strong> {{ ucfirst($simulacao->detalhes->tipo_uso) }}</p>
+                @endif
+            @break
+            
 
                     @case('vida')
                         <p><span class="bold">Beneficiário:

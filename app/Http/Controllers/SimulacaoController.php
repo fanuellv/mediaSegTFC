@@ -8,6 +8,7 @@ use App\Models\PlanoModel;
 use App\Models\Simulacao;
 use App\Models\tipoSeguro;
 use App\Models\ItemSimulado;
+use App\Models\SimulacaoDetalhe;
 use Illuminate\Http\Request;
 use App\Services\Cotacao\CotacaoService;
 use Illuminate\Support\Str;
@@ -27,63 +28,72 @@ class SimulacaoController extends Controller
     }
 
     public function store(Request $request)
-{
-    $dados = $request->all();
+    {
+        $dados = $request->json()->all(); // Captura corretamente dados JSON
+    
+        Log::debug('✅ Dados completos recebidos:', $dados);
+    
+        // Validação dos campos principais
+        $validated = validator($dados, [
+            'cliente_id' => 'required|exists:clientes,id',
+            'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
+            'valor_calculado' => 'required|numeric',
+            'status' => 'required|string',
+            'plano_id' => 'required|exists:plano_seguro,id',
+    
+            // Validação dos detalhes
+            'marca_modelo' => 'nullable|string|max:255',
+            'matricula' => 'nullable|string|max:100',
+            'valor_veiculo' => 'nullable|numeric',
+            'tem_franquia' => 'nullable|boolean',
+            'tipo_uso' => 'nullable|string|max:100',
+            'ano_veiculo' => 'nullable|integer|min:1900|max:' . now()->year,
+        ])->validate();
+    
+        // Criação da simulação principal
+        $simulacao = Simulacao::create([
+            'cliente_id' => $validated['cliente_id'],
+            'tipo_seguro_id' => $validated['tipo_seguro_id'],
+            'data' => now(),
+            'valor_calculado' => $validated['valor_calculado'],
+            'status' => $validated['status'],
+        ]);
+    
+        // Criação dos detalhes (dados adicionais)
+        SimulacaoDetalhe::create([
+            'simulacao_id' => $simulacao->id,
+            'marca_modelo' => $request->input('marca_modelo'),
+            'matricula' => $request->input('matricula'),
+            'valor_veiculo' => $request->input('valor_veiculo'),
+            'tem_franquia' => filter_var($request->input('tem_franquia'), FILTER_VALIDATE_BOOLEAN),
+            'tipo_uso' => $request->input('tipo_uso'),
+            'ano_veiculo' => $request->input('ano_veiculo'),
+        ]);
+        Log::debug('➡️ Detalhes recebidos:', $request->only([
+            'marca_modelo', 'matricula', 'valor_veiculo', 'tem_franquia', 'tipo_uso', 'ano_veiculo'
+        ]));
+        
+        
+    
+    
+        // Criação do item simulado (plano associado)
+        ItemSimulado::create([
+            'simulacao_id' => $simulacao->id,
+            'plano_id' => $validated['plano_id'],
+        ]);
+    
+        return response()->json([
+            'id' => $simulacao->id,
+            'cliente_id' => $simulacao->cliente_id,
+            'tipo_seguro_id' => $simulacao->tipo_seguro_id,
+            'valor_calculado' => $simulacao->valor_calculado,
+            'status' => $simulacao->status,
+            'detalhes' => $simulacao->detalhes, // Relação com SimulacaoDetalhe (se tiveres configurada)
+        ]);
+    }
+    
 
-    Log::debug('✅ Dados completos recebidos:', $dados);
-
-    $validated = $request->validate([
-        'cliente_id' => 'required|exists:clientes,id',
-        'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
-        'valor_calculado' => 'required|numeric',
-        'status' => 'required|string',
-        'plano_id' => 'required|exists:plano_seguro,id',
-    ]);
-
-    // Montar array de extras
-    $extras = [
-        'marca_modelo' => $dados['marca_modelo'] ?? '',
-        'matricula' => $dados['matricula'] ?? '',
-        'valor_veiculo' => $dados['valor_veiculo'] ?? '',
-        'tem_franquia' => $dados['tem_franquia'] ?? false,
-        'tipo_uso' => $dados['tipo_uso'] ?? '',
-        'ano_veiculo' => $dados['ano_veiculo'] ?? '',
-    ];
-
-    Log::debug('Entrou no método store da SimulacaoController', [
-        'cliente_id' => $request->cliente_id,
-        'tipo_seguro_id' => $request->tipo_seguro_id,
-        'valor_calculado' => $request->valor_calculado,
-        'status' => $request->status,
-        'plano_id' => $request->plano_id,
-        'extras' => $extras,
-    ]);
-
-    Log::debug('Extras armazenados:', ['extras' => $extras]);
-
-    $simulacao = Simulacao::create([
-        'cliente_id' => $validated['cliente_id'],
-        'tipo_seguro_id' => $validated['tipo_seguro_id'],
-        'data' => now(),
-        'valor_calculado' => $validated['valor_calculado'],
-        'status' => $validated['status'],
-        'extras' => json_encode($extras),
-    ]);
-
-    // Criar o item simulado associado
-    ItemSimulado::create([
-        'simulacao_id' => $simulacao->id,
-        'plano_id' => $validated['plano_id'],
-    ]);
-
-    return response()->json([
-        'id' => $simulacao->id,
-        'cliente_id' => $simulacao->cliente_id,
-        'tipo_seguro_id' => $simulacao->tipo_seguro_id,
-        'valor_calculado' => $simulacao->valor_calculado,
-        'status' => $simulacao->status,
-    ]);
-}
+    
 
 
 
@@ -143,12 +153,12 @@ class SimulacaoController extends Controller
 
     public function gerarPdf($id)
     {
-        $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora'])->findOrFail($id);
+        $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora','detalhes'])->findOrFail($id);
 
         $plano = $simulacao->itens->first()->plano ?? null;
         $valor_total = $simulacao->valor_calculado;
 
-        $extras = json_decode($simulacao->extras ?? '{}', true);
+        $extras = $simulacao->extras ?? [];
 
 
         if (!$plano) {
@@ -157,18 +167,19 @@ class SimulacaoController extends Controller
 
         $pdf = Pdf::loadView('documentos.apolice_fatura', [
             'apolice' => $simulacao,
+            'simulacao' => $simulacao,
             'plano_seguro' => $plano,
             'valor_total' => $simulacao->valor_calculado, // <- corrigido aqui
-            'extras' => $extras,
+            'detalhes' => $simulacao->detalhes, // se quiser retornar
         ]);
         Log::debug('Valor total', [
 
             'valor_total' => $simulacao->valor_calculado, // <- corrigido aqui
 
         ]);
-        Log::debug('Extras', [
+        Log::debug('detalhes', [
 
-            'extras' => $extras,
+            'detalhes' => $simulacao->detalhes, 
 
         ]);
 

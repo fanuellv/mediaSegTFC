@@ -47,17 +47,17 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-    
+
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
             setDados({ [name]: checked });
         } else if (type === 'number') {
-            setDados({ [name]: value === '' ? null : parseFloat(value) });
+            const parsed = parseFloat(value);
+            setDados({ [name]: isNaN(parsed) ? undefined : parsed });
         } else {
             setDados({ [name]: value });
         }
     };
-    
 
     const camposValidos = (): boolean => {
         if (!dados.plano_id) return false;
@@ -91,9 +91,16 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
             const payload = {
                 ...dados,
                 plano_id,
+
+                // Garantir que os dados são enviados corretamente
+                ano_veiculo: dados.ano_veiculo ?? null,
+                marca_modelo: dados.marca_modelo ?? null,
+                matricula: dados.matricula ?? null,
+                valor_veiculo: dados.valor_veiculo ?? null,
+                tem_franquia: dados.tem_franquia ?? false,
+                tipo_uso: dados.tipo_uso ?? null,
             };
             console.log('📤 Payload enviado:', payload);
-
 
             const response = await fetch('/simular', {
                 method: 'POST',
@@ -106,6 +113,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 credentials: 'same-origin',
                 body: JSON.stringify(payload),
             });
+            console.log('📤 Payload enviado:', JSON.stringify(payload, null, 2));
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -118,7 +126,17 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 valor: result.valor,
                 plano: result.plano,
                 apolice_id: result.apolice_id, // <-- ADICIONA ISTO
+
+                // Garantir que os campos de automóvel vão junto
+                ano_veiculo: dados.ano_veiculo,
+                tem_franquia: dados.tem_franquia,
+                tipo_uso: dados.tipo_uso,
+                marca_modelo: dados.marca_modelo,
+                valor_veiculo: dados.valor_veiculo,
+                matricula: dados.matricula,
             });
+            console.log(dados);
+            
 
             onAvancar();
         } catch (err: unknown) {
@@ -204,7 +222,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
                 {tipoSelecionado === 'automovel' && (
                     <>
-                        <div className='space-y-2'>
+                        <div className="space-y-2">
                             <div className="flex w-full gap-4">
                                 <div className="flex w-1/2 flex-col gap-1">
                                     <label htmlFor="ano_veiculo" className="text-sm font-medium text-gray-700">
@@ -214,7 +232,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                         type="number"
                                         id="ano_veiculo"
                                         name="ano_veiculo"
-                                        value={dados.ano_veiculo || ''}
+                                        value={dados.ano_veiculo}
                                         onChange={handleChange}
                                         required
                                         className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
@@ -229,8 +247,9 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                         type="text"
                                         id="marca_modelo"
                                         name="marca_modelo"
-                                        value={dados.marca_modelo || ''}
+                                        value={dados.marca_modelo}
                                         onChange={handleChange}
+                                        required
                                         className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -245,8 +264,9 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                         type="text"
                                         id="matricula"
                                         name="matricula"
-                                        value={dados.matricula || ''}
+                                        value={dados.matricula}
                                         onChange={handleChange}
+                                        required
                                         className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -259,8 +279,9 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                         type="number"
                                         id="valor_veiculo"
                                         name="valor_veiculo"
-                                        value={dados.valor_veiculo || ''}
+                                        value={dados.valor_veiculo}
                                         onChange={handleChange}
+                                        required
                                         className="w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -271,8 +292,9 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                     type="checkbox"
                                     id="tem_franquia"
                                     name="tem_franquia"
-                                    checked={dados.tem_franquia || false}
+                                    checked={dados.tem_franquia}
                                     onChange={handleChange}
+                                    required
                                     className="h-5 w-5 rounded border-gray-300 text-blue-600"
                                 />
                                 <label htmlFor="tem_franquia" className="text-sm font-medium text-gray-700">
@@ -287,7 +309,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 <select
                                     id="tipo_uso"
                                     name="tipo_uso"
-                                    value={dados.tipo_uso || ''}
+                                    value={dados.tipo_uso}
                                     onChange={handleChange}
                                     required
                                     className="w-full appearance-none rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
