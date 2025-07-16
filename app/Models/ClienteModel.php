@@ -27,6 +27,12 @@ class ClienteModel extends Authenticatable
         'dataRegistro' => 'datetime',
     ];
 
+    public function simulacoes()
+{
+    return $this->hasMany(Simulacao::class, 'cliente_id');
+}
+
+
     // Laravel usa esse método para saber qual campo é a senha
     public function getAuthPassword()
     {
@@ -37,4 +43,5 @@ class ClienteModel extends Authenticatable
     {
         $this->attributes['senha'] = Hash::make($value);
     }
+    
 }

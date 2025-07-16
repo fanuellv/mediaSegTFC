@@ -14,6 +14,7 @@ import { RiBillLine, RiLogoutCircleLine } from 'react-icons/ri';
 import { TbSmartHome } from 'react-icons/tb';
 import Pagamento from '@/components/painel/Pagamento';
 import Etapa from '@/components/painel/Servico/Etapa';
+import Index from '@/components/painel/Planos';
 
 interface Cliente {
     nome: string;
@@ -106,7 +107,7 @@ export default function Dashboard() {
                         {sessaoAtiva === 'Inicio' && <Inicio />}
                         {sessaoAtiva === 'Seguros' && <Etapa />}
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}
-                        {sessaoAtiva === 'Meus Planos' && <div>Conteúdo dos Planos</div>}
+                        {sessaoAtiva === 'Meus Planos' && <Index/>}
                         {sessaoAtiva === 'Aprender' && <div>Conteúdo de Aprendizado</div>}
                         {sessaoAtiva === 'Menu' && <div>Outros conteúdos do Menu</div>}
                     </div>

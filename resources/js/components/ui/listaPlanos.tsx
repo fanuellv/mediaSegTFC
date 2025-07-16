@@ -62,7 +62,7 @@ export default function ListaPlanos() {
                         </p>
                         {/* Ação */}
                         <div className='flex gap-4 mt-2'>
-                        Kz {new Intl.NumberFormat('pt-AO', { maximumFractionDigits: 0 }).format(plano.valor)}
+                        <p className='text-[#0153A5] font-bold'>Kz {new Intl.NumberFormat('pt-AO', { minimumFractionDigits: 2 }).format(plano.valor)}</p>
 
                             <button className="text-sm rounded-lg bg-[#0153A5] px-4 py-2 text-white hover:bg-blue-600">Adquirir</button>
                         </div>

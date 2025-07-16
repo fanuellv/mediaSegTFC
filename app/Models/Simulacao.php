@@ -43,5 +43,11 @@ class Simulacao extends Model
     return $this->hasOne(SimulacaoDetalhe::class);
 }
 
+public function plano()
+{
+    return $this->belongsTo(PlanoModel::class, 'plano_id');
+}
+
+
 }
 

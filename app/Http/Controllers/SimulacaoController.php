@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -213,4 +215,21 @@ class SimulacaoController extends Controller
         $tipos = tipoSeguro::whereIn('id', PlanoModel::select('tipo_id')->distinct())->get();
         return response()->json($tipos);
     }
+
+
+    public function meusPlanos()
+{
+    // Verifica se o cliente está autenticado
+    if (!Auth::guard('cliente')->check()) {
+        return response()->json(['erro' => 'Não autenticado.'], 401);
+    }
+
+    /** @var \App\Models\ClienteModel $cliente */
+    $cliente = Auth::guard('cliente')->user();
+
+    // Carrega as simulações (relacionamento deve estar definido no modelo Cliente)
+    $simulacoes = $cliente->simulacoes()->with('plano', 'plano.seguradora')->latest()->get();
+
+    return response()->json($simulacoes);
+}
 }

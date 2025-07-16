@@ -22,5 +22,6 @@ class SimulacaoDetalhe extends Model
     {
         return $this->belongsTo(Simulacao::class);
     }
+    
 }
 
