@@ -1,6 +1,7 @@
 import { Seguradora } from '@/types/DadosSimulacao';
 import { useEffect, useState } from 'react';
 
+
 interface Plano {
     id: number;
     nome: string;
