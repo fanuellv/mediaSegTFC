@@ -8,7 +8,7 @@ import { router } from '@inertiajs/react';
 interface Plano {
     id: number;
     nome: string;
-    preco: number;
+    valor: number;
     descricao: string;
     foto?: string | null;
 }

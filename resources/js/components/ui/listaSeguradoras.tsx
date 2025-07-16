@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Seguradora } from '@/types/DadosSimulacao';
+import { useEffect, useState } from 'react';
 interface SeguradoraData {
     id: number;
     nome: string;
@@ -11,8 +11,8 @@ interface SeguradoraData {
 }
 
 interface Props {
-    onAvancar: () => void;
-    setSeguradora: React.Dispatch<React.SetStateAction<Seguradora | null>>;
+    onAvancar?: () => void;
+    setSeguradora?: React.Dispatch<React.SetStateAction<Seguradora | null>>;
 }
 
 export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
@@ -65,11 +65,11 @@ export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
     return (
         <>
             {loading ? (
-                <div className="flex bg-white rounded h-full w-full items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center rounded bg-white">
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
                 </div>
             ) : (
-                <div className="w-full overflow-x-hidden bg-white rounded">
+                <div className="w-full overflow-x-hidden rounded bg-white">
                     <ul className="divide-y">
                         {lista.map((seguradora) => (
                             <li
@@ -92,11 +92,13 @@ export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
                                 </div>
 
                                 <div className="sm:ml-auto sm:self-center">
-                                    <button 
-                                    onClick={() => {
-                                        setSeguradora(seguradora);
-                                        onAvancar();
-                                    }}className="w-full rounded bg-[#0153A5] px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto">
+                                    <button
+                                        onClick={() => {
+                                            if (setSeguradora) setSeguradora(seguradora);
+                                            if (onAvancar) onAvancar();
+                                        }}
+                                        className="w-full rounded bg-[#0153A5] px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto"
+                                    >
                                         Ver mais
                                     </button>
                                 </div>

@@ -5,6 +5,8 @@ import ListaPlanos from '../ui/listaPlanos';
 import ListSeguradora from '../ui/listaSeguradoras';
 import Simulador from '../ui/simulador/Simulador';
 
+
+
 export default function Inicio() {
     const [mostrarModal, setMostrarModal] = useState(false);
     return (
@@ -28,7 +30,7 @@ export default function Inicio() {
                             msOverflowStyle: 'none', // IE 10+
                         }}
                     >
-                        <ListSeguradora />
+                        <ListSeguradora  />
                     </div>
                 </div>
             </div>

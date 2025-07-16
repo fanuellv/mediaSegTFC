@@ -47,7 +47,7 @@ export default function Simulador() {
 
     return (
         <div className="flex h-full flex-col rounded-xl">
-            {etapa === 1 && <SimuladorPlanoForm onAvancar={() => setEtapa(2)} setDados={atualizar} dadosIniciais={dados} />}
+            {etapa === 1 && <SimuladorPlanoForm onAvancar={() => setEtapa(2)} setDados={atualizar} />}
             {etapa === 2 && <Cotacao dados={dados} setDados={atualizar} onVoltar={() => setEtapa(1)} onAvancar={() => setEtapa(3)} />}
             {etapa === 3 && <Resultado dados={dados} setDados={atualizar} seguradoras={seguradoras} onVoltar={() => setEtapa(2)} onAvancar={() => setEtapa(4)} />}
             {etapa === 4 && <Extrair dados={dados} onVoltar={() => setEtapa(1)} />}

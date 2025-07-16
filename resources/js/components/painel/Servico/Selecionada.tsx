@@ -1,11 +1,10 @@
 import { Seguradora } from '@/types/DadosSimulacao';
-import { useEffect, useState } from 'react';
-
+import { useCallback, useEffect, useState } from 'react';
 
 interface Plano {
     id: number;
     nome: string;
-    preco: number;
+    valor: number;
     descricao: string;
     foto?: string | null;
 }
@@ -17,11 +16,11 @@ interface Props {
     setPlanoSelecionado: (plano: Plano) => void; // ✅ Adicionado
 }
 
-export default function Selecionada({ seguradora, adquirir, onVoltar,setPlanoSelecionado }: Props) {
+export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSelecionado }: Props) {
     const [planos, setPlanos] = useState<Plano[]>([]);
     const [loading, setLoading] = useState(true);
 
-    async function buscarPlanos() {
+    const buscarPlanos = useCallback(async () => {
         if (!seguradora?.id) return;
 
         setLoading(true);
@@ -48,11 +47,15 @@ export default function Selecionada({ seguradora, adquirir, onVoltar,setPlanoSel
         } finally {
             setLoading(false);
         }
-    }
+    }, [seguradora?.id]); // <- dependência
 
     useEffect(() => {
         if (seguradora) buscarPlanos();
-    }, [seguradora]);
+    }, [seguradora, buscarPlanos]); // <- resolverá o aviso
+
+    useEffect(() => {
+        if (seguradora) buscarPlanos();
+    }, [seguradora, buscarPlanos]);
 
     if (!seguradora) {
         return (
@@ -108,13 +111,15 @@ export default function Selecionada({ seguradora, adquirir, onVoltar,setPlanoSel
                                     <div>
                                         <h4 className="text-base font-semibold">{plano.nome}</h4>
                                         <p className="text-sm text-gray-600">{plano.descricao}</p>
-                                        <p className="mt-1 text-sm font-semibold text-[#0153A5]">Kz {plano.preco}</p>
+                                        <p className="mt-1 text-sm font-semibold text-[#0153A5]">
+                                            Kz {new Intl.NumberFormat('pt-AO', { minimumFractionDigits: 2 }).format(plano.valor)}
+                                        </p>
                                     </div>
                                     <div className="mt-2 self-end">
                                         <button
                                             onClick={() => {
-                                                setPlanoSelecionado(plano); // opcional, se ainda quiser guardar no estado
-                                                adquirir(plano); // ✅ Corrigido: passa o plano
+                                                setPlanoSelecionado(plano);
+                                                adquirir(plano);
                                             }}
                                             className="rounded bg-[#0153A5] px-4 py-1.5 text-sm text-white hover:bg-blue-600"
                                         >

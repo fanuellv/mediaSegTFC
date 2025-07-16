@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CgSelect } from 'react-icons/cg';
 import { DadosSimulacao, Plano } from '@/types/DadosSimulacao';
-//import { usePage } from '@inertiajs/react'; // ✅ Importação para acessar URL
 
 interface Seguradora {
     id: number;
@@ -19,17 +18,25 @@ interface Props {
     dadosIniciais: DadosSimulacao;
 }
 
-export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais }: Props) {
-    //const { url } = usePage();
+export default function SimuladorPlanoForm({ onAvancar, setDados }: Omit<Props, 'dadosIniciais'>) {
     const query = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
 
-    const seguradoraIdInicial = query.get('seguradora_id') || (dadosIniciais.seguradora_id?.toString() || '');
-    const planoIdInicial = query.get('plano_id') || (dadosIniciais.plano_id?.toString() || '');
+    const seguradoraIdParam = query.get('seguradora_id');
+    const planoIdParam = query.get('plano_id');
+
+    const veioDoAdquirir = !!seguradoraIdParam && !!planoIdParam;
 
     const [seguradoras, setSeguradoras] = useState<Seguradora[]>([]);
     const [planos, setPlanos] = useState<Plano[]>([]);
-    const [seguradoraSelecionada, setSeguradoraSelecionada] = useState(seguradoraIdInicial);
-    const [planoSelecionado, setPlanoSelecionado] = useState(planoIdInicial);
+
+    const [seguradoraSelecionada, setSeguradoraSelecionada] = useState(
+        veioDoAdquirir ? seguradoraIdParam! : ''
+    );
+
+    const [planoSelecionado, setPlanoSelecionado] = useState(
+        veioDoAdquirir ? planoIdParam! : ''
+    );
+
     const [info, setInfo] = useState('');
 
     const seguradoraId = Number(seguradoraSelecionada);
@@ -80,9 +87,7 @@ export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais 
             try {
                 const response = await fetch(`/planos?seguradora_id=${id}`, {
                     method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                    },
+                    headers: { Accept: 'application/json' },
                 });
 
                 if (!response.ok) throw new Error(await response.text());
@@ -90,9 +95,9 @@ export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais 
                 const dados = await response.json();
                 setPlanos(dados);
 
-                // Se o planoIdInicial existir na lista, mantemos ele selecionado
-                if (planoIdInicial && dados.some((d: Plano) => d.id === Number(planoIdInicial))) {
-                    setPlanoSelecionado(planoIdInicial);
+                // ✅ Seleciona o plano só se veio do adquirir
+                if (veioDoAdquirir && planoIdParam && dados.some((d: Plano) => d.id === Number(planoIdParam))) {
+                    setPlanoSelecionado(planoIdParam);
                 }
             } catch (error) {
                 console.error('❌ Erro ao buscar planos:', error);
@@ -101,7 +106,7 @@ export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais 
         }
 
         buscarPlanos();
-    }, [seguradoraSelecionada]);
+    }, [seguradoraSelecionada, veioDoAdquirir, planoIdParam]);
 
     useEffect(() => {
         const texto = informacao();
@@ -117,7 +122,6 @@ export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais 
         }
 
         const planoSelecionadoInfo = planos.find((p) => p.id === planoId);
-
         if (!planoSelecionadoInfo || !planoSelecionadoInfo.tipo_id) {
             alert('Plano inválido ou sem tipo definido.');
             return;
@@ -130,7 +134,6 @@ export default function SimuladorPlanoForm({ onAvancar, setDados, dadosIniciais 
         } as const;
 
         const tipoSeguro = tipoMapeado[planoSelecionadoInfo.tipo_id as keyof typeof tipoMapeado];
-
         if (!tipoSeguro) {
             alert('Tipo de seguro desconhecido.');
             return;

@@ -4,7 +4,7 @@ interface PlanoData {
     id: number;
     nome: string;
     descricao: string;
-    valor: string;
+    valor: number;
     duracao: string;
     seguradora_id?: number;
     seguradora?: {
@@ -62,7 +62,8 @@ export default function ListaPlanos() {
                         </p>
                         {/* Ação */}
                         <div className='flex gap-4 mt-2'>
-                            <p className="text-md mt-1 font-semibold text-[#0153A5]">{plano.valor} Kz</p>
+                        Kz {new Intl.NumberFormat('pt-AO', { maximumFractionDigits: 0 }).format(plano.valor)}
+
                             <button className="text-sm rounded-lg bg-[#0153A5] px-4 py-2 text-white hover:bg-blue-600">Adquirir</button>
                         </div>
                     </div>
