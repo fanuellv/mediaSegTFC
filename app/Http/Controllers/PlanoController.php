@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PlanoModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PlanoController extends Controller
 {
@@ -43,10 +44,14 @@ class PlanoController extends Controller
             'duracao' => 'required|string|max:50',
             'cobertura' => 'required|string|max:100',
             'seguradora_id' => 'required|exists:seguradoras,id',
-            'tipo_id' => 'required|exists:TipoSeguro,id', // 👈 ADICIONA ISSO
+            'tipo_id' => 'required|exists:TipoSeguro,id',
+            'foto' => 'nullable|image|max:2048', // nova validação
         ]);
-        //dd($request->all());
 
+        // Se veio uma foto no request, armazena
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('planos/fotos', 'public');
+        }
 
         $plano = PlanoModel::create($data);
 
@@ -77,8 +82,20 @@ class PlanoController extends Controller
             'duracao' => 'required|string|max:50',
             'cobertura' => 'required|string|max:100',
             'seguradora_id' => 'required|exists:seguradoras,id',
-            'tipo_id' => 'required|exists:TipoSeguro,id', // 👈 ADICIONA ISSO
+            'tipo_id' => 'required|exists:TipoSeguro,id',
+            'foto' => 'nullable|image|max:2048',
         ]);
+
+        // Se veio uma nova foto, salva e substitui
+        if ($request->hasFile('foto')) {
+            // Remove a foto antiga, se existir
+            if ($plano->foto && Storage::disk('public')->exists($plano->foto)) {
+                Storage::disk('public')->delete($plano->foto);
+            }
+
+            // Salva a nova
+            $data['foto'] = $request->file('foto')->store('planos/fotos', 'public');
+        }
 
         $plano->update($data);
 
@@ -92,6 +109,12 @@ class PlanoController extends Controller
         }
 
         $plano = PlanoModel::findOrFail($id);
+
+        // Remove a imagem do disco, se existir
+        if ($plano->foto && Storage::disk('public')->exists($plano->foto)) {
+            Storage::disk('public')->delete($plano->foto);
+        }
+
         $plano->delete();
 
         return response()->json(null, 204);

@@ -2,6 +2,7 @@ import { FaHome, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineSecurity, MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { CiMoneyCheck1 } from "react-icons/ci";
 import { GrConfigure } from "react-icons/gr";
+import { CiLogout } from "react-icons/ci";
 
 import { Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
@@ -30,7 +31,7 @@ export default function Menu() {
                 <ul className="mt-2 flex flex-col gap-2">
                     <MenuItem icon={<FaPhoneAlt />} label="Contactos" url="dashboard.pagamentos"/>
                     <MenuItem icon={<GrConfigure />} label="Configurações" url="dashboard.pagamentos"/>
-                    <MenuItem icon={<GrConfigure />} label="Terminar Sessão" url="logout"/>
+                    <MenuItem icon={<CiLogout />} label="Terminar Sessão" url="logout"/>
                 </ul>
             </div>
         </div>

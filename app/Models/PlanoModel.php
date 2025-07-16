@@ -17,6 +17,7 @@ class PlanoModel extends Model
         'descricao',
         'valor',
         'duracao',
+        'foto',
         'cobertura',
         'seguradora_id',
         'tipo_id'

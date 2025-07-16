@@ -104,7 +104,7 @@ export default function Dashboard() {
                     </header>
 
                     {/* CONTEÚDO COM BASE NA ABA */}
-                    <div className="flex-1 space-y-4 overflow-y-hidden rounded-b-xl bg-gray-50 px-4 py-4 sm:bg-transparent sm:overflow-hidden">
+                    <div className="flex-1 space-y-4 overflow-y-auto rounded-b-xl bg-gray-50 px-4 py-4 sm:bg-transparent sm:overflow-hidden">
                         {sessaoAtiva === 'Inicio' && <Inicio />}
                         {sessaoAtiva === 'Seguros' && <Etapa />}
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}

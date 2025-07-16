@@ -7,6 +7,7 @@ interface PlanoData {
     valor: number;
     duracao: string;
     seguradora_id?: number;
+    foto?: string;
     seguradora?: {
         nome: string;
         foto?: string;
@@ -47,8 +48,8 @@ export default function ListaPlanos() {
                 <div key={plano.id} className="flex items-center gap-4 border-b bg-white p-4  hover:shadow-md space-y-4">
                     {/* Foto da seguradora (se houver) */}
                     <div className="h-15 w-15 flex-shrink-0 overflow-hidden rounded bg-gray-100">
-                        {plano.seguradora?.foto ? (
-                            <img src={`/storage/${plano.seguradora.foto}`} alt={plano.seguradora.nome} className="h-full w-full object-cover" />
+                        {plano.foto ? (
+                            <img src={`/storage/${plano.foto}`} alt={plano.nome} className="h-full w-full object-cover" />
                         ) : (
                             <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">Sem Foto</div>
                         )}
