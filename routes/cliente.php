@@ -37,7 +37,7 @@ Route::middleware(['web','auth:cliente'])->group(function () {
                 'seguradora_id' => request('seguradora_id'), // pode ser nulo
                 'plano_id' => request('plano_id'),
             ]);
-        })->name('dashboard.pagamentos');
+        })->name('dashboard.pagamentosV2');
         Route::get('/meus-planos', fn () => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
         Route::get('/aprender', fn () => Inertia::render('dashboard', ['aba' => 'Aprender']))->name('dashboard.aprender');
         Route::get('/menu', fn () => Inertia::render('dashboard', ['aba' => 'Menu']))->name('dashboard.menu');
