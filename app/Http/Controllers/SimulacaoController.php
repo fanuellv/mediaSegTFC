@@ -32,9 +32,9 @@ class SimulacaoController extends Controller
     public function store(Request $request)
     {
         $dados = $request->json()->all(); // Captura corretamente dados JSON
-    
+
         Log::debug('✅ Dados completos recebidos:', $dados);
-    
+
         // Validação dos campos principais
         $validated = validator($dados, [
             'cliente_id' => 'required|exists:clientes,id',
@@ -42,7 +42,7 @@ class SimulacaoController extends Controller
             'valor_calculado' => 'required|numeric',
             'status' => 'required|string',
             'plano_id' => 'required|exists:plano_seguro,id',
-    
+
             // Validação dos detalhes
             'marca_modelo' => 'nullable|string|max:255',
             'matricula' => 'nullable|string|max:100',
@@ -51,7 +51,7 @@ class SimulacaoController extends Controller
             'tipo_uso' => 'nullable|string|max:100',
             'ano_veiculo' => 'nullable|integer|min:1900|max:' . now()->year,
         ])->validate();
-    
+
         // Criação da simulação principal
         $simulacao = Simulacao::create([
             'cliente_id' => $validated['cliente_id'],
@@ -60,7 +60,7 @@ class SimulacaoController extends Controller
             'valor_calculado' => $validated['valor_calculado'],
             'status' => $validated['status'],
         ]);
-    
+
         // Criação dos detalhes (dados adicionais)
         SimulacaoDetalhe::create([
             'simulacao_id' => $simulacao->id,
@@ -72,18 +72,23 @@ class SimulacaoController extends Controller
             'ano_veiculo' => $request->input('ano_veiculo'),
         ]);
         Log::debug('➡️ Detalhes recebidos:', $request->only([
-            'marca_modelo', 'matricula', 'valor_veiculo', 'tem_franquia', 'tipo_uso', 'ano_veiculo'
+            'marca_modelo',
+            'matricula',
+            'valor_veiculo',
+            'tem_franquia',
+            'tipo_uso',
+            'ano_veiculo'
         ]));
-        
-        
-    
-    
+
+
+
+
         // Criação do item simulado (plano associado)
         ItemSimulado::create([
             'simulacao_id' => $simulacao->id,
             'plano_id' => $validated['plano_id'],
         ]);
-    
+
         return response()->json([
             'id' => $simulacao->id,
             'cliente_id' => $simulacao->cliente_id,
@@ -93,9 +98,9 @@ class SimulacaoController extends Controller
             'detalhes' => $simulacao->detalhes, // Relação com SimulacaoDetalhe (se tiveres configurada)
         ]);
     }
-    
 
-    
+
+
 
 
 
@@ -155,7 +160,7 @@ class SimulacaoController extends Controller
 
     public function gerarPdf($id)
     {
-        $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora','detalhes'])->findOrFail($id);
+        $simulacao = Simulacao::with(['cliente', 'itens.plano.tipo', 'itens.plano.seguradora', 'detalhes'])->findOrFail($id);
 
         $plano = $simulacao->itens->first()->plano ?? null;
         $valor_total = $simulacao->valor_calculado;
@@ -181,7 +186,7 @@ class SimulacaoController extends Controller
         ]);
         Log::debug('detalhes', [
 
-            'detalhes' => $simulacao->detalhes, 
+            'detalhes' => $simulacao->detalhes,
 
         ]);
 
@@ -217,23 +222,42 @@ class SimulacaoController extends Controller
     }
 
 
-    public function meusPlanos()
+    
+
+public function meusPlanos()
 {
-    // Verifica se o cliente está autenticado
     if (!Auth::guard('cliente')->check()) {
         return response()->json(['erro' => 'Não autenticado.'], 401);
     }
 
-    /** @var \App\Models\ClienteModel $cliente */
-    $clienteId = Auth::guard('cliente')->id();
+    $clienteId = Auth::guard('cliente')->user()->id;
 
+    // Traz todas as apólices com seus planos e seguradoras
+    $apolices = ApoliceModel::with('plano.seguradora')
+        ->where('cliente_id', $clienteId)
+        ->orderBy('data_inicio', 'desc')
+        ->get();
 
-    // Carrega as simulações (relacionamento deve estar definido no modelo Cliente)
-    $simulacoes = Simulacao::with('itens.plano.seguradora')
-    ->where('cliente_id', $clienteId)
-    ->orderBy('created_at', 'desc')
-    ->get();
+    $total = $apolices->count();
 
-    return response()->json($simulacoes);
+    // Considera ativo se a data atual estiver entre o início e fim
+    $ativos = $apolices->filter(function ($apolice) {
+        $hoje = now();
+        return $apolice->data_inicio <= $hoje && $apolice->data_fim >= $hoje;
+    })->count();
+
+    $totalInvestido = $apolices->reduce(function ($soma, $apolice) {
+        return $soma + floatval($apolice->valor_total ?? 0);
+    }, 0);
+
+    return response()->json([
+        'apolices' => $apolices,
+        'resumo' => [
+            'total' => $total,
+            'ativos' => $ativos,
+            'investido' => $totalInvestido,
+        ],
+    ]);
 }
+
 }
