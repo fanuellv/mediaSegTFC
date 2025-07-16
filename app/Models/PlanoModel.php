@@ -41,4 +41,5 @@ class PlanoModel extends Model
     {
         return $this->belongsTo(ClienteModel::class, 'cliente_id');
     }
+    
 }

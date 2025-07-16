@@ -1,32 +1,39 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+interface Plano {
+    id: number;
+    nome: string;
+    tipo_id: number;
+    valor: number;
+    descricao: string;
+    seguradora?: {
+        id: number;
+        nome: string;
+    };
+}
+
+interface ItemSimulado {
+    id: number;
+    plano: Plano;
+}
+
 interface Simulacao {
     id: number;
     data: string;
-    plano: {
-        id: number;
-        nome: string;
-        tipo_id: number;
-        valor: number;
-        descricao: string;
-    };
-    seguradora: {
-        id: number;
-        nome: string;
-    };
-    status?: string; // Opcional se tiver
+    status?: string;
+    itens: ItemSimulado[];
 }
 
 export default function MeusPlanos() {
-    const [planos, setPlanos] = useState<Simulacao[]>([]);
+    const [simulacoes, setSimulacoes] = useState<Simulacao[]>([]);
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
         async function buscar() {
             try {
                 const { data } = await axios.get('/meus-planos');
-                setPlanos(data);
+                setSimulacoes(data);
                 console.log(data);
             } catch (error) {
                 console.error('Erro ao buscar os planos:', error);
@@ -51,7 +58,7 @@ export default function MeusPlanos() {
             >
                 {carregando ? (
                     <p className="text-gray-500">Carregando planos...</p>
-                ) : planos.length === 0 ? (
+                ) : simulacoes.length === 0 ? (
                     <p className="text-gray-500">Nenhum plano encontrado.</p>
                 ) : (
                     <table className="w-full table-auto border-collapse text-sm text-left">
@@ -66,30 +73,37 @@ export default function MeusPlanos() {
                             </tr>
                         </thead>
                         <tbody>
-                            {planos.map((simulacao) => (
-                                <tr key={simulacao.id} className="border-b hover:bg-gray-50">
-                                    <td className="p-2 font-medium text-gray-800">
-                                        {simulacao.plano?.nome ?? '---'}
-                                    </td>
-                                    <td className="p-2">{simulacao.seguradora?.nome ?? '---'}</td>
-                                    <td className="p-2">
-                                        <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">
-                                            Ativo
-                                        </span>
-                                    </td>
-                                    <td className="p-2">
-                                        {new Date(simulacao.data).toLocaleDateString()}
-                                    </td>
-                                    <td className="p-2 font-semibold text-[#0153A5]">
-                                        Kz {simulacao.plano?.valor?.toLocaleString('pt-AO')}
-                                    </td>
-                                    <td className="p-2 text-right">
-                                        <button className="text-sm text-blue-600 hover:underline">
-                                            Ver detalhes
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {simulacoes.map((simulacao) =>
+                                simulacao.itens.map((item) => (
+                                    <tr key={`${simulacao.id}-${item.id}`} className="border-b hover:bg-gray-50">
+                                        <td className="p-2 font-medium text-gray-800">
+                                            {item.plano?.nome ?? '---'}
+                                        </td>
+                                        <td className="p-2">
+                                            {item.plano?.seguradora?.nome ?? '---'}
+                                        </td>
+                                        <td className="p-2">
+                                            <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">
+                                                {simulacao.status ?? 'Ativo'}
+                                            </span>
+                                        </td>
+                                        <td className="p-2">
+                                            {new Date(simulacao.data).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-2 font-semibold text-[#0153A5]">
+                                            Kz{' '}
+                                            {item.plano?.valor?.toLocaleString('pt-AO', {
+                                                minimumFractionDigits: 2,
+                                            })}
+                                        </td>
+                                        <td className="p-2 text-right">
+                                            <button className="text-sm text-blue-600 hover:underline">
+                                                Ver detalhes
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 )}

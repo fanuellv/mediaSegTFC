@@ -225,10 +225,14 @@ class SimulacaoController extends Controller
     }
 
     /** @var \App\Models\ClienteModel $cliente */
-    $cliente = Auth::guard('cliente')->user();
+    $clienteId = Auth::guard('cliente')->id();
+
 
     // Carrega as simulações (relacionamento deve estar definido no modelo Cliente)
-    $simulacoes = $cliente->simulacoes()->with('plano', 'plano.seguradora')->latest()->get();
+    $simulacoes = Simulacao::with('itens.plano.seguradora')
+    ->where('cliente_id', $clienteId)
+    ->orderBy('created_at', 'desc')
+    ->get();
 
     return response()->json($simulacoes);
 }
