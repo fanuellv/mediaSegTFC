@@ -15,6 +15,7 @@ import { TbSmartHome } from 'react-icons/tb';
 import Pagamento from '@/components/painel/Pagamento';
 import Etapa from '@/components/painel/Servico/Etapa';
 import Index from '@/components/painel/Planos';
+import Menu from '@/components/painel/Menu/Index'
 
 interface Cliente {
     nome: string;
@@ -103,13 +104,13 @@ export default function Dashboard() {
                     </header>
 
                     {/* CONTEÚDO COM BASE NA ABA */}
-                    <div className="flex-1 space-y-4 overflow-y-auto rounded-b-xl bg-gray-50 px-4 py-4 sm:bg-transparent sm:overflow-hidden">
+                    <div className="flex-1 space-y-4 overflow-y-hidden rounded-b-xl bg-gray-50 px-4 py-4 sm:bg-transparent sm:overflow-hidden">
                         {sessaoAtiva === 'Inicio' && <Inicio />}
                         {sessaoAtiva === 'Seguros' && <Etapa />}
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}
                         {sessaoAtiva === 'Meus Planos' && <Index/>}
                         {sessaoAtiva === 'Aprender' && <div>Conteúdo de Aprendizado</div>}
-                        {sessaoAtiva === 'Menu' && <div>Outros conteúdos do Menu</div>}
+                        {sessaoAtiva === 'Menu' && <Menu/>}
                     </div>
                 </div>
             </div>
