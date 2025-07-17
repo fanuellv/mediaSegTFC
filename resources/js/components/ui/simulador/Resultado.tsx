@@ -63,7 +63,7 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar, onAv
 
             // 2. Gerar PDF
             const gerarResponse = await axios.post(
-                `http://127.0.0.1:8000/apolice/pdf/gerar/${simulacao.id}`,
+                `/apolice/pdf/gerar/${simulacao.id}`,
                 {},
                 {
                     headers: {
