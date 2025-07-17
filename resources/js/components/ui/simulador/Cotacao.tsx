@@ -110,7 +110,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                     'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
-                credentials: 'same-origin',
+                credentials: 'include', // necessário para manter cookies da sessão
                 body: JSON.stringify(payload),
             });
             console.log('📤 Payload enviado:', JSON.stringify(payload, null, 2));
