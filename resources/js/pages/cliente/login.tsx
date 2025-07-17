@@ -1,4 +1,4 @@
-import DefaultLayout from '@/Layouts/DefaultLayout';
+import DefaultLayout from '@/layouts/DefaultLayout';
 import Loader from '@/components/uiMediaseg/Loader';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';

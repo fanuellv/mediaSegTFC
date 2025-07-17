@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 Route::prefix('cliente')->group(function () {
     Route::get('/create', fn () => Inertia::render('cliente/criarConta'))->name('cliente.create');
-    Route::post('/', [ClienteController::class, 'store'])->name('cliente.store');
+    Route::post('/cliente', [ClienteController::class, 'store'])->name('cliente.store');
 });
 
 // LOGIN / LOGOUT CLIENTE
