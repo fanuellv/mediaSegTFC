@@ -22,8 +22,10 @@ RUN chown -R www-data:www-data /var/www/html
 # Habilita mod_rewrite do Apache
 RUN a2enmod rewrite
 
+# Define o diretório público como DocumentRoot
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
+
 # Define diretório de trabalho
 WORKDIR /var/www/html
 
-# Porta do Laravel
 EXPOSE 80
