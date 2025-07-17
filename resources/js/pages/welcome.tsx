@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import DefaultLayout from '@/Layouts/DefaultLayout';
+import DefaultLayout from '@/layouts/DefaultLayout';
 import Loader from '@/components/uiMediaseg/Loader';
 
 import Botao from '@/components/uiMediaseg/botao';
