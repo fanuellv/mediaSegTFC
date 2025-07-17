@@ -16,7 +16,7 @@ class tipoSeguro extends Seeder
     public function run(): void
     {
         //
-        DB::table('Tiposeguro')->insert([
+        DB::table('TipoSeguro')->insert([
             ['nome' => 'Vida'],
             ['nome' => 'Saude'],
             ['nome' => 'Automovel'],
