@@ -26,4 +26,8 @@ class SeguradoraModel extends Model
     {
         return $this->belongsTo(Administrador::class);
     }
+    public function planos()
+    {
+        return $this->hasMany(PlanoModel::class);
+    }
 }
