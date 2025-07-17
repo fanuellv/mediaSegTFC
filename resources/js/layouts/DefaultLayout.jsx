@@ -1,6 +1,6 @@
 // resources/js/Layouts/DefaultLayout.jsx
-import Cabecalho from '@/components/uiMediaseg/header';
-import Rodape from '@/components/uiMediaseg/footer';
+//import Cabecalho from '@/components/uiMediaseg/header';
+//import Rodape from '@/components/uiMediaseg/footer';
 
 export default function DefaultLayout({ children }) {
     return (
