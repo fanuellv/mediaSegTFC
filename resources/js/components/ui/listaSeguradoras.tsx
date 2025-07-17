@@ -25,7 +25,8 @@ export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
             console.log('🔍 Buscando seguradoras...');
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-            const response = await fetch('http://127.0.0.1:8000/seguradoras', {
+            
+            const response = await fetch('/seguradoras', {
                 method: 'GET', // Usa GET aqui, a não ser que a tua rota exija POST para listagem
                 headers: {
                     Accept: 'application/json',

@@ -51,7 +51,7 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar, onAv
             console.log('Plano ID:', dados.plano?.id);
             console.log(payload);
 
-            const simulacaoResponse = await axios.post('http://127.0.0.1:8000/simulacao', payload, {
+            const simulacaoResponse = await axios.post('/simulacao', payload, {
                 headers: {
                     Accept: 'application/json',
                 },
