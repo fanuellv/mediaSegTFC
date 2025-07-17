@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::create('administrador', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->string('nome', 100);
             $table->string('sobrenome', 100);
             $table->string('nome_usuario', 100)->unique();

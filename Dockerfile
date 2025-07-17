@@ -1,31 +1,36 @@
-FROM php:8.2-apache
+# Dockerfile
+
+FROM php:8.2-fpm
 
 # Instala extensões necessárias
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libonig-dev \
-    libzip-dev \
-    unzip \
+    libxml2-dev \
     zip \
+    unzip \
     git \
     curl \
-    && docker-php-ext-install pdo pdo_mysql zip
+    libzip-dev \
+    libmcrypt-dev \
+    default-mysql-client \
+    nodejs \
+    npm \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia os arquivos do projeto
-COPY . /var/www/html/
-
-# Ajusta permissões
-RUN chown -R www-data:www-data /var/www/html
-
-# Habilita mod_rewrite do Apache
-RUN a2enmod rewrite
-
-# Define o diretório público como DocumentRoot
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
-
-# Define diretório de trabalho
 WORKDIR /var/www/html
 
-EXPOSE 80
+COPY . .
+
+RUN composer install --no-dev --optimize-autoloader
+RUN npm install && npm run build
+
+EXPOSE 8000
+
+CMD php artisan serve --host=0.0.0.0 --port=8000

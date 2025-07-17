@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::create('TipoSeguro', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->string('nome', 100);
         });
     }
