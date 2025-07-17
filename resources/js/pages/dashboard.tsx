@@ -1,4 +1,4 @@
-import DefaultLayout from '@/Layouts/DefaultLayout';
+import DefaultLayout from '@/Layouts/DefaultLayout.jsx';
 import Loader from '@/components/uiMediaseg/Loader';
 import { useEffect, useState } from 'react';
 
