@@ -1,5 +1,5 @@
-import DefaultLayout from '@/layouts/DefaultLayout';
 import Loader from '@/components/uiMediaseg/Loader';
+import DefaultLayout from '@/layouts/DefaultLayout';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 
@@ -30,38 +30,44 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => setLoading(false), 1500);
-    
+
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         console.log('CSRF Token:', token);
-    
+
         return () => clearTimeout(timeout);
     }, []);
-    
 
     if (loading) return <Loader />;
 
     return (
         <DefaultLayout>
-            <div className="flex h-screen w-full">
+            <div className="flex h-auto w-full flex-col sm:h-screen sm:flex-row">
                 {/* Seção de Conteúdo */}
-                <div className="flex w-3/5 flex-col justify-center space-y-6 bg-[#0153A5] p-10 text-white">
+                <div className="flex flex-col justify-center space-y-6 bg-[#0153A5] p-10 text-white sm:w-3/5">
                     <img src={logoWhite} alt="" style={{ width: '200px', height: 'auto', maxWidth: '100%' }} />
-                    <img src={hero} alt="" style={{ width: '300px', height: 'auto', maxWidth: '100%' }} />
-                    <h1 className="text-2xl font-bold">Bem-Vindo</h1>
-                    <p className="mb-10 text-xs font-light">
-                        A MediaSeg! Explore nossa coleção selecionada de conteúdo voltado a seguros e descubra uma realidade ainda não explorada.
-                    </p>
+                    <div className="flex items-center sm:flex-col sm:items-start">
+                        <img src={hero} alt="" style={{ width: '300px', height: 'auto', maxWidth: '100%' }} />
+                        <div className="flex flex-col">
+                            <h1 className="text-2xl font-bold">Bem-Vindo</h1>
+                            <p className="mb-10 text-xs font-light">
+                                A MediaSeg! Explore nossa coleção selecionada de conteúdo voltado a seguros e descubra uma realidade ainda não
+                                explorada.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Seção de Login */}
-                <div className="flex w-2/5 flex-col justify-center space-y-6 bg-white p-10">
-                    <h1 className="text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
-                    <p className="text-sm">
-                        Não tens Conta?{' '}
-                        <a href={route('cadastro')} className="font-semibold text-[#0153A5] underline">
-                            Criar uma conta
-                        </a>
-                    </p>
+                <div className="flex flex-col justify-center space-y-6 bg-white p-10 sm:w-2/5">
+                    <div>
+                        <h1 className="text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
+                        <p className="text-sm">
+                            Não tens Conta?{' '}
+                            <a href={route('cadastro')} className="font-semibold text-[#0153A5] underline">
+                                Criar uma conta
+                            </a>
+                        </p>
+                    </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex items-center">
