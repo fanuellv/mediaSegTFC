@@ -1,9 +1,10 @@
 import ListSeguradora from '@/components/ui/listaSeguradoras';
 import { Seguradora } from '@/types/DadosSimulacao';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Selecionada from './Selecionada';
 //import Servico from './Servico';
 import { router } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 interface Plano {
     id: number;
@@ -21,6 +22,17 @@ export default function Etapa() {
 
     const [seguradoraSelecionada, setSeguradoraSelecionada] = useState<Seguradora | null>(null);
     const [planoSelecionado, setPlanoSelecionado] = useState<Plano | null>(null);
+
+    const { props } = usePage();
+    const seguradoraIdFromUrl = props.seguradora_id as number | undefined;
+
+    useEffect(() => {
+        if (seguradoraIdFromUrl) {
+            fetch(`/dashboard/seguradoras/${seguradoraIdFromUrl}`)
+                .then(res => res.json())
+                .then(data => setSeguradoraSelecionada(data));
+        }
+    }, [seguradoraIdFromUrl]);
 
 
     function adquirir() {

@@ -41,6 +41,25 @@ Route::middleware(['web','auth:cliente'])->group(function () {
         Route::get('/meus-planos', fn () => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
         Route::get('/aprender', fn () => Inertia::render('dashboard', ['aba' => 'Aprender']))->name('dashboard.aprender');
         Route::get('/menu', fn () => Inertia::render('dashboard', ['aba' => 'Menu']))->name('dashboard.menu');
+
+        Route::get('/seguros/seguradora', function (Request $request) {
+            return Inertia::render('dashboard', [
+                'aba' => 'Seguros',
+                'seguradora_id' => $request->query('seguradora_id'),
+            ]);
+        })->name('dashboard.seguros.com.seguradora');
+        
+        
+    });
+
+    Route::get('/dashboard/seguradoras/{id}', function ($id) {
+        $seguradora = \App\Models\SeguradoraModel::find($id);
+    
+        if (!$seguradora) {
+            return response()->json(['message' => 'Seguradora não encontrada'], 404);
+        }
+    
+        return response()->json($seguradora);
     });
 
     Route::get('/comentarios', [ComentarioController::class, 'index']);

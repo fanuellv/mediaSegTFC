@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ComentarioModal from '../ui/Comentario';
 import ComentariosLista from '../ui/ComentarioLista';
 import ListaPlanos from '../ui/listaPlanos';
-import ListSeguradora from '../ui/listaSeguradoras';
+import ListSeguradora from '../painel/listSeguradoraInicio';
 import Simulador from '../ui/simulador/Simulador';
 
 
