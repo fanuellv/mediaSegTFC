@@ -14,7 +14,7 @@ interface ClienteForm {
     nif: string;
     senha: string;
     telefone: string;
-    foto: File | null;
+    foto?: File | null;
 }
 
 export default function CriarCliente() {
@@ -31,6 +31,8 @@ export default function CriarCliente() {
     });
 
     const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -50,11 +52,15 @@ export default function CriarCliente() {
 
         const formData = new FormData();
         Object.entries(form).forEach(([key, value]) => {
-            if (key === 'foto' && value instanceof File) {
+          if (key === 'foto') {
+            if (value instanceof File) {
                 formData.append('foto', value);
-            } else {
-                formData.append(key, value as string);
             }
+            // não faz nada se foto for null
+        } else {
+            formData.append(key, value as string);
+        }
+        
         });
 
         try {
@@ -70,10 +76,14 @@ export default function CriarCliente() {
             });
 
             if (!res.ok) {
-                const erro = await res.text();
-                console.error('❌ Erro ao criar cliente:', erro);
-                return;
-            }
+              const erro = await res.json();
+              console.error('❌ Erro ao criar cliente:', erro);
+              if (erro.errors) {
+                  setErrors(erro.errors);
+              }
+              return;
+          }
+          
 
             console.log('✅ Cliente criado com sucesso!');
         } catch (err) {
@@ -134,7 +144,10 @@ export default function CriarCliente() {
                                 placeholder="Nome"
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                            
                         </div>
+                        {errors.nome && <p className="text-sm text-red-500">{errors.nome[0]}</p>}
+
 
                         <div className="flex gap-2">
                             <label htmlFor="sobrenome" className="flex items-center gap-2 text-sm font-medium">
@@ -147,7 +160,10 @@ export default function CriarCliente() {
                                 placeholder="Sobrenome"
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                           
+
                         </div>
+                        {errors.sobrenome && <p className="text-sm text-red-500">{errors.sobrenome[0]}</p>}
 
                         <div className="flex gap-2">
                             <label htmlFor="nome_usuario" className="flex items-center gap-2 text-sm font-medium">
@@ -160,7 +176,10 @@ export default function CriarCliente() {
                                 placeholder="Nome de Usuário"
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                            
+
                         </div>
+                        {errors.nome_usuario && <p className="text-sm text-red-500">{errors.nome_usuario[0]}</p>}
 
                         <div className="flex gap-2">
                             <label htmlFor="dataRegistro" className="flex items-center gap-2 text-sm font-medium">
@@ -173,7 +192,10 @@ export default function CriarCliente() {
                                 onChange={handleChange}
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                            
+
                         </div>
+                        {errors.dataRegistro && <p className="text-sm text-red-500">{errors.dataRegistro[0]}</p>}
 
                         <div className="flex gap-2">
                             <label htmlFor="nif" className="flex items-center gap-2 text-sm font-medium">
@@ -186,7 +208,10 @@ export default function CriarCliente() {
                                 placeholder="NIF"
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                           
                         </div>
+                        {errors.nif && <p className="text-sm text-red-500">{errors.nif[0]}</p>}
+
 
                         <div className="flex gap-2">
                             <label htmlFor="telefone" className="flex items-center gap-2 text-sm font-medium">
@@ -199,7 +224,10 @@ export default function CriarCliente() {
                                 placeholder="Telefone"
                                 className="input w-full rounded border p-2 text-sm"
                             />
+                            
                         </div>
+                        {errors.telefone && <p className="text-sm text-red-500">{errors.telefone[0]}</p>}
+
                     </div>
                     <div className="flex gap-2">
                         <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium">
@@ -213,7 +241,10 @@ export default function CriarCliente() {
                             placeholder="Email"
                             className="input w-full rounded border p-2 text-sm"
                         />
+                        
                     </div>
+                    {errors.email && <p className="text-sm text-red-500">{errors.email[0]}</p>}
+
                     <div className="flex gap-2">
                         <label htmlFor="senha" className="flex items-center gap-2 text-sm font-medium">
                             <MdOutlinePassword />
@@ -226,7 +257,10 @@ export default function CriarCliente() {
                             placeholder="Senha"
                             className="input w-full rounded border p-2 text-sm"
                         />
+                        
                     </div>
+                    {errors.senha && <p className="text-sm text-red-500">{errors.senha[0]}</p>}
+
                     <button type="submit" className="mt-4 rounded bg-[#0153A5] px-4 py-2 font-bold text-white transition hover:bg-blue-600 sm:w-50">
                         Criar Conta
                     </button>
