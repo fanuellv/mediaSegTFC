@@ -52,7 +52,7 @@ class ClienteController extends Controller
 
         ClienteModel::create($validated);
 
-        return redirect()->route('login')->with('success', 'Cliente cadastrado com sucesso!');
+        return Inertia::location(route('login'));
     }
 
     //login

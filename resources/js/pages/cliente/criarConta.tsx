@@ -5,6 +5,7 @@ import { IoMdPhonePortrait } from 'react-icons/io';
 import { MdDateRange, MdDriveFileRenameOutline, MdOutlineMailOutline, MdOutlinePassword } from 'react-icons/md';
 import logoWhite from '/public/img/logoWhite.svg';
 
+
 interface ClienteForm {
     nome: string;
     sobrenome: string;
@@ -86,6 +87,7 @@ export default function CriarCliente() {
           
 
             console.log('✅ Cliente criado com sucesso!');
+            window.location.href = '/iniciar-sessao';
         } catch (err) {
             console.error('❌ Erro geral:', err);
         }
