@@ -16,7 +16,7 @@ import { PiPersonSimpleHikeFill } from 'react-icons/pi';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import { TbMoodSmileFilled } from 'react-icons/tb';
 
-import Content from '@/components/uiMediaseg/content';
+//import Content from '@/components/uiMediaseg/content';
 import Rodape from '@/components/uiMediaseg/footer';
 
 export default function Welcome() {
@@ -156,32 +156,7 @@ export default function Welcome() {
                         </div>
                     </section>
 
-                    <section className="relative top-35 space-y-5 px-5 py-10 sm:px-15">
-                        <h1 className="text-2xl font-bold text-black">Os melhores conteúdos sobre Seguros</h1>
-                        <p>
-                            Aprenda tudo o que você precisa saber para aprofundar seus conhecimentos sobre o mercado de seguro e como investir com
-                            estratégia.
-                        </p>
-
-                        <div className="flex flex-col gap-4 pb-10 sm:flex-row">
-                            <Content
-                                titulo="O Que É Um Seguro e Por Que 
-Você Deve Ter Um?"
-                            />
-                            <Content
-                                titulo="O Que É Um Seguro e Por Que 
-Você Deve Ter Um?"
-                            />
-                            <Content
-                                titulo="O Que É Um Seguro e Por Que 
-Você Deve Ter Um?"
-                            />
-                            <Content
-                                titulo="O Que É Um Seguro e Por Que 
-Você Deve Ter Um?"
-                            />
-                        </div>
-                    </section>
+                    
                     <Rodape />
                 </div>
             </DefaultLayout>

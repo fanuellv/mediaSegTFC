@@ -41,9 +41,9 @@ const Botao: React.FC<ButtonProps> = ({ icon: Icon, cor, texto, onClick, renderM
   }, [isModalOpen]);
 
   return (
-    <div className="flex items-center space-x-2" onClick={handleClick}>
-      {Icon && <Icon className="w-6 h-6 text-black" />}
-      <button className={`${cor} rounded px-4 py-3`} >
+    <div className="flex text-black hover:text-white items-center space-x-2" onClick={handleClick}>
+      {Icon && <Icon className="w-4 " />}
+      <button className={`${cor} rounded px-2 py-3`} >
         {texto}
       </button>
 
