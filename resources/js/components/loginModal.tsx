@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import hero from '/public/img/heroLogin.svg';
 import logoWhite from '/public/img/logoWhite.svg';
 
+import { useForm } from '@inertiajs/react';
 import { FaRegUser } from 'react-icons/fa';
 import { TbLockPassword } from 'react-icons/tb';
 import Loader from './loader';
-import { useForm } from '@inertiajs/react';
 
 const LoginModal: React.FC = () => {
     const { data, setData, post, processing, errors } = useForm({
@@ -38,73 +38,83 @@ const LoginModal: React.FC = () => {
 
     if (loading) return <Loader />;
     return (
-        <div className="flex w-full">
-            {/* Seção de Conteúdo */}
-            <div className="w-3/5 space-y-6 bg-[#0153A5] p-10 text-white">
-                <img src={logoWhite} alt="" style={{ width: '200px', height: 'auto', maxWidth: '100%' }} />
-                <img src={hero} alt="" style={{ width: '300px', height: 'auto', maxWidth: '100%' }} />
-                <h1 className="text-2xl font-bold">Bem-Vindo</h1>
-                <p className="mb-10 text-xs font-light">
-                    A MediaSeg! Explore nossa coleção selecionada de conteúdo voltado a seguros e descubra uma realidade ainda não explorada.
-                </p>
-            </div>
+        <div className="flex flex-col sm:flex-row w-full min-h-screen">
+  {/* Seção de Conteúdo */}
+  <div className="flex flex-col justify-center items-center bg-[#0153A5] text-white p-6 sm:w-3/5 space-y-6">
+    <img src={logoWhite} alt="Logo" className="w-40 sm:w-52" />
+    <img src={hero} alt="Hero" className="w-64 sm:w-80" />
+    <div className="text-center sm:text-left max-w-md">
+      <h1 className="text-xl sm:text-2xl font-bold">Bem-Vindo</h1>
+      <p className="mt-2 text-sm font-light">
+        A MediaSeg! Explore nossa coleção selecionada de conteúdo voltado a seguros e descubra uma realidade ainda não explorada.
+      </p>
+    </div>
+  </div>
 
-            {/* Seção de Login */}
-            <div className="flex w-2/5 flex-col justify-center space-y-6 bg-white p-10">
-                <h1 className="text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
-                <p className="text-sm">
-                    Não tens Conta?{' '}
-                    <a href={route('cadastro')} className="font-semibold text-[#0153A5] underline">
-                        Criar uma conta
-                    </a>
-                </p>
+  {/* Seção de Login */}
+  <div className="flex flex-col justify-center bg-white p-8 sm:p-12 w-full sm:w-2/5 space-y-6">
+    <h1 className="text-xl sm:text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
+    <p className="text-sm">
+      Não tens Conta?{' '}
+      <a href={route('cadastro')} className="font-semibold text-[#0153A5] underline">
+        Criar uma conta
+      </a>
+    </p>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="flex items-center">
-                        <input
-                            type="text"
-                            value={data.nif}
-                            onChange={(e) => setData('nif', e.target.value)}
-                            className="w-full rounded border-b border-b-gray-300 px-4 py-2"
-                            placeholder="Nome do Usuário | NIF"
-                        />
-                        {errors.nif && <div className="text-red-500">{errors.nif}</div>}
-                        <span className="absolute right-65 text-gray-400">
-                            <FaRegUser />
-                        </span>
-                    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Campo NIF */}
+      <div className="relative">
+        <input
+          type="text"
+          value={data.nif}
+          onChange={(e) => setData('nif', e.target.value)}
+          className="w-full rounded border border-gray-300 px-4 py-2 pr-10 text-sm"
+          placeholder="Nome do Usuário | NIF"
+        />
+        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <FaRegUser />
+        </span>
+        {errors.nif && <p className="text-xs text-red-500 mt-1">{errors.nif}</p>}
+      </div>
 
-                    <div className="flex items-center">
-                        <input
-                            type="password"
-                            value={data.senha}
-                            onChange={(e) => setData('senha', e.target.value)}
-                            className="w-full rounded border-b border-b-gray-300 px-4 py-2"
-                            placeholder="Palavra-passe"
-                        />
-                         {errors.senha && <div className="text-red-500">{errors.senha}</div>}
-                        <span className="absolute right-65 text-gray-400">
-                            <TbLockPassword />
-                        </span>
-                    </div>
+      {/* Campo Senha */}
+      <div className="relative">
+        <input
+          type="password"
+          value={data.senha}
+          onChange={(e) => setData('senha', e.target.value)}
+          className="w-full rounded border border-gray-300 px-4 py-2 pr-10 text-sm"
+          placeholder="Palavra-passe"
+        />
+        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <TbLockPassword />
+        </span>
+        {errors.senha && <p className="text-xs text-red-500 mt-1">{errors.senha}</p>}
+      </div>
 
-                    <div className="mt-5 flex justify-between">
-                        <button type="submit" disabled={processing} className="rounded bg-[#0153A5] px-4 py-2 font-semibold text-white">
-                            Iniciar Sessão
-                        </button>
-                        <div className="flex items-center space-x-2">
-                            <input type="checkbox" id="remember" />
-                            <label htmlFor="remember" className="text-xs text-gray-600">
-                                Lembrar Palavra-passe
-                            </label>
-                        </div>
-                    </div>
-                    <a href="#" className="text-xs font-light text-blue-400 underline">
-                        Esqueci-me da Palavra-passe
-                    </a>
-                </form>
-            </div>
+      {/* Ações */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
+        <button
+          type="submit"
+          disabled={processing}
+          className="rounded bg-[#0153A5] px-4 py-2 font-semibold text-white hover:bg-blue-700 transition"
+        >
+          Iniciar Sessão
+        </button>
+
+        <div className="flex items-center space-x-2">
+          <input type="checkbox" id="remember" />
+          <label htmlFor="remember" className="text-xs text-gray-600">Lembrar Palavra-passe</label>
         </div>
+      </div>
+
+      <a href="#" className="text-xs font-light text-blue-500 underline">
+        Esqueci-me da Palavra-passe
+      </a>
+    </form>
+  </div>
+</div>
+
     );
 };
 

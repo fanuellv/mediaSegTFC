@@ -19,17 +19,19 @@ class LoginCOntroller extends Controller
 }
 
 
-    public function login(Request $request)
+public function login(Request $request)
 {
     $credentials = $request->validate([
-        'nif' => ['required'],
+        'nif' => ['required'], // agora pode ser NIF ou nome de usuário
         'senha' => ['required'],
-    ],[
-        'nif.required' => 'O campo nif é obrigatório.',
+    ], [
+        'nif.required' => 'O campo NIF ou nome de usuário é obrigatório.',
         'senha.required' => 'O campo senha é obrigatório.',
     ]);
 
-    $cliente = ClienteModel::where('nif', $credentials['nif'])->first();
+    $cliente = ClienteModel::where('nif', $credentials['nif'])
+        ->orWhere('nome_usuario', $credentials['nif'])
+        ->first();
 
     if ($cliente && Hash::check($credentials['senha'], $cliente->senha)) {
         Auth::guard('cliente')->login($cliente);
@@ -38,9 +40,10 @@ class LoginCOntroller extends Controller
     }
 
     return back()->withErrors([
-        'nif' => 'NIF ou senha incorretos.',
+        'nif' => 'NIF, nome de usuário ou senha incorretos.',
     ]);
 }
+
 
     public function logout(Request $request)
     {

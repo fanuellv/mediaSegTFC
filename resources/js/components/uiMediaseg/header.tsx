@@ -27,8 +27,11 @@ const Header: React.FC = () => {
         <Link href={route('cadastro')}>
           <Botao texto="Abrir Minha Conta" cor="bg-[#0153A5] text-white font-bold sm:text-1xl text-xs" />
         </Link>
+        <Link href={route('login')}>
+        <Botao icon={FaUser} texto="Acessar" cor="bg-white text-black font-medium sm:text-1xl text-xs" />
+        </Link>
 
-        <Botao icon={FaUser} texto="Acessar" cor="bg-white text-black font-medium sm:text-1xl text-xs" renderModal={true} />
+        
       </div>
     </header>
   );
