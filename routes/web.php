@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NovoEmailController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 use App\Http\Controllers\SimulacaoController;
@@ -37,6 +38,9 @@ Route::middleware(['web'])->group(function () {
     Route::get('/seguradoras', [SeguradoraController::class, 'index']);
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
 });
+
+Route::post('/newsletter', [NovoEmailController::class, 'store'])->name('newsletter.store');
+
 
 
 

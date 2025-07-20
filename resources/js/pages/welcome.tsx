@@ -5,6 +5,7 @@ import Loader from '@/components/uiMediaseg/Loader';
 import Botao from '@/components/uiMediaseg/botao';
 import Cabecalho from '@/components/uiMediaseg/header';
 import Value from '@/components/uiMediaseg/value';
+import NovoEmail from '@/components/ui/NovoEmail';
 //import { type SharedData } from '@/types';
 //import { Head, Link, usePage } from '@inertiajs/react';
 import { Head, Link } from '@inertiajs/react';
@@ -141,12 +142,7 @@ export default function Welcome() {
                                     <p className="w-[75%] text-white">
                                         Cadastre-se e receba nossos relatórios, recomendações de seguros e muito mais.
                                     </p>
-                                    <div className="w-full space-y-4 space-x-4">
-                                        <input type="e-mail" className="rounded bg-white/50 p-2 sm:w-120 sm:p-4" placeholder="Digite o seu email" />
-                                        <button type="submit" className="rounded bg-white p-2 font-bold text-[#003162] sm:p-4">
-                                            Comerçar a receber
-                                        </button>
-                                    </div>
+                                    <NovoEmail/>
                                 </div>
                                 <div
                                     className="absolute right-15 h-35 w-35 rounded-full bg-cover bg-center bg-no-repeat"
