@@ -38,7 +38,7 @@ export default function Welcome() {
             </Head>
 
             <DefaultLayout>
-                <div className="flex min-h-screen flex-col bg-[#FDFDFC] dark:bg-[#0a0a0a]">
+                <div className="flex min-h-screen flex-col bg-white">
                     <Cabecalho />
                     <section
                         style={{ backgroundImage: `url("/img/hero.svg")` }}
