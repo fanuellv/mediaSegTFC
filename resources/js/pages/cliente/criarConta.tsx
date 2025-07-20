@@ -4,6 +4,7 @@ import { FaIdCard } from 'react-icons/fa';
 import { IoMdPhonePortrait } from 'react-icons/io';
 import { MdDateRange, MdDriveFileRenameOutline, MdOutlineMailOutline, MdOutlinePassword } from 'react-icons/md';
 import logoWhite from '/public/img/logoWhite.svg';
+import { Link } from '@inertiajs/react';
 
 
 interface ClienteForm {
@@ -129,12 +130,12 @@ export default function CriarCliente() {
                 <div className="flex flex-col justify-center gap-6 p-10 sm:w-3/5">
                     <div className="flex items-center gap-2">
                         <h1 className="text-3xl font-bold text-[#0153A5]">Registrar-se</h1>
-                        <p className="text-sm">
-                            Já tens conta? <span className="cursor-pointer text-blue-500 underline">Iniciar Sessão</span>
+                        <p className="text-sm text-black">
+                            Já tens conta? <Link href={route('login')}><span className="cursor-pointer text-blue-500 underline">Iniciar Sessão</span></Link>
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-4 text-gray-600 sm:grid-cols-2">
                         <div className="flex gap-2">
                             <label htmlFor="nome" className="flex items-center gap-2 font-medium">
                                 <MdDriveFileRenameOutline />

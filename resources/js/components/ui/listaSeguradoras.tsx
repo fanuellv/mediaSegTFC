@@ -87,7 +87,7 @@ export default function ListSeguradora({ onAvancar, setSeguradora }: Props) {
                                     </div>
 
                                     <div>
-                                        <strong className="block text-base sm:text-lg">{seguradora.nome}</strong>
+                                        <strong className="block text-black text-base sm:text-lg">{seguradora.nome}</strong>
                                         <span className="text-sm text-gray-600">{seguradora.descricao}</span>
                                     </div>
                                 </div>

@@ -45,8 +45,8 @@ const Login: React.FC = () => {
                 {/* Seção de Conteúdo */}
                 <div className="flex flex-col justify-center space-y-6 bg-[#0153A5] p-10 text-white sm:w-3/5">
                     <img src={logoWhite} alt="" style={{ width: '200px', height: 'auto', maxWidth: '100%' }} />
-                    <div className="flex items-center sm:flex-col sm:items-start">
-                        <img src={hero} alt="" style={{ width: '300px', height: 'auto', maxWidth: '100%' }} />
+                    <div className="flex flex-col items-center sm:flex-col sm:items-start">
+                        <img src={hero}  alt="" style={{ width: '300px', height: 'auto', maxWidth: '100%' }} />
                         <div className="flex flex-col">
                             <h1 className="text-2xl font-bold">Bem-Vindo</h1>
                             <p className="mb-10 text-xs font-light">
@@ -58,10 +58,10 @@ const Login: React.FC = () => {
                 </div>
 
                 {/* Seção de Login */}
-                <div className="flex flex-col justify-center space-y-6 bg-white p-10 sm:w-2/5">
-                    <div className='flex items-center gap-3'>
+                <div className="flex flex-col justify-center space-y-4 bg-white p-10 sm:w-2/5">
+                    <div className='flex items-center'>
                         <h1 className="text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
-                        <p className="text-sm">
+                        <p className="text-sm text-black">
                             Não tens Conta?{' '}
                             <a href={route('cadastro')} className="font-semibold text-[#0153A5] underline">
                                 Criar uma conta
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4 text-gray-600">
                         <div className="flex items-center">
                             <input
                                 type="text"

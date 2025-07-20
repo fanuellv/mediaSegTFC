@@ -171,7 +171,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
                 {tipoSelecionado && (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') && (
                     <>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col text-gray-600 gap-1">
                             <label htmlFor="idade" className="text-sm font-medium text-gray-700">
                                 Idade:
                             </label>
@@ -186,7 +186,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                             />
                         </div>
 
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col text-gray-600 gap-1">
                             <label htmlFor="profissao" className="text-sm font-medium text-gray-700">
                                 Profissão:
                             </label>
@@ -203,7 +203,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                             </select>
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center text-gray-600 gap-2">
                             <input
                                 type="checkbox"
                                 id="fumante"
@@ -223,7 +223,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 {tipoSelecionado === 'automovel' && (
                     <>
                         <div className="space-y-2">
-                            <div className="flex w-full gap-4">
+                            <div className="flex w-full text-gray-600 gap-4">
                                 <div className="flex w-1/2 flex-col gap-1">
                                     <label htmlFor="ano_veiculo" className="text-sm font-medium text-gray-700">
                                         Ano do veículo:
@@ -239,7 +239,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                     />
                                 </div>
 
-                                <div className="flex w-1/2 flex-col gap-1">
+                                <div className="flex w-1/2 flex-col text-gray-600 gap-1">
                                     <label htmlFor="marca_modelo" className="text-sm font-medium text-gray-700">
                                         Marca / Modelo:
                                     </label>
@@ -255,7 +255,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 </div>
                             </div>
 
-                            <div className="flex w-full gap-4">
+                            <div className="flex w-full text-gray-600 gap-4">
                                 <div className="flex w-1/2 flex-col gap-1">
                                     <label htmlFor="matricula" className="text-sm font-medium text-gray-700">
                                         Matrícula:
@@ -271,7 +271,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                     />
                                 </div>
 
-                                <div className="flex w-1/2 flex-col gap-1">
+                                <div className="flex w-1/2 flex-col text-gray-600 gap-1">
                                     <label htmlFor="valor_veiculo" className="text-sm font-medium text-gray-700">
                                         Valor do veículo (Kz):
                                     </label>
@@ -287,7 +287,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center text-gray-600 gap-2">
                                 <input
                                     type="checkbox"
                                     id="tem_franquia"
@@ -302,7 +302,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                                 </label>
                             </div>
 
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col text-gray-600 gap-1">
                                 <label htmlFor="tipo_uso" className="text-sm font-medium text-gray-700">
                                     Tipo de uso:
                                 </label>

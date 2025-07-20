@@ -12,8 +12,8 @@ const Card: React.FC<CardProps> = ({ titulo, descricao, link, icon: Icon }) => {
     <div className="flex bg-gray-200 p-5">
       {/* Conteúdo Esquerdo */}
       <div className="w-3/4 space-y-4">
-        <h1 className="font-bold text-lg">{titulo}</h1>
-        <p className="w-[90%]">{descricao}</p>
+        <h1 className="font-bold text-black text-lg">{titulo}</h1>
+        <p className="w-[90%] text-gray-600">{descricao}</p>
         <a href={link} className="flex items-center gap-1 text-blue-600">
           Ver Mais
           <span className="ml-1">→</span>

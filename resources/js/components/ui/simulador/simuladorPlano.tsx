@@ -159,8 +159,8 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Omit<Props, 
 
     return (
         <div className="h-full w-full">
-            <form onSubmit={handleSubmit} className="flex h-full flex-col space-y-6">
-                <h1 className="mb-4 text-lg font-bold">Contratação de Plano</h1>
+            <form onSubmit={handleSubmit} className="flex h-full text-gray-600 flex-col space-y-6">
+                <h1 className="mb-4 text-lg text-black font-bold">Contratação de Plano</h1>
 
                 {/* Seguradora */}
                 <div className="relative flex w-full flex-col gap-1">

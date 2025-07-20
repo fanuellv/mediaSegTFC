@@ -77,8 +77,8 @@ export default function Welcome() {
 
                     <section className="relative top-35 mb-10 space-y-5 px-5 sm:px-15">
                         <div className="space-y-5">
-                            <h1 className="text-2xl font-bold">Aqui, você encontra as melhores soluções em seguros reunidas num só lugar.</h1>
-                            <p className="text-sm">
+                            <h1 className="text-2xl text-black font-bold">Aqui, você encontra as melhores soluções em seguros reunidas num só lugar.</h1>
+                            <p className="text-sm text-gray-600">
                                 A MediaSeg desenvolveu soluções completas para ajudar você a escolher o seguro ideal, de acordo com o seu perfil e as
                                 suas necessidades.
                             </p>
