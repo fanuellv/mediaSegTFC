@@ -86,15 +86,15 @@ export default function Index() {
                                     return (
                                         <tr key={apolice.id} className="border-b hover:bg-gray-50">
                                             <td className="p-2 font-medium text-gray-800">{apolice.plano?.nome ?? '---'}</td>
-                                            <td className="p-2">{apolice.plano?.seguradora?.nome ?? '---'}</td>
-                                            <td className="hidden p-2 sm:block">
+                                            <td className="p-2 text-gray-600">{apolice.plano?.seguradora?.nome ?? '---'}</td>
+                                            <td className="hidden p-2 sm:block text-gray-600">
                                                 <span
                                                     className={`rounded-full px-2 py-1 text-xs font-semibold ${ativo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                                                 >
                                                     {ativo ? 'Ativo' : 'Expirado'}
                                                 </span>
                                             </td>
-                                            <td className="p-2">{new Date(apolice.data_fim).toLocaleDateString()}</td>
+                                            <td className="p-2 text-gray-600">{new Date(apolice.data_fim).toLocaleDateString()}</td>
                                             <td className="hidden p-2 font-semibold text-[#0153A5] sm:block">
                                                 Kz{' '}
                                                 {apolice.valor_total?.toLocaleString('pt-AO', {

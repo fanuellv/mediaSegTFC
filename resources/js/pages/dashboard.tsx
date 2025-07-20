@@ -155,13 +155,14 @@ export default function Dashboard() {
                                 <MdOutlineNotificationsActive />
                             </div>
                             <div className="flex items-center gap-2">
-                                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
-                                    {cliente.foto ? (
-                                        <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-contain" />
-                                    ) : (
-                                        <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
-                                    )}
-                                </div>
+                                
+                                <div className="h-10 w-10 flex-shrink-0 shadow-inner borde-[#0153a5] overflow-hidden ounded-full bg-gray-100">
+                                        {cliente.foto ? (
+                                            <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-contain" />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
+                                        )}
+                                    </div>
                                 <p className="hidden text-sm sm:block">
                                     Seja bem-vindo
                                     <br />

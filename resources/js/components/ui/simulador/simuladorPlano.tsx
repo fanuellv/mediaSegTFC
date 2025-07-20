@@ -216,7 +216,7 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Omit<Props, 
                 </div>
 
                 {/* Botões */}
-                <div className="mt-auto flex w-full gap-4">
+                <div className="mt-auto mb-20 flex w-full gap-4">
                     <button
                         type="button"
                         onClick={handleReset}

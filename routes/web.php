@@ -23,9 +23,9 @@ Route::get('/', fn () => Inertia::render('welcome'))->name('home');
 Route::get('/cadastro', fn () => Inertia::render('cliente/criarConta'))->name('cadastro');
 
 Route::get('/servico/consultoria-personalizada', fn () => Inertia::render('servicos/Consultoria'))->name('consultoria');
-Route::get('/servicos/educacao', fn () => Inertia::render('servico/Educacao'))->name('educacao');
-Route::get('/servicos/facilidade', fn () => Inertia::render('servico/Facilidade'))->name('facilidade');
-Route::get('/servicos/acompanhamento', fn () => Inertia::render('servico/Acompanhamento'))->name('acompanhamento');
+Route::get('/servicos/educacao', fn () => Inertia::render('servicos/Educacao'))->name('educacao');
+Route::get('/servicos/facilidade', fn () => Inertia::render('servicos/Facilidade'))->name('facilidade');
+Route::get('/servicos/acompanhamento', fn () => Inertia::render('servicos/Acompanhamento'))->name('acompanhamento');
 
 // ROTAS DE TESTE
 Route::prefix('usuarios')->group(function () {
