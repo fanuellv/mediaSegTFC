@@ -30,7 +30,7 @@ Route::get('/servicos/acompanhamento', fn () => Inertia::render('servicos/Acompa
 // ROTAS DE TESTE
 Route::prefix('usuarios')->group(function () {
     Route::get('/create', fn () => Inertia::render('cliente/cadastro'));
-    Route::post('/', [TesteController::class, 'store']);
+    //Route::post('/', [TesteController::class, 'store']);
 });
 
 // web.php

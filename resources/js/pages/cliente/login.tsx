@@ -59,7 +59,7 @@ const Login: React.FC = () => {
 
                 {/* Seção de Login */}
                 <div className="flex flex-col justify-center space-y-4 bg-white p-10 sm:w-2/5">
-                    <div className='flex items-center'>
+                    <div className='flex items-center gap-2'>
                         <h1 className="text-2xl font-bold text-[#0153A5]">Iniciar Sessão</h1>
                         <p className="text-sm text-black">
                             Não tens Conta?{' '}

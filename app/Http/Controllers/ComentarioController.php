@@ -29,7 +29,7 @@ class ComentarioController extends Controller
             'cliente_id' => Auth::guard('cliente')->id(),
             'mensagem' => $request->mensagem,
         ]);
-        dd($request->all()); // <-- Vai mostrar o que chega do React
+        //dd($request->all()); // <-- Vai mostrar o que chega do React
 
         return response()->json($comentario, 201);
     }

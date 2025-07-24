@@ -10,6 +10,7 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import Menu from '@/components/painel/Menu/Index';
 import Pagamento from '@/components/painel/Pagamento';
 import Index from '@/components/painel/Planos';
+import IndexAprender from '@/components/painel/aprender';
 import Etapa from '@/components/painel/Servico/Etapa';
 
 import SelecionadaPorRota from '@/components/painel/Servico/SelecionadaPorRota';
@@ -99,7 +100,7 @@ export default function Dashboard() {
                             classe={colorChange('Menu')}
                         />
                     </div>
-                    <div>
+                    <div className='mt-10'>
                         <button onClick={handleLogout} className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-2">
                             <RiLogoutCircleLine className="text-2xl text-gray-400" />
                         </button>
@@ -190,7 +191,7 @@ export default function Dashboard() {
 
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}
                         {sessaoAtiva === 'Meus Planos' && <Index />}
-                        {sessaoAtiva === 'Aprender' && <div>Conteúdo de Aprendizado</div>}
+                        {sessaoAtiva === 'Aprender' && <IndexAprender/>}
                         {sessaoAtiva === 'Menu' && <Menu />}
                     </div>
                 </div>

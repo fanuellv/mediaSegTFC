@@ -28,7 +28,7 @@ export default function Menu() {
                 <h2 className="mt-6 text-sm font-semibold text-gray-600">Outras Opções</h2>
                 <ul className="mt-2 flex flex-col gap-2">
                     <MenuItem icon={<FaPhoneAlt />} label="Contactos" url="dashboard.pagamentos" />
-                    <MenuItem icon={<GrConfigure />} label="Configurações" url="dashboard.pagamentos" />
+                    <MenuItem icon={<GrConfigure />} label="Configurações" url="cliente.configuracao" />
                     <MenuItemLogout icon={<CiLogout />} label="Terminar Sessão" />
                 </ul>
             </div>

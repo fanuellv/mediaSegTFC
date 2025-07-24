@@ -82,11 +82,11 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar, onAv
                 documento_url,
             });
 
-            alert('Plano adquirido e documento gerado!');
+            //alert('Plano adquirido e documento gerado!');
             onAvancar();
         } catch (err) {
             console.error('❌ Erro ao adquirir plano ou gerar documento:', err);
-            alert('Erro ao adquirir o plano ou gerar o PDF.');
+            //alert('Erro ao adquirir o plano ou gerar o PDF.');
         } finally {
             setLoading(false);
         }

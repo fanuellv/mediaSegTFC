@@ -79,10 +79,6 @@ class SimulacaoController extends Controller
             'tipo_uso',
             'ano_veiculo'
         ]));
-
-
-
-
         // Criação do item simulado (plano associado)
         ItemSimulado::create([
             'simulacao_id' => $simulacao->id,
@@ -98,14 +94,6 @@ class SimulacaoController extends Controller
             'detalhes' => $simulacao->detalhes, // Relação com SimulacaoDetalhe (se tiveres configurada)
         ]);
     }
-
-
-
-
-
-
-
-
 
 
 

@@ -11,29 +11,28 @@ use App\Http\Controllers\SimulacaoController;
 use Illuminate\Http\Request;
 
 Route::prefix('cliente')->group(function () {
-    Route::get('/create', fn () => Inertia::render('cliente/criarConta'))->name('cliente.create');
-    Route::get('/aprender', fn () => Inertia::render('cliente/aprender'))->name('cliente.aprender');
-    Route::get('/blog', fn () => Inertia::render('cliente/blog'))->name('cliente.blog');
+    Route::get('/create', fn() => Inertia::render('cliente/criarConta'))->name('cliente.create');
+    Route::get('/aprender', fn() => Inertia::render('cliente/aprender'))->name('cliente.aprender');
+    Route::get('/blog', fn() => Inertia::render('cliente/blog'))->name('cliente.blog');
     Route::post('/', [ClienteController::class, 'store'])->name('cliente.store');
-
 });
 
 // LOGIN / LOGOUT CLIENTE
-Route::get('/iniciar-sessao', fn () => Inertia::render('cliente/login'))->name('login');
+Route::get('/iniciar-sessao', fn() => Inertia::render('cliente/login'))->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/iniciar', [LoginController::class, 'showLoginForm'])->name('iniciar');
 
 // ROTAS AUTENTICADAS
-Route::middleware(['web','auth:cliente'])->group(function () {
+Route::middleware(['web', 'auth:cliente'])->group(function () {
     // ✅ REDIRECIONAR /painel para /dashboard/inicio
-    Route::get('/painel', fn () => redirect()->route('dashboard.inicio'))->name('painel');
+    Route::get('/painel', fn() => redirect()->route('dashboard.inicio'))->name('painel');
 
     // ✅ ROTAS COM CONTROLE DE ABA
     Route::prefix('dashboard')->group(function () {
-        Route::get('/inicio', fn () => Inertia::render('dashboard', ['aba' => 'Inicio']))->name('dashboard.inicio');
-        Route::get('/seguros', fn () => Inertia::render('dashboard', ['aba' => 'Seguros']))->name('dashboard.seguros');
-        Route::get('/pagamentos', fn () => Inertia::render('dashboard', ['aba' => 'Pagamentos']))->name('dashboard.pagamentos');
+        Route::get('/inicio', fn() => Inertia::render('dashboard', ['aba' => 'Inicio']))->name('dashboard.inicio');
+        Route::get('/seguros', fn() => Inertia::render('dashboard', ['aba' => 'Seguros']))->name('dashboard.seguros');
+        Route::get('/pagamentos', fn() => Inertia::render('dashboard', ['aba' => 'Pagamentos']))->name('dashboard.pagamentos');
         Route::get('/dashboard/pagamentos', function (Request $request) {
             return Inertia::render('dashboard', [
                 'aba' => 'Pagamentos',
@@ -41,9 +40,9 @@ Route::middleware(['web','auth:cliente'])->group(function () {
                 'plano_id' => request('plano_id'),
             ]);
         })->name('dashboard.pagamentosV2');
-        Route::get('/meus-planos', fn () => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
-        Route::get('/aprender', fn () => Inertia::render('dashboard', ['aba' => 'Aprender']))->name('dashboard.aprender');
-        Route::get('/menu', fn () => Inertia::render('dashboard', ['aba' => 'Menu']))->name('dashboard.menu');
+        Route::get('/meus-planos', fn() => Inertia::render('dashboard', ['aba' => 'Meus Planos']))->name('dashboard.planos');
+        Route::get('/aprender', fn() => Inertia::render('dashboard', ['aba' => 'Aprender']))->name('dashboard.aprender');
+        Route::get('/menu', fn() => Inertia::render('dashboard', ['aba' => 'Menu']))->name('dashboard.menu');
 
         Route::get('/seguros/seguradora', function (Request $request) {
             return Inertia::render('dashboard', [
@@ -51,17 +50,22 @@ Route::middleware(['web','auth:cliente'])->group(function () {
                 'seguradora_id' => $request->query('seguradora_id'),
             ]);
         })->name('dashboard.seguros.com.seguradora');
-        
+
+
         
     });
 
+    // Se estiver autenticado via web:
+    Route::get('/api/cliente', [ClienteController::class, 'show']);
+    Route::put('/cliente', [ClienteController::class, 'update'])->name('cliente.update');
+
     Route::get('/dashboard/seguradoras/{id}', function ($id) {
         $seguradora = \App\Models\SeguradoraModel::find($id);
-    
+
         if (!$seguradora) {
             return response()->json(['message' => 'Seguradora não encontrada'], 404);
         }
-    
+
         return response()->json($seguradora);
     });
 
@@ -75,6 +79,5 @@ Route::middleware(['web','auth:cliente'])->group(function () {
     Route::post('/apolice/pdf/gerar/{id}', [SimulacaoController::class, 'gerarPdf']);
 
     // routes/web.php ou routes/api.php
-Route::get('/meus-planos', [SimulacaoController::class, 'meusPlanos']);
-
+    Route::get('/meus-planos', [SimulacaoController::class, 'meusPlanos']);
 });
