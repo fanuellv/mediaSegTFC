@@ -8,6 +8,7 @@ use App\Models\PlanoModel;
 use App\Models\Simulacao;
 use App\Models\tipoSeguro;
 use App\Models\ItemSimulado;
+use App\Models\Notificacao;
 use App\Models\SimulacaoDetalhe;
 use Illuminate\Http\Request;
 use App\Services\Cotacao\CotacaoService;
@@ -77,6 +78,14 @@ class SimulacaoController extends Controller
             'tipo_uso' => $request->input('tipo_uso'),
             'ano_veiculo' => $request->input('ano_veiculo'),
         ]);
+
+        Notificacao::create([
+            'titulo' => 'Simulação realizada com sucesso!',
+            'mensagem' => 'Sua simulação foi concluída. Você pode gerar o documento da apólice ou ir em meus planos e extrair a mesma',
+            'tipo' => 'simulacao',
+            'cliente_id' => Auth::guard('cliente')->id(),
+        ]);
+        
         Log::debug('➡️ Detalhes recebidos:', $request->only([
             'marca_modelo',
             'matricula',

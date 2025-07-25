@@ -2,15 +2,17 @@ import Loader from '@/components/uiMediaseg/Loader';
 import DefaultLayout from '@/layouts/DefaultLayout.jsx';
 import { useEffect, useState } from 'react';
 
+import axios from 'axios';
+
 import Inicio from '@/components/painel/inicio';
 import Sessao from '@/components/ui/navDashboard';
 
 import { router, useForm, usePage } from '@inertiajs/react';
 
+import IndexAprender from '@/components/painel/aprender';
 import Menu from '@/components/painel/Menu/Index';
 import Pagamento from '@/components/painel/Pagamento';
 import Index from '@/components/painel/Planos';
-import IndexAprender from '@/components/painel/aprender';
 import Etapa from '@/components/painel/Servico/Etapa';
 
 import SelecionadaPorRota from '@/components/painel/Servico/SelecionadaPorRota';
@@ -18,6 +20,8 @@ import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import { MdOutlineNotificationsActive, MdOutlineSchool, MdOutlineSecurity, MdPayment } from 'react-icons/md';
 import { RiBillLine, RiLogoutCircleLine } from 'react-icons/ri';
 import { TbSmartHome } from 'react-icons/tb';
+
+import ModalNotificacoes from '../components/ui/NotificacoesCliente';
 
 interface Cliente {
     nome: string;
@@ -33,6 +37,23 @@ interface PageProps {
 }
 
 export default function Dashboard() {
+    const [mostrarModal, setMostrarModal] = useState(false);
+
+    const [quantidadeNaoLidas, setQuantidadeNaoLidas] = useState(0);
+
+useEffect(() => {
+    axios.get('/notificacoes', { withCredentials: true })
+        .then((res) => {
+            const todas = res.data;
+            const naoLidas = todas.filter((n) => !n.lida).length;
+            setQuantidadeNaoLidas(naoLidas);
+        })
+        .catch(() => {
+            console.error('Erro ao buscar notificações');
+        });
+}, []);
+
+
     const { url } = usePage();
     const { props } = usePage<PageProps>();
     const cliente = props.cliente;
@@ -100,7 +121,7 @@ export default function Dashboard() {
                             classe={colorChange('Menu')}
                         />
                     </div>
-                    <div className='mt-10'>
+                    <div className="mt-10">
                         <button onClick={handleLogout} className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-2">
                             <RiLogoutCircleLine className="text-2xl text-gray-400" />
                         </button>
@@ -152,18 +173,29 @@ export default function Dashboard() {
                     <header className="sticky top-0 z-10 flex items-center justify-between px-4 py-3">
                         <h1 className="text-xl font-bold text-[#0153A5] sm:text-2xl">{sessaoAtiva}</h1>
                         <div className="flex items-center gap-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-gray-600">
-                                <MdOutlineNotificationsActive />
+                            <div className="relative">
+                                <div
+                                    onClick={() => setMostrarModal(true)}
+                                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[#0153A5] text-xl text-white"
+                                >
+                                    <MdOutlineNotificationsActive />
+                                </div>
+                                {quantidadeNaoLidas > 0 && (
+                                    <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
+                                        {quantidadeNaoLidas}
+                                    </div>
+                                )}
+
+                                {mostrarModal && <ModalNotificacoes onFechar={() => setMostrarModal(false)} />}
                             </div>
                             <div className="flex items-center gap-2">
-                                
-                                <div className="h-10 w-10 flex-shrink-0 shadow-inner borde-[#0153a5] overflow-hidden ounded-full bg-gray-100 rounded-full border-[#0153A5] border-2">
-                                        {cliente.foto ? (
-                                            <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-cover" />
-                                        ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
-                                        )}
-                                    </div>
+                                <div className="borde-[#0153a5] ounded-full h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border-2 border-[#0153A5] bg-gray-100 shadow-inner">
+                                    {cliente.foto ? (
+                                        <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-cover" />
+                                    ) : (
+                                        <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
+                                    )}
+                                </div>
                                 <p className="hidden text-sm sm:block">
                                     Seja bem-vindo
                                     <br />
@@ -191,7 +223,7 @@ export default function Dashboard() {
 
                         {sessaoAtiva === 'Pagamentos' && <Pagamento />}
                         {sessaoAtiva === 'Meus Planos' && <Index />}
-                        {sessaoAtiva === 'Aprender' && <IndexAprender/>}
+                        {sessaoAtiva === 'Aprender' && <IndexAprender />}
                         {sessaoAtiva === 'Menu' && <Menu />}
                     </div>
                 </div>

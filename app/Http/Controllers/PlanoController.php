@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClienteModel;
+use App\Models\Notificacao;
 use App\Models\PlanoModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +56,16 @@ class PlanoController extends Controller
         }
 
         $plano = PlanoModel::create($data);
+
+        foreach (ClienteModel::all() as $cliente) {
+            Notificacao::create([
+                'titulo' => 'Novo plano disponível!',
+                'mensagem' => 'Um novo plano de seguro foi adicionado.',
+                'tipo' => 'plano',
+                'cliente_id' => $cliente->id,
+            ]);
+        }
+        
 
         return response()->json($plano, 201);
     }

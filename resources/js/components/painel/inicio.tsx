@@ -20,7 +20,7 @@ export default function Inicio() {
 
                 {/* Lista de Seguradoras */}
                 <div className="flex flex-col rounded-2xl bg-white p-4 sm:h-[40%]">
-                    <div className="top-0 z-10 bg-white pb-2 font-bold">
+                    <div className="top-0 pb-2 font-bold">
                         <h1 className="text-lg text-black">Top Seguradoras</h1>
                     </div>
                     <div
@@ -39,7 +39,7 @@ export default function Inicio() {
             <div className="flex w-full flex-col gap-4 sm:w-2/5">
                 {/* Planos em Alta */}
                 <div className="flex flex-col rounded-2xl bg-white p-4 sm:h-[60%]">
-                    <div className="top-0 z-10 bg-white pb-2 font-bold">
+                    <div className="top-0 bg-white pb-2 font-bold">
                         <h1 className="text-lg text-black">Planos em Alta</h1>
                     </div>
                     <div className="scrollbar-thin scrollbar-thumb-gray-300 flex-1 overflow-y-auto pr-1" style={{
@@ -52,7 +52,7 @@ export default function Inicio() {
 
                 {/* Comentários */}
                 <div className="flex flex-col rounded-2xl bg-white p-4 sm:h-[40%]">
-                    <div className="top-0 z-10 flex items-center justify-between bg-white pb-2">
+                    <div className="top-0 flex items-center justify-between bg-white pb-2">
                         <h1 className="text-lg text-black font-bold">Avaliações</h1>
                         <button onClick={() => setMostrarModal(true)} className="rounded bg-[#0153A5] px-3 py-1 text-sm text-white hover:bg-blue-600">
                             + Adicionar

@@ -9,6 +9,7 @@ use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
 use App\Http\Controllers\SimulacaoController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Route::prefix('cliente')->group(function () {
     Route::get('/create', fn() => Inertia::render('cliente/criarConta'))->name('cliente.create');
@@ -22,6 +23,19 @@ Route::get('/iniciar-sessao', fn() => Inertia::render('cliente/login'))->name('l
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/iniciar', [LoginController::class, 'showLoginForm'])->name('iniciar');
+
+Route::middleware('auth:cliente')->get('/cliente/notificacoes', function () {
+    $clienteId = Auth::guard('cliente')->id();
+
+    return \App\Models\Notificacao::where('cliente_id', $clienteId)
+        ->orderBy('created_at', 'desc')
+        ->take(30)
+        ->get();
+});
+Route::middleware('auth:cliente')->get('/notificacoes', [ClienteController::class, 'minhasNotificacoes']);
+
+Route::middleware('auth:cliente')->patch('/notificacoes/{id}/marcar-lida', [ClienteController::class, 'marcarComoLida']);
+
 
 // ROTAS AUTENTICADAS
 Route::middleware(['web', 'auth:cliente'])->group(function () {
@@ -80,4 +94,6 @@ Route::middleware(['web', 'auth:cliente'])->group(function () {
 
     // routes/web.php ou routes/api.php
     Route::get('/meus-planos', [SimulacaoController::class, 'meusPlanos']);
+
+
 });

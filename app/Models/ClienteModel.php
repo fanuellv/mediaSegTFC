@@ -33,6 +33,15 @@ class ClienteModel extends Authenticatable
 }
 
 
+
+public function notificacoes()
+{
+    return $this->hasMany(Notificacao::class, 'cliente_id', 'id');
+}
+
+
+
+
     // Laravel usa esse método para saber qual campo é a senha
     public function getAuthPassword()
     {

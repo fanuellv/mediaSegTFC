@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Notificacao;
 
 class ClienteController extends Controller
 {
@@ -147,5 +148,32 @@ class ClienteController extends Controller
             ], 500);
         }
     }
+
+    public function minhasNotificacoes()
+{
+    $cliente = Auth::guard('cliente')->user();
+
+    $notificacoes = $cliente->notificacoes()
+        ->orderBy('created_at', 'desc')
+        ->take(20)
+        ->get();
+
+    return response()->json($notificacoes);
+}
+
+public function marcarComoLida($id)
+{
+    $cliente = Auth::guard('cliente')->user();
+
+    $notificacao = Notificacao::where('id', $id)
+        ->where('cliente_id', $cliente->id)
+        ->firstOrFail();
+
+    $notificacao->lida = true;
+    $notificacao->save();
+
+    return response()->json(['success' => true]);
+}
+
     
 }
