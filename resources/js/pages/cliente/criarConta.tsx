@@ -232,7 +232,7 @@ export default function CriarCliente() {
                         {errors.telefone && <p className="text-sm text-red-500">{errors.telefone[0]}</p>}
 
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 text-gray-600">
                         <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium">
                             <MdOutlineMailOutline />
                         </label>

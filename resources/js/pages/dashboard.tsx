@@ -157,9 +157,9 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center gap-2">
                                 
-                                <div className="h-10 w-10 flex-shrink-0 shadow-inner borde-[#0153a5] overflow-hidden ounded-full bg-gray-100">
+                                <div className="h-10 w-10 flex-shrink-0 shadow-inner borde-[#0153a5] overflow-hidden ounded-full bg-gray-100 rounded-full border-[#0153A5] border-2">
                                         {cliente.foto ? (
-                                            <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-contain" />
+                                            <img src={`/storage/${cliente.foto}`} alt={cliente.nome} className="h-full w-full object-cover" />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">Sem imagem</div>
                                         )}

@@ -34,7 +34,7 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar, onAv
         try {
             // 1. Salvar simulação
             const payload = {
-                cliente_id: 1, // ou pegar do auth
+                //cliente_id: 1, // ou pegar do auth
                 tipo_seguro_id: dados.tipo_id,
                 valor_calculado: dados.valor,
                 status: 'simulado',

@@ -37,12 +37,11 @@ class SimulacaoController extends Controller
 
         // Validação dos campos principais
         $validated = validator($dados, [
-            'cliente_id' => 'required|exists:clientes,id',
             'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
             'valor_calculado' => 'required|numeric',
             'status' => 'required|string',
             'plano_id' => 'required|exists:plano_seguro,id',
-
+        
             // Validação dos detalhes
             'marca_modelo' => 'nullable|string|max:255',
             'matricula' => 'nullable|string|max:100',
@@ -51,15 +50,22 @@ class SimulacaoController extends Controller
             'tipo_uso' => 'nullable|string|max:100',
             'ano_veiculo' => 'nullable|integer|min:1900|max:' . now()->year,
         ])->validate();
+        
+        $cliente = Auth::guard('cliente')->user();
+        if (!$cliente) {
+            return response()->json(['erro' => 'Não autenticado'], 401);
+        }
+        
 
         // Criação da simulação principal
         $simulacao = Simulacao::create([
-            'cliente_id' => $validated['cliente_id'],
+            'cliente_id' => $cliente->id,
             'tipo_seguro_id' => $validated['tipo_seguro_id'],
             'data' => now(),
             'valor_calculado' => $validated['valor_calculado'],
             'status' => $validated['status'],
         ]);
+        
 
         // Criação dos detalhes (dados adicionais)
         SimulacaoDetalhe::create([
@@ -79,6 +85,10 @@ class SimulacaoController extends Controller
             'tipo_uso',
             'ano_veiculo'
         ]));
+
+
+
+
         // Criação do item simulado (plano associado)
         ItemSimulado::create([
             'simulacao_id' => $simulacao->id,
@@ -94,6 +104,14 @@ class SimulacaoController extends Controller
             'detalhes' => $simulacao->detalhes, // Relação com SimulacaoDetalhe (se tiveres configurada)
         ]);
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -118,9 +136,20 @@ class SimulacaoController extends Controller
 
             $planoSelecionado = PlanoModel::with('tipo')->find($planoId);
 
+            $cliente = Auth::guard('cliente')->user();
+            $clienteId = $cliente->id;
+
+
+            if (!$clienteId) {
+                Log::warning('⚠️ Nenhum cliente autenticado na simulação.');
+            } else {
+                Log::info('✅ Cliente autenticado na simulação:', ['id' => $cliente->id, 'nome' => $cliente->nome]);
+            }
+            
+
             // Gerar a apólice (contrato de seguro)
             $apolice = ApoliceModel::create([
-                'cliente_id' => $user->id ?? 1,
+                'cliente_id' => $clienteId,
                 'plano_id' => $planoSelecionado->id,
                 'numero' => strtoupper(Str::random(10)),
                 'data_inicio' => now(),
@@ -177,6 +206,10 @@ class SimulacaoController extends Controller
             'detalhes' => $simulacao->detalhes,
 
         ]);
+        Log::debug('cliente da simulação', [
+            'cliente' => $simulacao->cliente,
+        ]);
+        
 
         $path = 'pdfs/apolice_fatura_' . $simulacao->id . '.pdf';
 
@@ -210,42 +243,41 @@ class SimulacaoController extends Controller
     }
 
 
-    
 
-public function meusPlanos()
-{
-    if (!Auth::guard('cliente')->check()) {
-        return response()->json(['erro' => 'Não autenticado.'], 401);
+
+    public function meusPlanos()
+    {
+        if (!Auth::guard('cliente')->check()) {
+            return response()->json(['erro' => 'Não autenticado.'], 401);
+        }
+
+        $clienteId = Auth::guard('cliente')->user()->id;
+
+        // Traz todas as apólices com seus planos e seguradoras
+        $apolices = ApoliceModel::with('plano.seguradora')
+            ->where('cliente_id', $clienteId)
+            ->orderBy('data_inicio', 'desc')
+            ->get();
+
+        $total = $apolices->count();
+
+        // Considera ativo se a data atual estiver entre o início e fim
+        $ativos = $apolices->filter(function ($apolice) {
+            $hoje = now();
+            return $apolice->data_inicio <= $hoje && $apolice->data_fim >= $hoje;
+        })->count();
+
+        $totalInvestido = $apolices->reduce(function ($soma, $apolice) {
+            return $soma + floatval($apolice->valor_total ?? 0);
+        }, 0);
+
+        return response()->json([
+            'apolices' => $apolices,
+            'resumo' => [
+                'total' => $total,
+                'ativos' => $ativos,
+                'investido' => $totalInvestido,
+            ],
+        ]);
     }
-
-    $clienteId = Auth::guard('cliente')->user()->id;
-
-    // Traz todas as apólices com seus planos e seguradoras
-    $apolices = ApoliceModel::with('plano.seguradora')
-        ->where('cliente_id', $clienteId)
-        ->orderBy('data_inicio', 'desc')
-        ->get();
-
-    $total = $apolices->count();
-
-    // Considera ativo se a data atual estiver entre o início e fim
-    $ativos = $apolices->filter(function ($apolice) {
-        $hoje = now();
-        return $apolice->data_inicio <= $hoje && $apolice->data_fim >= $hoje;
-    })->count();
-
-    $totalInvestido = $apolices->reduce(function ($soma, $apolice) {
-        return $soma + floatval($apolice->valor_total ?? 0);
-    }, 0);
-
-    return response()->json([
-        'apolices' => $apolices,
-        'resumo' => [
-            'total' => $total,
-            'ativos' => $ativos,
-            'investido' => $totalInvestido,
-        ],
-    ]);
-}
-
 }

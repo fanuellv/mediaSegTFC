@@ -36,6 +36,8 @@ export interface Seguradora {
     plano?: Plano;
     plano_id?: number; // ✅ Agora suportado para integração no backend
     
+    cliente_id: number;
+    
     
    
   
