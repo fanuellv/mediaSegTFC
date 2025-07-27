@@ -28,7 +28,7 @@ public function login(Request $request)
         'nif.required' => 'O campo NIF ou nome de usuário é obrigatório.',
         'senha.required' => 'O campo senha é obrigatório.',
     ]);
-
+    /** @var \App\Models\ClienteModel $cliente */
     $cliente = ClienteModel::where('nif', $credentials['nif'])
         ->orWhere('nome_usuario', $credentials['nif'])
         ->first();

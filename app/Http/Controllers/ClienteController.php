@@ -76,6 +76,7 @@ class ClienteController extends Controller
 
     public function show()
     {
+        /** @var \App\Models\ClienteModel $cliente */
         $cliente = auth()->guard('cliente')->user();
 
 
@@ -151,6 +152,7 @@ class ClienteController extends Controller
 
     public function minhasNotificacoes()
 {
+    /** @var \App\Models\ClienteModel $cliente */
     $cliente = Auth::guard('cliente')->user();
 
     $notificacoes = $cliente->notificacoes()

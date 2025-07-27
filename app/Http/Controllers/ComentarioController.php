@@ -30,7 +30,7 @@ class ComentarioController extends Controller
             'cliente_id' => Auth::guard('cliente')->id(),
             'mensagem' => $request->mensagem,
         ]);
-
+        /** @var \App\Models\ClienteModel $cliente */
         $cliente = Auth::guard('cliente')->user();
 
         if (!$cliente) {

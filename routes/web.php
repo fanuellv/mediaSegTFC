@@ -9,6 +9,8 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NovoEmailController;
 use App\Http\Controllers\PlanoController;
+use App\Http\Controllers\PlayListController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SeguradoraController;
 use App\Http\Controllers\SimulacaoController;
 use App\Http\Controllers\TesteController;
@@ -37,6 +39,8 @@ Route::prefix('usuarios')->group(function () {
 Route::middleware(['web'])->group(function () {
     Route::get('/seguradoras', [SeguradoraController::class, 'index']);
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
+    Route::get('/playlists', [PlayListController::class, 'index']);
+    Route::get('/quizzes', [QuizController::class, 'index']);
 });
 
 Route::post('/newsletter', [NovoEmailController::class, 'store'])->name('newsletter.store');
@@ -49,3 +53,5 @@ Route::post('/newsletter', [NovoEmailController::class, 'store'])->name('newslet
 require __DIR__.'/settings.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/cliente.php';
+require __DIR__.'/quiz.php';
+require __DIR__.'/playlist.php';

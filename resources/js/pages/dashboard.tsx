@@ -36,6 +36,15 @@ interface PageProps {
     [key: string]: unknown;
 }
 
+interface Notificacao {
+    id: number;
+    titulo: string;
+    cliente: string;
+    mensagem: string;
+    created_at: string;
+    lida: boolean;
+}
+
 export default function Dashboard() {
     const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -45,7 +54,7 @@ useEffect(() => {
     axios.get('/notificacoes', { withCredentials: true })
         .then((res) => {
             const todas = res.data;
-            const naoLidas = todas.filter((n) => !n.lida).length;
+            const naoLidas = todas.filter((n: Notificacao) => !n.lida).length;
             setQuantidadeNaoLidas(naoLidas);
         })
         .catch(() => {
