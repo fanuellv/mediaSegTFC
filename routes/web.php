@@ -41,6 +41,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
     Route::get('/playlists', [PlayListController::class, 'index']);
     Route::get('/quiz', [QuizController::class, 'index']);       // Listar todos os quizzes
+    Route::get('/quiz/{id}', [QuizController::class, 'show']);      // Mostrar um quiz específico
 });
 
 Route::post('/newsletter', [NovoEmailController::class, 'store'])->name('newsletter.store');

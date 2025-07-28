@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { Quiz } from '@/types/Quiz';
+
+interface Pergunta {
+  id: number;
+  pergunta: string;
+  alternativas: string[];
+  correta: string;
+}
+
+interface Quiz {
+  titulo: string;
+  perguntas: Pergunta[];
+}
 
 interface Props {
   quiz: Quiz;

@@ -4,6 +4,7 @@ import { Playlist } from '@/types/Playlist';
 import PlaylistsList from './PlaylistsList';
 import PlaylistViewer from './PlayListViewer';
 import QuizList from './QuizList'; // ✅ Certifique-se de ter esse componente
+import QuizViewer from './QuizViewer'; // ✅ Certifique-se de ter esse componente
 import { Quiz } from '@/types/Quiz'; // ✅ Certifique-se de ter esse tipo
 
 export default function AprenderPlaylists() {
@@ -47,27 +48,26 @@ export default function AprenderPlaylists() {
     return (
       <div className="p-4">
         <h2 className="text-xl font-bold text-black">Quiz: {quizSelecionado.titulo}</h2>
-        <button
-          onClick={() => setQuizSelecionado(null)}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-        >
-          Voltar
-        </button>
+  
+        <QuizViewer quiz={quizSelecionado} 
+        onVoltar={() => setQuizSelecionado(null)}/>
+  
       </div>
     );
   }
+  
 
   return (
     <div className="grid md:grid-cols-2 gap-4 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-y-auto">
       <div>
-        <h1 className="text-xl font-bold text-black mb-2">🎥 Assista conteúdos</h1>
+        <h1 className="text-xl font-bold text-black mb-2">Encontre os melhores conteúdos sobre seguros</h1>
         <PlaylistsList
           playlists={playlists}
           onSelecionar={setPlaylistSelecionada}
         />
       </div>
       <div>
-        <h1 className="text-xl font-bold text-black mb-2">📝 Responda quizzes</h1>
+        <h1 className="text-xl font-bold text-black mb-2">Responda quizzes sobre seguro</h1>
         <QuizList
           quizzes={quizzes}
           onSelecionar={setQuizSelecionado}
