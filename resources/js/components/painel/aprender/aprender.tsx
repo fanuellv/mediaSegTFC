@@ -47,7 +47,7 @@ export default function AprenderPlaylists() {
   if (quizSelecionado) {
     return (
       <div className="p-4">
-        <h2 className="text-xl font-bold text-black">Quiz: {quizSelecionado.titulo}</h2>
+        
   
         <QuizViewer quiz={quizSelecionado} 
         onVoltar={() => setQuizSelecionado(null)}/>
