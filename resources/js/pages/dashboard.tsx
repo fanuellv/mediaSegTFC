@@ -9,7 +9,7 @@ import Sessao from '@/components/ui/navDashboard';
 
 import { router, useForm, usePage } from '@inertiajs/react';
 
-import IndexAprender from '@/components/painel/aprender';
+import IndexAprender from '@/components/painel/aprender/aprender';
 import Menu from '@/components/painel/Menu/Index';
 import Pagamento from '@/components/painel/Pagamento';
 import Index from '@/components/painel/Planos';
