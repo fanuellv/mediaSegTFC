@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({ sessaoAtiva, setSessaoAtiva }) => {
                     <img src="/img/iconWhiteLogo.svg" alt="Logo" className="h-12 w-auto" />
                     <nav className="h-20">
                         <ul className="flex h-20">
-                            {['Seguradoras', 'Planos', 'Relatórios', 'Aprender'].map((sessao) => (
+                            {['Seguradoras', 'Planos', 'Relatórios', 'PlayList', 'Quiz'].map((sessao) => (
                                 <li key={sessao} className={colorChange(sessao)} onClick={() => setSessaoAtiva(sessao)}>
                                     {sessao}
                                 </li>

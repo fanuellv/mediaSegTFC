@@ -1,57 +1,89 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\Perguntas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    public function index()
-    {
-        $quizzes = Quiz::with('cliente')->latest()->get();
-        return response()->json($quizzes);
-    }
-
+    // Criar um novo quiz com perguntas
     public function store(Request $request)
     {
         $request->validate([
-            'pergunta' => 'required|string|max:255',
-            'alternativas' => 'required|array|min:2',
-            'correta' => 'required|string',
+            'titulo' => 'required|string|max:255',
+            'perguntas' => 'required|array|min:1',
+            'perguntas.*.pergunta' => 'required|string',
+            'perguntas.*.alternativas' => 'required|array|min:2',
+            'perguntas.*.correta' => 'required|string',
         ]);
 
+        // Cria o quiz
         $quiz = Quiz::create([
-            'cliente_id' => Auth::guard('cliente')->id(),
-            'pergunta' => $request->pergunta,
-            'alternativas' => $request->alternativas,
-            'correta' => $request->correta,
+            'titulo' => $request->titulo,
         ]);
 
-        return response()->json($quiz, 201);
+        // Adiciona perguntas ao quiz
+        foreach ($request->perguntas as $perguntaData) {
+            Perguntas::create([
+                'quiz_id' => $quiz->id,
+                'pergunta' => $perguntaData['pergunta'],
+                'alternativas' => $perguntaData['alternativas'],
+                'correta' => $perguntaData['correta'],
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Quiz criado com sucesso!',
+            'quiz' => $quiz->load('perguntas'),
+        ]);
     }
 
-    public function show($id)
+    // Listar todos os quizzes com suas perguntas
+    public function index()
     {
-        $quiz = Quiz::findOrFail($id);
-        return response()->json($quiz);
+        $quizzes = Quiz::with('perguntas')->get();
+        return response()->json($quizzes);
     }
 
     public function update(Request $request, $id)
-    {
-        $quiz = Quiz::findOrFail($id);
+{
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'perguntas' => 'required|array|min:1',
+        'perguntas.*.pergunta' => 'required|string',
+        'perguntas.*.alternativas' => 'required|array|min:2',
+        'perguntas.*.correta' => 'required|string',
+    ]);
 
-        $quiz->update($request->only(['pergunta', 'alternativas', 'correta']));
+    // Atualiza o quiz
+    $quiz = Quiz::findOrFail($id);
+    $quiz->update(['titulo' => $request->titulo]);
 
-        return response()->json($quiz);
+    // Remove perguntas antigas
+    $quiz->perguntas()->delete();
+
+    // Adiciona novas perguntas
+    foreach ($request->perguntas as $perguntaData) {
+        Perguntas::create([
+            'quiz_id' => $quiz->id,
+            'pergunta' => $perguntaData['pergunta'],
+            'alternativas' => $perguntaData['alternativas'],
+            'correta' => $perguntaData['correta'],
+        ]);
     }
 
-    public function destroy($id)
-    {
-        $quiz = Quiz::findOrFail($id);
-        $quiz->delete();
+    return response()->json([
+        'message' => 'Quiz atualizado com sucesso!',
+        'quiz' => $quiz->load('perguntas'),
+    ]);
+}
 
-        return response()->json(['mensagem' => 'Quiz removido com sucesso.']);
+
+    // Ver um quiz específico
+    public function show($id)
+    {
+        $quiz = Quiz::with('perguntas')->findOrFail($id);
+        return response()->json($quiz);
     }
 }

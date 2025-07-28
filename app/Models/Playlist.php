@@ -10,7 +10,6 @@ class Playlist extends Model
     protected $table = 'play_lists';
 
     protected $fillable = [
-        'cliente_id',
         'nome',
         'descricao',
         'url_videos',

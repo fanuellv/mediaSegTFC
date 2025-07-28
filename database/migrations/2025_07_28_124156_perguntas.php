@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('play_lists', function (Blueprint $table) {
+        //
+        Schema::create('perguntas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->text('descricao')->nullable();
-            $table->json('url_videos');
-            $table->string('autor');
+            $table->foreignId('quiz_id')->constrained('quizzes')->onDelete('cascade');
+            $table->text('pergunta');
+            $table->json('alternativas');
+            $table->string('correta');
             $table->timestamps();
-        });
+        });        
         
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playlists');
+        //
     }
 };

@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade'); // referencia tabela correta
-            $table->string('pergunta');
-            $table->json('alternativas'); // tipo json é melhor para guardar múltiplas opções
-            $table->string('correta'); // pode ser o índice ou valor correto
+            $table->string('titulo'); // Ex: Quiz de Seguro de Vida
             $table->timestamps();
-        });
+        });        
+        
         
     }
 

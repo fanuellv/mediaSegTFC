@@ -40,7 +40,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/seguradoras', [SeguradoraController::class, 'index']);
     Route::get('/planos', [PlanoController::class, 'index']);        // Listar planos
     Route::get('/playlists', [PlayListController::class, 'index']);
-    Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::get('/quiz', [QuizController::class, 'index']);       // Listar todos os quizzes
 });
 
 Route::post('/newsletter', [NovoEmailController::class, 'store'])->name('newsletter.store');

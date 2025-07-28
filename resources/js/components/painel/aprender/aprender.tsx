@@ -1,20 +1,38 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Playlist } from '@/types/Playlist';
 import PlaylistsList from './PlaylistsList';
 import PlaylistViewer from './PlayListViewer';
-import { Playlist } from '@/types/Playlist';
+import QuizList from './QuizList'; // ✅ Certifique-se de ter esse componente
+import { Quiz } from '@/types/Quiz'; // ✅ Certifique-se de ter esse tipo
 
-export default function Aprender() {
-  const [loadingInicial, setLoadingInicial] = useState(true);
+export default function AprenderPlaylists() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [playlistSelecionada, setPlaylistSelecionada] = useState<Playlist | null>(null);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [quizSelecionado, setQuizSelecionado] = useState<Quiz | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/playlists').then(res => {
-      setPlaylists(res.data);
-      setLoadingInicial(false);
-    });
+    Promise.all([
+      axios.get('/playlists'),
+      axios.get('/quiz')
+    ])
+      .then(([playlistsRes, quizzesRes]) => {
+        setPlaylists(playlistsRes.data);
+        setQuizzes(quizzesRes.data);
+      })
+      .catch(err => console.error('Erro ao carregar dados:', err))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-40 items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      </div>
+    );
+  }
 
   if (playlistSelecionada) {
     return (
@@ -25,21 +43,34 @@ export default function Aprender() {
     );
   }
 
-  if (loadingInicial) {
+  if (quizSelecionado) {
     return (
-      <div className="flex h-40 items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      <div className="p-4">
+        <h2 className="text-xl font-bold text-black">Quiz: {quizSelecionado.titulo}</h2>
+        <button
+          onClick={() => setQuizSelecionado(null)}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Voltar
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="flex w-full h-full flex-col gap-4 rounded-2xl bg-white p-4 sm:h-[88vh]">
-      <h1 className="font-bold text-black text-xl">Encontre os melhores conteúdos</h1>
-      <div className="overflow-y-auto flex pr-2">
+    <div className="grid md:grid-cols-2 gap-4 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-y-auto">
+      <div>
+        <h1 className="text-xl font-bold text-black mb-2">🎥 Assista conteúdos</h1>
         <PlaylistsList
           playlists={playlists}
           onSelecionar={setPlaylistSelecionada}
+        />
+      </div>
+      <div>
+        <h1 className="text-xl font-bold text-black mb-2">📝 Responda quizzes</h1>
+        <QuizList
+          quizzes={quizzes}
+          onSelecionar={setQuizSelecionado}
         />
       </div>
     </div>

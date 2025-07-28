@@ -3,6 +3,7 @@ import LayoutAdm from '@/layouts/app-adm';
 import Seguradora from '@/components/ui/seguradora';
 import Plano from '@/components/ui/plano';
 import CrudPlayList from '@/components/ui/CrudPlaylist';
+import CrudQuiz from '@/components/ui/CrudQuiz';
 
 const Painel: React.FC = () => {
     return (
@@ -15,8 +16,10 @@ const Painel: React.FC = () => {
                         return <Plano/>;
                     case 'Relatórios':
                         return <div>Conteúdo dos Relatórios</div>;
-                    case 'Aprender':
+                    case 'PlayList':
                         return <CrudPlayList/>
+                    case 'Quiz':
+                        return <CrudQuiz/>
                     default:
                         return <div>Escolha uma sessão</div>;
                 }
