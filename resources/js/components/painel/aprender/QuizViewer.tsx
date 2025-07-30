@@ -98,79 +98,84 @@ export default function QuizViewer({ quiz }: Props) {
   // TELA DAS PERGUNTAS
   // =========================
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl bg-white p-4 sm:h-[88vh]">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#0153A5]">Quiz: {quiz.titulo}</h2>
-        <MdQuiz className="text-4xl text-[#0153A5]" />
-      </div>
+    <div className="flex h-full flex-col gap-4 rounded-2xl bg-white p-4 sm:h-[88vh] overflow-hidden">
+  {/* Header */}
+  <div className="flex flex-wrap items-center justify-between gap-2">
+    <h2 className="text-xl sm:text-2xl font-bold text-[#0153A5]">Quiz: {quiz.titulo}</h2>
+    <MdQuiz className="text-3xl sm:text-4xl text-[#0153A5]" />
+  </div>
 
-      {/* Barra de progresso */}
-      <div className="w-full h-2 bg-gray-200 rounded overflow-hidden relative">
-        <div
-          className="h-full bg-gradient-to-r from-blue-500 to-blue-700 transition-all duration-500 ease-out"
-          style={{ width: `${progresso}%` }}
-        ></div>
-      </div>
+  {/* Barra de progresso */}
+  <div className="w-full h-2 bg-gray-200 rounded overflow-hidden relative">
+    <div
+      className="h-full bg-gradient-to-r from-blue-500 to-blue-700 transition-all duration-500 ease-out"
+      style={{ width: `${progresso}%` }}
+    ></div>
+  </div>
 
-      {/* Rodapé Etapa */}
-      <div className="text-sm text-gray-600 font-medium text-right">{rodapeTexto}</div>
+  {/* Rodapé Etapa */}
+  <div className="text-sm text-gray-600 font-medium text-right">{rodapeTexto}</div>
 
-      {/* Pergunta e alternativas */}
-      <div className="flex-1 overflow-y-auto space-y-6">
-        <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
-          <p className="text-lg font-semibold text-gray-800 mb-4">{perguntaAtual.pergunta}</p>
+  {/* Pergunta e alternativas */}
+  <div className="flex-1 overflow-y-auto space-y-6">
+    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl shadow-sm">
+      <p className="text-base sm:text-lg font-semibold text-gray-800 mb-4">
+        {perguntaAtual.pergunta}
+      </p>
 
-          <div className="space-y-3">
-            {perguntaAtual.alternativas.map((alt, i) => {
-              const Icon = icones[i % icones.length];
-              const selecionada = respostas[perguntaAtual.id] === alt;
+      <div className="space-y-3">
+        {perguntaAtual.alternativas.map((alt, i) => {
+          const Icon = icones[i % icones.length];
+          const selecionada = respostas[perguntaAtual.id] === alt;
 
-              return (
-                <div
-                  key={i}
-                  onClick={() => handleResponder(perguntaAtual.id, alt)}
-                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-200 ${
-                    selecionada
-                      ? 'bg-blue-100 border-blue-600 text-blue-700 shadow'
-                      : 'hover:bg-gray-100 border-gray-300'
-                  }`}
-                  aria-label={`Alternativa ${alt}`}
-                >
-                  <div className="bg-blue-200 p-2 rounded-full">
-                    <Icon className="text-blue-700 text-lg" />
-                  </div>
-                  <span className="text-sm sm:text-base">{alt}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Navegação */}
-      <div className="mt-4 flex justify-between items-center">
-        {etapaAtual > 0 && (
-          <button
-            onClick={() => setEtapaAtual(etapaAtual - 1)}
-            className="rounded-md bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400"
-          >
-            Anterior
-          </button>
-        )}
-
-        <button
-          onClick={proximaEtapa}
-          disabled={!respostas[perguntaAtual.id]}
-          className={`ml-auto rounded-md px-4 py-2 text-white transition ${
-            respostas[perguntaAtual.id]
-              ? 'bg-blue-600 hover:bg-blue-700'
-              : 'bg-blue-300 cursor-not-allowed'
-          }`}
-        >
-          {etapaAtual === quiz.perguntas.length - 1 ? 'Finalizar' : 'Próxima'}
-        </button>
+          return (
+            <div
+              key={i}
+              onClick={() => handleResponder(perguntaAtual.id, alt)}
+              className={`flex items-center gap-3 p-3 sm:p-4 border rounded-xl cursor-pointer transition-all duration-200 ${
+                selecionada
+                  ? 'bg-blue-100 border-blue-600 text-blue-700 shadow'
+                  : 'hover:bg-gray-100 border-gray-300'
+              }`}
+              aria-label={`Alternativa ${alt}`}
+            >
+              <div className="bg-blue-200 p-2 rounded-full">
+                <Icon className="text-blue-700 text-lg" />
+              </div>
+              <span className="text-sm sm:text-base">{alt}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
+  </div>
+
+  {/* Navegação fixada no mobile */}
+  <div className="sticky bottom-0 bg-white pt-4 pb-2 sm:static sm:pb-0 sm:pt-0">
+    <div className="flex justify-between items-center gap-2">
+      {etapaAtual > 0 && (
+        <button
+          onClick={() => setEtapaAtual(etapaAtual - 1)}
+          className="w-1/2 rounded-md bg-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-400"
+        >
+          Anterior
+        </button>
+      )}
+
+      <button
+        onClick={proximaEtapa}
+        disabled={!respostas[perguntaAtual.id]}
+        className={`w-full sm:w-1/2 ml-auto rounded-md px-4 py-2 text-white transition ${
+          respostas[perguntaAtual.id]
+            ? 'bg-blue-600 hover:bg-blue-700'
+            : 'bg-blue-300 cursor-not-allowed'
+        }`}
+      >
+        {etapaAtual === quiz.perguntas.length - 1 ? 'Finalizar' : 'Próxima'}
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 }

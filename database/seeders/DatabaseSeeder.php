@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
         Seguradora::class,
         tipoSeguro::class,
         PlanoSeguro::class,
+        PlaylistSeeder::class,
+        QuizSeeder::class,
+        QuizAutomovel::class,
+        QuizGeralSeeder::class,
+        QuizResidencialSeeder::class,
+        QuizPraticoSeeder::class,
     ]);
 }
 

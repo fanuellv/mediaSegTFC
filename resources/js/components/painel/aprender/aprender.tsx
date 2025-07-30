@@ -58,7 +58,7 @@ export default function AprenderPlaylists() {
   
 
   return (
-    <div className="grid  gap-2 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-y-auto">
+    <div className="flex flex-col w-full  gap-2 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-hidden">
       <div className='flex flex-col  gap-4'>
         <h1 className="text-xl font-bold text-[#1262b3]">Explore conteúdos sobre seguros</h1>
         <PlaylistsList
@@ -66,8 +66,8 @@ export default function AprenderPlaylists() {
           onSelecionar={setPlaylistSelecionada}
         />
       </div>
-      <div className='flex flex-col gap-4 overflow-auto'>
-        <h1 className="  text-xl font-bold text-[#1262b3]">Explore conteúdos sobre seguros</h1>
+      <div className='flex flex-col gap-4 '>
+        <h1 className="  text-xl font-bold text-[#1262b3]">Responda ao quiz sobre seguros</h1>
         <QuizList
           quizzes={quizzes}
           onSelecionar={setQuizSelecionado}
