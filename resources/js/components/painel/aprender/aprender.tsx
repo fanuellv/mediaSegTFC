@@ -58,19 +58,20 @@ export default function AprenderPlaylists() {
   
 
   return (
-    <div className="grid md:grid-cols-2 gap-4 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-y-auto">
-      <div>
-        <h1 className="text-xl font-bold text-black mb-2">Encontre os melhores conteúdos sobre seguros</h1>
+    <div className="grid  gap-2 p-4 bg-white rounded-2xl sm:h-[88vh] overflow-y-auto">
+      <div className='flex flex-col  gap-4'>
+        <h1 className="text-xl font-bold text-[#1262b3]">Explore conteúdos sobre seguros</h1>
         <PlaylistsList
           playlists={playlists}
           onSelecionar={setPlaylistSelecionada}
         />
       </div>
-      <div>
-        <h1 className="text-xl font-bold text-black mb-2">Responda quizzes sobre seguro</h1>
+      <div className='flex flex-col gap-4 overflow-auto'>
+        <h1 className="  text-xl font-bold text-[#1262b3]">Explore conteúdos sobre seguros</h1>
         <QuizList
           quizzes={quizzes}
           onSelecionar={setQuizSelecionado}
+          
         />
       </div>
     </div>
