@@ -61,13 +61,15 @@ export default function PlaylistViewer({ playlist, onVoltar }: Props) {
             {/* Informações da playlist */}
             <div className="mb-20 sm:mb-0 rounded bg-gray-100 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold first-letter:uppercase">{playlist.nome}</h2>
+                    <h2 className="text-xl text-gray-800 font-semibold first-letter:uppercase">{playlist.nome}</h2>
                     <button onClick={onVoltar} className="bg-[#0153A5] text-white p-2 font-bold hover:underline rounded ">
                         ← Voltar
                     </button>
                 </div>
+                <div className='w-full h-15 overflow-y-auto'>
                 <p className="text-sm text-gray-700">@{playlist.autor}</p>
                 <p className="mt-2 text-sm text-gray-600">{playlist.descricao}</p>
+                </div>
             </div>
         </div>
     );

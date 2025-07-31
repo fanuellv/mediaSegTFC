@@ -98,7 +98,7 @@ export default function QuizViewer({ quiz }: Props) {
   // TELA DAS PERGUNTAS
   // =========================
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl bg-white p-4 sm:h-[88vh] overflow-hidden">
+    <div className="flex h-full flex-col gap-4 rounded-2xl text-gray-600 bg-white p-4 sm:h-[88vh] overflow-hidden">
   {/* Header */}
   <div className="flex flex-wrap items-center justify-between gap-2">
     <h2 className="text-xl sm:text-2xl font-bold text-[#0153A5]">Quiz: {quiz.titulo}</h2>
@@ -118,12 +118,12 @@ export default function QuizViewer({ quiz }: Props) {
 
   {/* Pergunta e alternativas */}
   <div className="flex-1 overflow-y-auto space-y-6">
-    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl shadow-sm">
+    <div className="bg-gray-50 p-4 text-gray-600 sm:p-6 rounded-xl shadow-sm">
       <p className="text-base sm:text-lg font-semibold text-gray-800 mb-4">
         {perguntaAtual.pergunta}
       </p>
 
-      <div className="space-y-3">
+      <div className="space-y-3 text-gray-600">
         {perguntaAtual.alternativas.map((alt, i) => {
           const Icon = icones[i % icones.length];
           const selecionada = respostas[perguntaAtual.id] === alt;
@@ -132,7 +132,7 @@ export default function QuizViewer({ quiz }: Props) {
             <div
               key={i}
               onClick={() => handleResponder(perguntaAtual.id, alt)}
-              className={`flex items-center gap-3 p-3 sm:p-4 border rounded-xl cursor-pointer transition-all duration-200 ${
+              className={`flex items-center gap-3 p-3 sm:p-4 border text-gray-600 rounded-xl cursor-pointer transition-all duration-200 ${
                 selecionada
                   ? 'bg-blue-100 border-blue-600 text-blue-700 shadow'
                   : 'hover:bg-gray-100 border-gray-300'
