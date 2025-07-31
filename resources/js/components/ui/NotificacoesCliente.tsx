@@ -52,7 +52,7 @@ export default function ModalNotificacoes({ onFechar }: Props) {
 
             <div className="w-[90%] max-w-md rounded-lg bg-white p-4 shadow-lg">
                 <div className="flex justify-between items-center border-b pb-2 mb-4">
-                    <h2 className="text-lg font-bold">Minhas Notificações</h2>
+                    <h2 className="text-lg font-bold text-gray-800">Minhas Notificações</h2>
                     <button onClick={onFechar} className="text-black font-bold text-xl">&times;</button>
                 </div>
 
