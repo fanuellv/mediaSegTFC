@@ -6,7 +6,7 @@ interface Props {
     onVoltar: () => void;
 }
 
-export default function PlaylistViewer({ playlist, onVoltar }: Props) {
+export default function PlayListViewer({ playlist, onVoltar }: Props) {
     const [videoAtualIndex, setVideoAtualIndex] = useState(0);
 
     const videoId = extrairVideoId(playlist.url_videos[videoAtualIndex]);
