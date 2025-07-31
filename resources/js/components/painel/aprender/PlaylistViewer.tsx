@@ -25,7 +25,7 @@ export default function PlaylistViewer({ playlist, onVoltar }: Props) {
                     {videoId ? (
                         <iframe src={`https://www.youtube.com/embed/${videoId}`} className="h-full w-full" title="YouTube player" allowFullScreen />
                     ) : (
-                        <p className="p-4 text-white">Vídeo inválido</p>
+                        <p className="p-4 text-red">Vídeo inválido</p>
                     )}
                 </div>
 
@@ -66,8 +66,8 @@ export default function PlaylistViewer({ playlist, onVoltar }: Props) {
                         ← Voltar
                     </button>
                 </div>
-                <p className="text-sm text-gray-600">@{playlist.autor}</p>
-                <p className="mt-2 text-sm">{playlist.descricao}</p>
+                <p className="text-sm text-gray-700">@{playlist.autor}</p>
+                <p className="mt-2 text-sm text-gray-600">{playlist.descricao}</p>
             </div>
         </div>
     );
