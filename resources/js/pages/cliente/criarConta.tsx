@@ -185,7 +185,7 @@ export default function CriarCliente() {
                         {errors.nome_usuario && <p className="text-sm text-red-500">{errors.nome_usuario[0]}</p>}
 
                         <div className="flex gap-2">
-                            <label htmlFor="dataRegistro" className="flex items-center gap-2 text-sm font-medium">
+                            <label htmlFor="dataRegistro" className="flex text-gray-600 items-center gap-2 text-sm font-medium">
                                 <MdDateRange />
                             </label>
                             <input
@@ -248,7 +248,7 @@ export default function CriarCliente() {
                     </div>
                     {errors.email && <p className="text-sm text-red-500">{errors.email[0]}</p>}
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 text-gray-600">
                         <label htmlFor="senha" className="flex items-center gap-2 text-sm font-medium">
                             <MdOutlinePassword />
                         </label>

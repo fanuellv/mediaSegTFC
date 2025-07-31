@@ -3,7 +3,7 @@ import Cabecalho from '@/components/uiMediaseg/header';
 
 const ServicoEducacao: React.FC = () => {
     return (
-        <div className="flex w-full flex-col">
+        <div className="flex w-full bg-white flex-col">
             <Cabecalho />
 
             {/* Padding-top para compensar o header fixo (80px = h-20) */}

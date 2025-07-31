@@ -3,7 +3,7 @@ import Cabecalho from '@/components/uiMediaseg/header';
 
 const ServicoEducacao: React.FC = () => {
     return (
-        <div className="flex h-screen w-full flex-col">
+        <div className="flex bg-white h-screen w-full flex-col">
             <Cabecalho />
             <div className='pt-20'>
                 <section
