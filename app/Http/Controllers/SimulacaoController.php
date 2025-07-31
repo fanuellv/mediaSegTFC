@@ -17,9 +17,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
-
-
+use Illuminate\Support\Facades\Mail;
 
 class SimulacaoController extends Controller
 {
@@ -103,6 +101,13 @@ class SimulacaoController extends Controller
             'simulacao_id' => $simulacao->id,
             'plano_id' => $validated['plano_id'],
         ]);
+
+        $email = $cliente->email;
+
+        Mail::send('email.notificacao', [], function ($message) use ($email) {
+            $message->to($email)
+                    ->subject('Obrigado por realizares a simulação');
+        });
 
         return response()->json([
             'id' => $simulacao->id,

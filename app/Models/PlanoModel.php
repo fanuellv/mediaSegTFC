@@ -5,6 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $nome
+ 
+ * @property \Illuminate\Support\Carbon $dataRegistro
+
+ * @property string $telefone
+ * @property string|null $foto
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class PlanoModel extends Model
 {
     //

@@ -9,6 +9,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @property int $id
+ * @property string $nome
+ * @property string $sobrenome
+ * @property string $nome_usuario
+ * @property string $email
+ * @property \Illuminate\Support\Carbon $dataRegistro
+ * @property string $nif
+ * @property string $senha
+ * @property string $telefone
+ * @property string|null $foto
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class ClienteModel extends Authenticatable
 {
     //

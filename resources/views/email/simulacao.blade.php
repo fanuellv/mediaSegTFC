@@ -58,7 +58,7 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>🎉 Obrigado por se inscrever as  notificações!</h1>
+            <h1>🎉 Obrigado por realizar a simulação do seguro!</h1>
         </div>
         <div class="content">
             <p>Olá {{ $user->nome ?? 'usuário' }},</p>
