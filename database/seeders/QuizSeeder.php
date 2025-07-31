@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
-use App\Models\Perguntas;
+use App\Models\perguntas;
 
 class QuizSeeder extends Seeder
 {
@@ -14,7 +14,7 @@ class QuizSeeder extends Seeder
             'titulo' => 'Seguros de Vida',
         ]);
 
-        Perguntas::create([
+    perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é um seguro de vida?',
             'alternativas' => [
@@ -26,7 +26,7 @@ class QuizSeeder extends Seeder
             'correta' => 'Uma proteção financeira para beneficiários em caso de falecimento do segurado',
         ]);
 
-        Perguntas::create([
+    perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Quem pode ser beneficiário em um seguro de vida?',
             'alternativas' => [
@@ -38,7 +38,7 @@ class QuizSeeder extends Seeder
             'correta' => 'Qualquer pessoa designada pelo segurado',
         ]);
 
-        Perguntas::create([
+    perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual das opções abaixo é uma cobertura comum em seguros de vida?',
             'alternativas' => [
@@ -50,7 +50,7 @@ class QuizSeeder extends Seeder
             'correta' => 'Cobertura de falecimento por causas naturais ou acidentais',
         ]);
 
-        Perguntas::create([
+    perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O seguro de vida pode ter cobertura em vida para quais situações?',
             'alternativas' => [
@@ -62,7 +62,7 @@ class QuizSeeder extends Seeder
             'correta' => 'Para cobertura de doenças graves ou invalidez',
         ]);
 
-        Perguntas::create([
+    perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual é o objetivo principal do seguro de vida?',
             'alternativas' => [

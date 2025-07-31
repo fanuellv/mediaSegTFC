@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
-use App\Models\Perguntas;
+use App\Models\perguntas;
 
 class QuizGeralSeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class QuizGeralSeeder extends Seeder
             'titulo' => 'Mundo dos Seguros',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é um seguro?',
             'alternativas' => [
@@ -26,7 +27,7 @@ class QuizGeralSeeder extends Seeder
             'correta' => 'Um contrato que oferece proteção financeira contra riscos específicos',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Quem é o segurado em um contrato de seguro?',
             'alternativas' => [
@@ -38,7 +39,7 @@ class QuizGeralSeeder extends Seeder
             'correta' => 'A pessoa que contrata o seguro',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é a apólice do seguro?',
             'alternativas' => [
@@ -50,7 +51,7 @@ class QuizGeralSeeder extends Seeder
             'correta' => 'O documento que oficializa o contrato do seguro',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Quais são os principais tipos de seguro?',
             'alternativas' => [

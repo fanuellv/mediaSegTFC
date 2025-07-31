@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
-use App\Models\Perguntas;
+use App\Models\perguntas;
 
 class QuizPraticoSeeder extends Seeder
 {
@@ -14,7 +14,7 @@ class QuizPraticoSeeder extends Seeder
             'titulo' => 'Seguros na Prática',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Antes de contratar um seguro, o que é essencial fazer?',
             'alternativas' => [
@@ -26,7 +26,7 @@ class QuizPraticoSeeder extends Seeder
             'correta' => 'Ler a apólice com atenção e comparar coberturas',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é considerado um sinistro?',
             'alternativas' => [
@@ -38,7 +38,7 @@ class QuizPraticoSeeder extends Seeder
             'correta' => 'Um evento previsto na apólice que causa prejuízo',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Quando acionar a seguradora?',
             'alternativas' => [
@@ -50,7 +50,7 @@ class QuizPraticoSeeder extends Seeder
             'correta' => 'Quando ocorrer um evento coberto pela apólice',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual documento é geralmente necessário para registrar um sinistro?',
             'alternativas' => [

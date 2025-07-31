@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
-use App\Models\Perguntas;
+use App\Models\perguntas;
 
 class QuizResidencialSeeder extends Seeder
 {
@@ -14,7 +14,7 @@ class QuizResidencialSeeder extends Seeder
             'titulo' => 'Seguro Residencial',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é coberto por um seguro residencial básico?',
             'alternativas' => [
@@ -26,7 +26,7 @@ class QuizResidencialSeeder extends Seeder
             'correta' => 'Incêndio, explosão e queda de raio',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Seguro residencial é obrigatório?',
             'alternativas' => [
@@ -38,7 +38,7 @@ class QuizResidencialSeeder extends Seeder
             'correta' => 'Não, é opcional, mas recomendável',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual das opções pode ser uma cobertura adicional?',
             'alternativas' => [
@@ -50,7 +50,7 @@ class QuizResidencialSeeder extends Seeder
             'correta' => 'Reparos elétricos',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Seguro residencial cobre bens móveis da casa?',
             'alternativas' => [

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
-use App\Models\Perguntas;
+use App\Models\perguntas;
 
 class QuizAutomovel extends Seeder
 {
@@ -14,7 +14,7 @@ class QuizAutomovel extends Seeder
             'titulo' => 'Seguro Automóvel',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual é o principal objetivo de um seguro automóvel?',
             'alternativas' => [
@@ -26,7 +26,7 @@ class QuizAutomovel extends Seeder
             'correta' => 'Proteger o veículo contra danos, roubo e acidentes',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é a franquia no seguro automóvel?',
             'alternativas' => [
@@ -38,7 +38,7 @@ class QuizAutomovel extends Seeder
             'correta' => 'O valor fixo pago pelo segurado em caso de sinistro',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Qual das coberturas abaixo é considerada adicional no seguro automóvel?',
             'alternativas' => [
@@ -50,7 +50,7 @@ class QuizAutomovel extends Seeder
             'correta' => 'Danos a terceiros',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'Em caso de acidente, o que o segurado deve fazer primeiro?',
             'alternativas' => [
@@ -62,7 +62,7 @@ class QuizAutomovel extends Seeder
             'correta' => 'Acionar a seguradora e registrar um boletim de ocorrência',
         ]);
 
-        Perguntas::create([
+        perguntas::create([
             'quiz_id' => $quiz->id,
             'pergunta' => 'O que é um sinistro no contexto do seguro automóvel?',
             'alternativas' => [
