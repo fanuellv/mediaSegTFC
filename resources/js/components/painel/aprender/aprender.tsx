@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Playlist } from '@/types/Playlist';
 import PlaylistsList from './PlaylistsList';
-import PlaylistViewer from './PlayListViewer';
+import PlaylistViewer from './PlaylistViewer';
 import QuizList from './QuizList'; // ✅ Certifique-se de ter esse componente
 import QuizViewer from './QuizViewer'; // ✅ Certifique-se de ter esse componente
 import { Quiz } from '@/types/Quiz'; // ✅ Certifique-se de ter esse tipo
