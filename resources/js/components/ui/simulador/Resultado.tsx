@@ -47,6 +47,10 @@ export default function Resultado({ dados, setDados, seguradoras, onVoltar, onAv
                 ano_veiculo: dados.ano_veiculo || null,
                 tipo_uso: dados.tipo_uso || null,
                 tem_franquia: dados.tem_franquia ?? false, // <- cuidado com boolean
+
+                dependentes: dados.dependentes ?? [],
+                profissao:dados.profissao?? null,
+                fumante:dados.fumante?? null,
             };
             console.log('Plano ID:', dados.plano?.id);
             console.log(payload);

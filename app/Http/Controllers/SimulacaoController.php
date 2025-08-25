@@ -29,95 +29,92 @@ class SimulacaoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $dados = $request->json()->all(); // Captura corretamente dados JSON
+{
+    $dados = $request->json()->all();
 
-        Log::debug('✅ Dados completos recebidos:', $dados);
+    Log::debug('✅ Dados completos recebidos:', $dados);
 
-        // Validação dos campos principais
-        $validated = validator($dados, [
-            'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
-            'valor_calculado' => 'required|numeric',
-            'status' => 'required|string',
-            'plano_id' => 'required|exists:plano_seguro,id',
-        
-            // Validação dos detalhes
-            'marca_modelo' => 'nullable|string|max:255',
-            'matricula' => 'nullable|string|max:100',
-            'valor_veiculo' => 'nullable|numeric',
-            'tem_franquia' => 'nullable|boolean',
-            'tipo_uso' => 'nullable|string|max:100',
-            'ano_veiculo' => 'nullable|integer|min:1900|max:' . now()->year,
-        ])->validate();
-        
-        $cliente = Auth::guard('cliente')->user();
-        if (!$cliente) {
-            return response()->json(['erro' => 'Não autenticado'], 401);
-        }
-        
+    // Validação dos campos principais
+    $validated = validator($dados, [
+        'tipo_seguro_id' => 'required|exists:TipoSeguro,id',
+        'valor_calculado' => 'required|numeric',
+        'status' => 'required|string',
+        'plano_id' => 'required|exists:plano_seguro,id',
 
-        // Criação da simulação principal
-        $simulacao = Simulacao::create([
-            'cliente_id' => $cliente->id,
-            'tipo_seguro_id' => $validated['tipo_seguro_id'],
-            'data' => now(),
-            'valor_calculado' => $validated['valor_calculado'],
-            'status' => $validated['status'],
-        ]);
-        
+        // Detalhes automóvel
+        'marca_modelo' => 'nullable|string|max:255',
+        'matricula' => 'nullable|string|max:100',
+        'valor_veiculo' => 'nullable|numeric',
+        'tem_franquia' => 'nullable|boolean',
+        'tipo_uso' => 'nullable|string|max:100',
+        'ano_veiculo' => 'nullable|integer|min:1900|max:' . now()->year,
 
-        // Criação dos detalhes (dados adicionais)
-        SimulacaoDetalhe::create([
-            'simulacao_id' => $simulacao->id,
-            'marca_modelo' => $request->input('marca_modelo'),
-            'matricula' => $request->input('matricula'),
-            'valor_veiculo' => $request->input('valor_veiculo'),
-            'tem_franquia' => filter_var($request->input('tem_franquia'), FILTER_VALIDATE_BOOLEAN),
-            'tipo_uso' => $request->input('tipo_uso'),
-            'ano_veiculo' => $request->input('ano_veiculo'),
-        ]);
+        'profissao' => 'nullable|string',
+        'idade' => 'nullable|string',
 
-        Notificacao::create([
-            'titulo' => 'Simulação realizada com sucesso!',
-            'mensagem' => 'Sua simulação foi concluída. Você pode gerar o documento da apólice ou ir em meus planos e extrair a mesma',
-            'tipo' => 'simulacao',
-            'cliente_id' => Auth::guard('cliente')->id(),
-        ]);
-        
-        Log::debug('➡️ Detalhes recebidos:', $request->only([
-            'marca_modelo',
-            'matricula',
-            'valor_veiculo',
-            'tem_franquia',
-            'tipo_uso',
-            'ano_veiculo'
-        ]));
+        // Dependentes (array opcional)
+        'dependentes' => 'nullable|array',
+        'dependentes.*.nome' => 'required_with:dependentes|string|max:255',
+        'dependentes.*.idade' => 'required_with:dependentes|integer|min:0',
+        'dependentes.*.fumante' => 'required_with:dependentes|boolean',
+    ])->validate();
 
-
-
-
-        // Criação do item simulado (plano associado)
-        ItemSimulado::create([
-            'simulacao_id' => $simulacao->id,
-            'plano_id' => $validated['plano_id'],
-        ]);
-
-        $email = $cliente->email;
-
-        Mail::send('email.notificacao', [], function ($message) use ($email) {
-            $message->to($email)
-                    ->subject('Obrigado por realizares a simulação');
-        });
-
-        return response()->json([
-            'id' => $simulacao->id,
-            'cliente_id' => $simulacao->cliente_id,
-            'tipo_seguro_id' => $simulacao->tipo_seguro_id,
-            'valor_calculado' => $simulacao->valor_calculado,
-            'status' => $simulacao->status,
-            'detalhes' => $simulacao->detalhes, // Relação com SimulacaoDetalhe (se tiveres configurada)
-        ]);
+    $cliente = Auth::guard('cliente')->user();
+    if (!$cliente) {
+        return response()->json(['erro' => 'Não autenticado'], 401);
     }
+
+    // Criar a simulação principal
+    $simulacao = Simulacao::create([
+        'cliente_id' => $cliente->id,
+        'tipo_seguro_id' => $validated['tipo_seguro_id'],
+        'data' => now(),
+        'valor_calculado' => $validated['valor_calculado'],
+        'status' => $validated['status'],
+    ]);
+
+    // Criar os detalhes da simulação (inclui dependentes como JSON)
+    SimulacaoDetalhe::create([
+        'simulacao_id' => $simulacao->id,
+        'marca_modelo' => $request->input('marca_modelo'),
+        'matricula' => $request->input('matricula'),
+        'valor_veiculo' => $request->input('valor_veiculo'),
+        'tem_franquia' => filter_var($request->input('tem_franquia'), FILTER_VALIDATE_BOOLEAN),
+        'tipo_uso' => $request->input('tipo_uso'),
+        'ano_veiculo' => $request->input('ano_veiculo'),
+        'dependentes' => $request->input('dependentes') ? json_encode($request->input('dependentes')) : null,
+        'profissao' => $request->input('profissao'),
+        'idade' => $request->input('idade'),
+    ]);
+
+    Notificacao::create([
+        'titulo' => 'Simulação realizada com sucesso!',
+        'mensagem' => 'Sua simulação foi concluída.',
+        'tipo' => 'simulacao',
+        'cliente_id' => $cliente->id,
+    ]);
+
+    ItemSimulado::create([
+        'simulacao_id' => $simulacao->id,
+        'plano_id' => $validated['plano_id'],
+    ]);
+
+    $email = $cliente->email;
+    Mail::send('email.notificacao', [], function ($message) use ($email) {
+        $message->to($email)->subject('Obrigado por realizares a simulação');
+    });
+
+    return response()->json([
+        'id' => $simulacao->id,
+        'cliente_id' => $simulacao->cliente_id,
+        'tipo_seguro_id' => $simulacao->tipo_seguro_id,
+        'valor_calculado' => $simulacao->valor_calculado,
+        'status' => $simulacao->status,
+        'detalhes' => $simulacao->detalhes,
+        'dependentes' => $request->input('dependentes', []), // devolve dependentes no response
+    ]);
+}
+
 
 
 

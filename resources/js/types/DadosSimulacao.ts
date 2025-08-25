@@ -24,7 +24,11 @@ export interface Seguradora {
   foto: string | null;
   }
   
-  
+  export interface Dependente {
+    nome: string;
+    idade: number;
+    fumante: boolean;
+  }
   export interface DadosSimulacao {
     tipo: "vida" | "saude" | "automovel";
     idade: number;
@@ -36,10 +40,10 @@ export interface Seguradora {
     plano?: Plano;
     plano_id?: number; // ✅ Agora suportado para integração no backend
     
-    cliente_id: number;
+    cliente_id?: number;
     
     
-   
+    dependentes?: Dependente[]; 
   
     // Resultado
     valor?: number;

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->boolean('tem_franquia')->default(false);
             $table->string('tipo_uso')->nullable();
             $table->integer('ano_veiculo')->nullable();
+
+            $table->json('dependentes')->nullable();
+            $table->string('idade')->nullable();
+            $table->string('profissao')->nullable();
+            $table->boolean('fumante')->nullable();
             $table->timestamps();
         });
     }

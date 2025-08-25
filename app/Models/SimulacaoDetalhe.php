@@ -16,7 +16,19 @@ class SimulacaoDetalhe extends Model
         'tem_franquia',
         'tipo_uso',
         'ano_veiculo',
+        'dependentes',
+        'idade',
+        'profissao',
+        'fumante',
     ];
+    
+
+    protected $casts = [
+        'tem_franquia' => 'boolean',
+        'fumante'      => 'boolean',
+        'dependentes'  => 'array',
+    ];
+    
 
     public function simulacao()
     {
