@@ -14,6 +14,7 @@ class Playlist extends Model
         'descricao',
         'url_videos',
         'autor',
+        'tumb',
     ];
 
     protected $casts = [

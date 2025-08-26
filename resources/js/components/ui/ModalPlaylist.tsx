@@ -11,6 +11,7 @@ interface PlaylistFormData {
   nome: string;
   autor: string;
   descricao: string;
+  tumb?: File | null;
   url_videos: string[]; // ✅ Agora corretamente um array de strings
 }
 
@@ -19,6 +20,7 @@ export default function ModalPlaylist({ onClose, onSubmit, playlistEditar }: Pro
     nome: '',
     autor: '',
     descricao: '',
+    tumb: null,
     url_videos: [''],
   });
 
@@ -47,6 +49,15 @@ export default function ModalPlaylist({ onClose, onSubmit, playlistEditar }: Pro
     const novaLista = form.url_videos.filter((_, i) => i !== index);
     setForm({ ...form, url_videos: novaLista.length > 0 ? novaLista : [''] });
   };
+  function handleChangeFoto(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files && e.target.files[0]) {
+      setForm((prev) => ({
+        ...prev,
+        tumb: e.target.files![0],
+      }));
+    }
+  }
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +67,9 @@ export default function ModalPlaylist({ onClose, onSubmit, playlistEditar }: Pro
       autor: form.autor,
       descricao: form.descricao,
       url_videos: form.url_videos.filter(link => link.trim() !== ''), // ✅ Mantém como array
+      tumb:form.tumb,
     };
+    
 
     onSubmit(dadosParaEnviar, playlistEditar?.id);
   };
@@ -130,6 +143,11 @@ export default function ModalPlaylist({ onClose, onSubmit, playlistEditar }: Pro
             >
               + Adicionar outro link
             </button>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Tumb</label>
+            <input type="file" name="tumb" onChange={handleChangeFoto} className="mb-4 w-full" />
+
           </div>
 
           <div className="flex justify-end gap-2 mt-4">

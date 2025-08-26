@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('play_lists', function (Blueprint $table) {
+        Schema::create('cliente_learning', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->text('descricao')->nullable();
-            $table->json('url_videos');
-            $table->string('autor');
-            $table->string('tumb')->nullable();
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playlists');
+        Schema::dropIfExists('cliente_learning');
     }
 };

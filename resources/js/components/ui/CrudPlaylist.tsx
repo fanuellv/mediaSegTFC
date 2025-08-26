@@ -6,7 +6,8 @@ interface PlaylistFormData {
   nome: string;
   autor: string;
   descricao: string;
-  url_videos: string[]; // ✅ CORRIGIDO: era string, agora é string[]
+  tumb?: File|null;
+  url_videos: string[]; 
 }
 
 export default function CrudPlayList() {
@@ -36,21 +37,31 @@ export default function CrudPlayList() {
 
   async function criarPlaylist(form: PlaylistFormData) {
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-
+  
+    const formData = new FormData();
+    formData.append('nome', form.nome);
+    formData.append('autor', form.autor);
+    formData.append('descricao', form.descricao);
+    form.url_videos.forEach((link, i) => {
+      formData.append(`url_videos[${i}]`, link);
+    });
+    if (form.tumb) {
+      formData.append('tumb', form.tumb);
+    }
+  
     try {
       const res = await fetch('/playlists', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'X-CSRF-TOKEN': token,
           Accept: 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(form), // ✅ já é array, não precisa tratar
+        body: formData,
       });
-
+  
       if (!res.ok) throw new Error(await res.text());
-
+  
       console.log('✅ Playlist criada com sucesso');
       buscarPlaylists();
     } catch (err) {
@@ -58,24 +69,37 @@ export default function CrudPlayList() {
       alert('Erro ao criar playlist');
     }
   }
-
+  
   async function atualizarPlaylist(form: PlaylistFormData, id: number) {
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-
+  
+    const formData = new FormData();
+    formData.append('nome', form.nome);
+    formData.append('autor', form.autor);
+    formData.append('descricao', form.descricao);
+    form.url_videos.forEach((link, i) => {
+      formData.append(`url_videos[${i}]`, link);
+    });
+    if (form.tumb) {
+      formData.append('tumb', form.tumb);
+    }
+  
     try {
       const res = await fetch(`/playlists/${id}`, {
-        method: 'PUT',
+        method: 'POST', // 👈 Laravel espera POST + _method=PUT
         headers: {
-          'Content-Type': 'application/json',
           'X-CSRF-TOKEN': token,
           Accept: 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(form),
+        body: (() => {
+          formData.append('_method', 'PUT');
+          return formData;
+        })(),
       });
-
+  
       if (!res.ok) throw new Error(await res.text());
-
+  
       console.log('✅ Playlist atualizada');
       buscarPlaylists();
     } catch (err) {
@@ -83,6 +107,7 @@ export default function CrudPlayList() {
       alert('Erro ao atualizar playlist');
     }
   }
+  
 
   const handleDelete = (id: number) => {
     if (!confirm('Deseja realmente apagar esta playlist?')) return;
@@ -121,7 +146,9 @@ export default function CrudPlayList() {
               <th className="px-4 py-2">Autor</th>
               <th className="px-4 py-2">Descrição</th>
               <th className="px-4 py-2">Links</th>
+              <th className="px-4 py-2">Tumb</th>
               <th className="px-4 py-2">Ações</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -143,6 +170,16 @@ export default function CrudPlayList() {
                   ) : (
                     <span className="text-gray-400 italic">Sem link</span>
                   )}
+                </td>
+                <td className="px-4 py-3">
+              {p.tumb && (
+                <img
+                  src={`/storage/${p.tumb}`}
+                  className="h-12 w-12 rounded-full object-cover border"
+                  
+                />
+              )}
+                  
                 </td>
 
                 <td className="px-4 py-2 space-x-2">

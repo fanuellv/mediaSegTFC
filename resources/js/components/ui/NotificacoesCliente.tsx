@@ -19,18 +19,22 @@ export default function ModalNotificacoes({ onFechar }: Props) {
     const [loading, setLoading] = useState(true);
 
     const marcarComoLida = async (id: number) => {
+        // Atualiza otimisticamente
+        setNotificacoes((prev) =>
+            prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
+        );
+    
         try {
             await axios.patch(`/notificacoes/${id}/marcar-lida`, {}, { withCredentials: true });
-    
-            // Atualiza localmente
-            setNotificacoes((prev) =>
-                prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-            );
         } catch (err) {
-            console.log('Erro ao marcar como lida.');
-            console.log(err);
+            console.log('Erro ao marcar como lida:', err);
+            // Reverte caso dê erro
+            setNotificacoes((prev) =>
+                prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
+            );
         }
     };
+    
     
 
     useEffect(() => {
