@@ -88,4 +88,14 @@ class PlayListController extends Controller
 
         return response()->json(['mensagem' => 'Playlist removida com sucesso.']);
     }
+
+    public function totalPlayList()
+{
+    $total = Playlist::count();
+
+    return response()->json([
+        'total_playlist' => $total
+    ]);
+}
+
 }

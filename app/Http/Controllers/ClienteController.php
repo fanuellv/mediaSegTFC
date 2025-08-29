@@ -176,6 +176,15 @@ public function marcarComoLida($id)
 
     return response()->json(['success' => true]);
 }
+public function totalClientes()
+{
+    $total = \App\Models\ClienteModel::count();
+
+    return response()->json([
+        'total_clientes' => $total
+    ]);
+}
+
 
     
 }

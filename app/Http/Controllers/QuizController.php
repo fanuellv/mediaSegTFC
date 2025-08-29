@@ -86,4 +86,13 @@ class QuizController extends Controller
         $quiz = Quiz::with('perguntas')->findOrFail($id);
         return response()->json($quiz);
     }
+
+    public function totalQuiz()
+{
+    $total = Quiz::count();
+
+    return response()->json([
+        'total_quiz' => $total
+    ]);
+}
 }

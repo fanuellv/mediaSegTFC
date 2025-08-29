@@ -82,4 +82,13 @@ class SeguradoraController extends Controller
 
         return response()->json(['message' => 'Apagado']);
     }
+
+    public function totalSeguradora()
+{
+    $total = \App\Models\SeguradoraModel::count();
+
+    return response()->json([
+        'total_seguradora' => $total
+    ]);
+}
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ClienteLearningController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\SeguradoraController;
@@ -34,7 +35,9 @@ Route::middleware('auth:cliente')->get('/cliente/notificacoes', function () {
 });
 Route::middleware('auth:cliente')->get('/notificacoes', [ClienteController::class, 'minhasNotificacoes']);
 
+
 Route::middleware('auth:cliente')->patch('/notificacoes/{id}/marcar-lida', [ClienteController::class, 'marcarComoLida']);
+Route::middleware('auth:cliente')->post('/cliente-learning', [ClienteLearningController::class, 'store']);
 
 
 // ROTAS AUTENTICADAS
@@ -65,9 +68,15 @@ Route::middleware(['web', 'auth:cliente'])->group(function () {
             ]);
         })->name('dashboard.seguros.com.seguradora');
 
-
+        //Route::post('/cliente-learning', [ClienteLearningController::class, 'store']);
         
     });
+
+    // routes/api.php
+Route::middleware('auth:cliente')->group(function () {
+    Route::post('/cliente-learning', [ClienteLearningController::class, 'store']);
+});
+
 
     // Se estiver autenticado via web:
     Route::get('/api/cliente', [ClienteController::class, 'show']);

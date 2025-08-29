@@ -291,4 +291,34 @@ class SimulacaoController extends Controller
             ],
         ]);
     }
+
+
+    public function totalSimulacao()
+{
+    $total = \App\Models\Simulacao::count();
+
+    return response()->json([
+        'total_simulacao' => $total
+    ]);
+}
+
+public function simulacoesPorTipo()
+{
+    $simulacoes = \App\Models\Simulacao::selectRaw('tipo_seguro_id, COUNT(*) as total')
+        ->groupBy('tipo_seguro_id')
+        ->with('tipoSeguro') // garantir que o relacionamento existe no Model
+        ->get()
+        ->map(function ($item) {
+            return [
+                'tipo' => $item->tipoSeguro->nome ?? 'Desconhecido',
+                'total' => $item->total
+            ];
+        });
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $simulacoes
+    ]);
+}
+
 }

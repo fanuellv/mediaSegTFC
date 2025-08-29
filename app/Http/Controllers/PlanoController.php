@@ -131,4 +131,28 @@ class PlanoController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function totalPlanosPorSeguradora()
+{
+    if (!$this->estaAutenticado()) {
+        return response()->json(['message' => 'Não autenticado'], 401);
+    }
+
+    $totais = \App\Models\PlanoModel::selectRaw('seguradora_id, COUNT(*) as total')
+        ->groupBy('seguradora_id')
+        ->with('seguradora') // precisa do relacionamento no PlanoModel
+        ->get()
+        ->map(function ($item) {
+            return [
+                'seguradora' => $item->seguradora->nome ?? 'Desconhecida',
+                'total_planos' => $item->total,
+            ];
+        });
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $totais
+    ]);
+}
+
 }

@@ -4,6 +4,7 @@ import Seguradora from '@/components/ui/seguradora';
 import Plano from '@/components/ui/plano';
 import CrudPlayList from '@/components/ui/CrudPlaylist';
 import CrudQuiz from '@/components/ui/CrudQuiz';
+import Relatorio from '@/components/Relatorio';
 
 const Painel: React.FC = () => {
     return (
@@ -15,7 +16,7 @@ const Painel: React.FC = () => {
                     case 'Planos':
                         return <Plano/>;
                     case 'Relatórios':
-                        return <div>Conteúdo dos Relatórios</div>;
+                        return <Relatorio/>;
                     case 'PlayList':
                         return <CrudPlayList/>
                     case 'Quiz':
