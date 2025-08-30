@@ -24,7 +24,7 @@ export default function Simulador() {
         idade: 30,
         fumante: false,
         profissao: 'normal',
-        seguradora_id: seguradoraIdRecebida ?? 1, // ✅ usa o ID vindo da URL, ou 1 como fallback
+        seguradora_id: seguradoraIdRecebida ?? 1, 
         tipo_id: 1,
     });
 

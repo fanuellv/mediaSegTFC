@@ -11,9 +11,9 @@ interface Plano {
 
 interface Props {
     seguradora: Seguradora | null;
-    adquirir: (plano: Plano) => void; // <- agora recebe o plano
+    adquirir: (plano: Plano) => void;
     onVoltar: () => void;
-    setPlanoSelecionado: (plano: Plano) => void; // ✅ Adicionado
+    setPlanoSelecionado: (plano: Plano) => void;
 }
 
 export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSelecionado }: Props) {
@@ -33,7 +33,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
 
             if (!response.ok) {
                 const erro = await response.text();
-                console.error('❌ Erro na resposta dos planos:', erro);
+                console.error('Erro na resposta dos planos:', erro);
                 setPlanos([]);
                 return;
             }
@@ -42,7 +42,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
             console.log('✅ Planos encontrados:', dados);
             setPlanos(dados);
         } catch (error) {
-            console.error('❌ Erro ao buscar planos:', error);
+            console.error('Erro ao buscar planos:', error);
             setPlanos([]);
         } finally {
             setLoading(false);
@@ -51,7 +51,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
 
     useEffect(() => {
         if (seguradora) buscarPlanos();
-    }, [seguradora, buscarPlanos]); // <- resolverá o aviso
+    }, [seguradora, buscarPlanos]);
 
     useEffect(() => {
         if (seguradora) buscarPlanos();

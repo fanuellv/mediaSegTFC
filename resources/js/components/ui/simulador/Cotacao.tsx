@@ -33,7 +33,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 const data = await response.json();
                 setTipos(data);
             } catch (err) {
-                console.error('❌ Erro ao carregar tipos de seguro:', err);
+                console.error('Erro ao carregar tipos de seguro:', err);
             } finally {
                 setLoadingInicial(false);
             }
@@ -99,7 +99,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
             const plano_id = dados.plano?.id || dados.plano_id;
 
             if (!plano_id) {
-                setErro('❌ Nenhum plano foi selecionado.');
+                setErro('Nenhum plano foi selecionado.');
                 return;
             }
 
@@ -116,7 +116,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 profissao:dados.profissao?? null,
                 fumante:dados.fumante?? null,
             };
-            console.log('📤 Payload enviado:', payload);
+            //console.log('📤 Payload enviado:', payload);
 
             const response = await fetch('/simular', {
                 method: 'POST',
@@ -145,7 +145,7 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
             onAvancar();
         } catch (err: unknown) {
-            console.error('❌ Erro na simulação:', err);
+            console.error('Erro na simulação:', err);
             if (err instanceof Error) {
                 setErro(err.message);
             } else {

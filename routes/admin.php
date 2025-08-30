@@ -43,6 +43,9 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/total/por-seguradora', [PlanoController::class, 'totalPlanosPorSeguradora']);
     Route::get('/totalPlaylist', [PlayListController::class, 'totalPlayList']);
     Route::get('/totalQuiz', [QuizController::class, 'totalQuiz']);
+    Route::get('/learning/total-videos', [ClienteLearningController::class, 'totalVideosAssistidos']);
+Route::get('/learning/total-quizzes', [ClienteLearningController::class, 'totalQuizzesJogadas']);
+
 
     
 

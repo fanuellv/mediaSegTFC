@@ -66,7 +66,7 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Omit<Props, 
             const dados = await response.json();
             setSeguradoras(dados);
         } catch (error) {
-            console.error('❌ Erro ao buscar seguradoras:', error);
+            console.error('Erro ao buscar seguradoras:', error);
         }
     }
 
@@ -100,7 +100,7 @@ export default function SimuladorPlanoForm({ onAvancar, setDados }: Omit<Props, 
                     setPlanoSelecionado(planoIdParam);
                 }
             } catch (error) {
-                console.error('❌ Erro ao buscar planos:', error);
+                console.error('Erro ao buscar planos:', error);
                 setPlanos([]);
             }
         }

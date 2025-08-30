@@ -32,7 +32,7 @@ export default function SelecionadaPorRota() {
       const data = await res.json();
       setSeguradora(data);
     } catch (e) {
-      console.error('❌ Erro ao buscar seguradora:', e);
+      console.error('Erro ao buscar seguradora:', e);
     }
   }, [seguradoraId]);
 
@@ -44,7 +44,7 @@ export default function SelecionadaPorRota() {
       const data = await res.json();
       setPlanos(data);
     } catch (e) {
-      console.error('❌ Erro ao buscar planos:', e);
+      console.error('Erro ao buscar planos:', e);
     } finally {
       setLoading(false);
     }

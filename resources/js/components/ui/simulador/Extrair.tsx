@@ -19,7 +19,7 @@ export default function Extrair({ dados, onVoltar }: Props) {
       setCarregando(true);
       window.open(dados.documento_url, "_blank");
     } catch (err) {
-      console.error("❌ Erro ao gerar PDF:", err);
+      console.error("Erro ao gerar PDF:", err);
       alert("Erro ao buscar documento.");
     } finally {
       setCarregando(false);

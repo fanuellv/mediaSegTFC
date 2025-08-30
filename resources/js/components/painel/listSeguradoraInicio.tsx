@@ -35,7 +35,7 @@ export default function ListSeguradora() {
 
             if (!response.ok) {
                 const erro = await response.text();
-                console.error('❌ Erro na resposta:', erro);
+                console.error('Erro na resposta:', erro);
                 return;
             }
 
@@ -43,7 +43,7 @@ export default function ListSeguradora() {
             console.log('✅ Seguradoras encontradas:', dados);
             setLista(dados);
         } catch (error) {
-            console.error('❌ Erro ao buscar seguradoras:', error);
+            console.error('Erro ao buscar seguradoras:', error);
         } finally {
             setLoading(false);
         }

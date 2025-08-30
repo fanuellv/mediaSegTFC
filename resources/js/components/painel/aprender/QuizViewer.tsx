@@ -52,7 +52,7 @@ export default function QuizViewer({ quiz }: Props) {
         quiz_id: quiz.id,
         finalizou: true,
       });
-      console.log('✅ Quiz concluído registrado no backend');
+      //console.log('✅ Quiz concluído registrado no backend');
     } catch (err) {
       console.error('❌ Erro ao registrar conclusão do quiz:', err);
     }

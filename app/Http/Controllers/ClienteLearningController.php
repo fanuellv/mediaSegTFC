@@ -72,4 +72,31 @@ class ClienteLearningController extends Controller
 
         return response()->json(['message' => 'Registro deletado com sucesso']);
     }
+
+
+   // Total de vídeos assistidos (geral)
+public function totalVideosAssistidos()
+{
+    $total = ClienteLearning::whereNotNull('video_id')
+        ->where('assistiu', true)
+        ->count();
+
+    return response()->json([
+        'total_videos_assistidos' => $total
+    ]);
+}
+
+// Total de quizzes jogados (geral)
+public function totalQuizzesJogadas()
+{
+    $total = ClienteLearning::whereNotNull('quiz_id')
+        ->where('finalizou', true) // se existir este campo
+        ->count();
+
+    return response()->json([
+        'total_quizzes_jogadas' => $total,
+    ]);
+}
+
+
 }

@@ -28,7 +28,7 @@ export default function PlaylistViewer({ playlist, onVoltar }: Props) {
                     video_id: playlist.id,
                     assistiu: true,
                 });
-                console.log('✅ Progresso registrado');
+                //console.log('✅ Progresso registrado');
             } catch (err) {
                 console.error('Erro ao registrar progresso:', err);
             }

@@ -17,11 +17,11 @@ const Login: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Enviando login com:', data);
+        //console.log('Enviando login com:', data);
 
         post('/login', {
             onError: (errors) => {
-                console.log('❌ Erros:', errors);
+                console.log(' Erros:', errors);
             },
         });
     };
@@ -31,8 +31,8 @@ const Login: React.FC = () => {
     useEffect(() => {
         const timeout = setTimeout(() => setLoading(false), 1500);
 
-        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        console.log('CSRF Token:', token);
+        //const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        //console.log('CSRF Token:', token);
 
         return () => clearTimeout(timeout);
     }, []);
