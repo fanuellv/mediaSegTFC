@@ -70,7 +70,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
 
     if (loading) {
         return (
-            <div className="flex h-40 items-center justify-center">
+            <div className="flex h-full items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
             </div>
         );
@@ -79,7 +79,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
     return (
         <div className="w-full h-full space-y-6 bg-white  rounded p-4">
             <div className="flex items-center gap-4 border-b pb-4">
-                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
+                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-300">
                     {seguradora.foto ? (
                         <img src={`/storage/${seguradora.foto}`} alt={seguradora.nome} className="h-full w-full object-contain" />
                     ) : (
@@ -87,13 +87,13 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
                     )}
                 </div>
                 <div>
-                    <h2 className="text-xl font-bold">{seguradora.nome}</h2>
+                    <h2 className="text-xl font-bold text-black">{seguradora.nome}</h2>
                     <p className="text-sm text-gray-600">{seguradora.descricao}</p>
                 </div>
             </div>
 
             <div>
-                <h3 className="mb-4 text-lg font-semibold">Planos disponíveis</h3>
+                <h3 className="mb-4 text-lg font-semibold text-black">Planos disponíveis</h3>
                 {planos.length === 0 ? (
                     <p className="text-gray-500">Nenhum plano cadastrado para esta seguradora.</p>
                 ) : (
@@ -109,7 +109,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
                                 </div>
                                 <div className="flex w-full flex-col justify-between">
                                     <div>
-                                        <h4 className="text-base font-semibold">{plano.nome}</h4>
+                                        <h4 className="text-base font-semibold text-black">{plano.nome}</h4>
                                         <p className="text-sm text-gray-600">{plano.descricao}</p>
                                         <p className="mt-1 text-sm font-semibold text-[#0153A5]">
                                             Kz {new Intl.NumberFormat('pt-AO', { minimumFractionDigits: 2 }).format(plano.valor)}

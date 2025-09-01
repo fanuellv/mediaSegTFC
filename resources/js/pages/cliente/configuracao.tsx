@@ -1,5 +1,4 @@
 import DefaultLayout from '@/layouts/DefaultLayout';
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 
@@ -97,7 +96,7 @@ export default function Configuracao() {
                     'X-CSRF-TOKEN': token || '',
                     Accept: 'application/json',
                 },
-                credentials: 'same-origin',
+                credentials: 'include',
                 body: formData,
             });
 
@@ -108,19 +107,22 @@ export default function Configuracao() {
                 return;
             }
 
-            console.log('Dados atualizados com sucesso!');
+            console.log('✅ Dados atualizados com sucesso!');
+            window.location.reload(); // 🔄 força o reload
         } catch (err) {
-            console.error('❌ Erro geral:', err);
+            console.error('Erro geral:', err);
         }
     };
 
     return (
         <DefaultLayout>
-            <div className="flex w-full flex-col gap-4 rounded-2xl bg-white sm:h-screen text-gray-600">
+            <div className="flex w-full flex-col gap-4 rounded-2xl bg-white text-gray-600 sm:h-screen">
                 <div className="sticky top-0 left-0 flex w-full items-center justify-between bg-[#0153A5] p-4">
-                    <Link href={'painel'} className="gap2 flex items-center text-white">
+                    <button onClick={() => (window.location.href = '/painel')} className="flex items-center gap-2 text-white">
                         <FaArrowLeft className="text-2xl" />
-                    </Link>
+                        Voltar
+                    </button>
+
                     <h1 className="text-xl font-bold text-white">Configuração da Conta</h1>
                 </div>
 
@@ -135,7 +137,7 @@ export default function Configuracao() {
                             <div className="space-y-4">
                                 {/* NOME */}
                                 <div>
-                                    <label htmlFor="nome" className="block text-gray-800 font-medium capitalize">
+                                    <label htmlFor="nome" className="block font-medium text-gray-800 capitalize">
                                         Nome
                                     </label>
                                     <input
@@ -151,7 +153,7 @@ export default function Configuracao() {
 
                                 {/* SOBRENOME */}
                                 <div>
-                                    <label htmlFor="sobrenome" className="text-gray-800 block font-medium capitalize">
+                                    <label htmlFor="sobrenome" className="block font-medium text-gray-800 capitalize">
                                         Sobrenome
                                     </label>
                                     <input
@@ -167,7 +169,7 @@ export default function Configuracao() {
 
                                 {/* NOME DE USUÁRIO */}
                                 <div>
-                                    <label htmlFor="nome_usuario" className="text-gray-800 block font-medium capitalize">
+                                    <label htmlFor="nome_usuario" className="block font-medium text-gray-800 capitalize">
                                         Nome de Usuário
                                     </label>
                                     <input
@@ -183,7 +185,7 @@ export default function Configuracao() {
 
                                 {/* NIF */}
                                 <div>
-                                    <label htmlFor="nif" className="text-gray-800 block font-medium capitalize">
+                                    <label htmlFor="nif" className="block font-medium text-gray-800 capitalize">
                                         NIF
                                     </label>
                                     <input
@@ -200,7 +202,7 @@ export default function Configuracao() {
 
                                 {/* EMAIL */}
                                 <div>
-                                    <label htmlFor="email" className="text-gray-800 block font-medium capitalize">
+                                    <label htmlFor="email" className="block font-medium text-gray-800 capitalize">
                                         Email
                                     </label>
                                     <input
@@ -226,7 +228,7 @@ export default function Configuracao() {
                                 </div>
 
                                 <div className="text-center">
-                                    <h2 className="text-sm text-gray-800 font-semibold">Alterar foto</h2>
+                                    <h2 className="text-sm font-semibold text-gray-800">Alterar foto</h2>
                                     <p className="text-xs text-gray-500">Use o botão abaixo para upload</p>
                                     <div>
                                         <input id="foto" name="foto" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
@@ -245,7 +247,7 @@ export default function Configuracao() {
                     {/* OUTRAS INFORMAÇÕES */}
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_2fr]">
                         <div>
-                            <h2 className="text-lg text-gray-800 font-semibold">Outras Informações</h2>
+                            <h2 className="text-lg font-semibold text-gray-800">Outras Informações</h2>
                         </div>
                         <div className="space-y-4">
                             <div>
@@ -262,7 +264,7 @@ export default function Configuracao() {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="dataRegistro" className=" text-gray-800 block font-medium">
+                                <label htmlFor="dataRegistro" className="block font-medium text-gray-800">
                                     Data de Registro
                                 </label>
                                 <input
@@ -283,7 +285,7 @@ export default function Configuracao() {
                             <h2 className="text-lg font-semibold">Palavra-Passe</h2>
                         </div>
                         <div>
-                            <label htmlFor="senha" className="text-gray-800 block font-medium">
+                            <label htmlFor="senha" className="block font-medium text-gray-800">
                                 Palavra-Passe
                             </label>
                             <input

@@ -92,7 +92,9 @@ const Relatorio: React.FC = () => {
     fetchTotais();
   }, []);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <div className="flex h-full items-center justify-center">
+  <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+</div>;
 
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
