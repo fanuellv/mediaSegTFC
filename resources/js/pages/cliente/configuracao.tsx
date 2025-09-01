@@ -108,7 +108,7 @@ export default function Configuracao() {
                 return;
             }
 
-            alert('Dados atualizados com sucesso!');
+            console.log('Dados atualizados com sucesso!');
         } catch (err) {
             console.error('❌ Erro geral:', err);
         }
