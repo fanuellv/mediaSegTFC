@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         QuizGeralSeeder::class,
         QuizResidencialSeeder::class,
         QuizPraticoSeeder::class,
+        SimulacaoSeguro::class,
     ]);
 }
 

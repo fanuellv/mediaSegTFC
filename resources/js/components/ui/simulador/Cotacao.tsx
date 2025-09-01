@@ -158,21 +158,21 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
 
     if (loadingInicial) {
         return (
-            <div className="flex h-40 items-center justify-center">
+            <div className="flex h-auto items-center justify-center">
                 <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
             </div>
         );
     }
 
     return (
-        <div className="relative flex h-full w-full flex-col justify-between space-y-4 p-4">
+            <div className="relative flex h-full w-full flex-col">
             {loadingSimulacao && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
-                </div>
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+            </div>
             )}
 
-            <div className="space-y-4">
+            <div className="flex-1 overflow-y-auto space-y-4 p-4">
                 <h2 className="text-lg font-bold text-gray-800">Preencha os dados para cotação</h2>
 
                 {tipoSelecionado && (tipoSelecionado === 'vida' || tipoSelecionado === 'saude') && (
@@ -377,17 +377,20 @@ export default function Cotacao({ dados, setDados, onVoltar, onAvancar }: Props)
                 {erro && <div className="text-sm font-medium text-red-600">{erro}</div>}
             </div>
 
-            <div className="flex w-full gap-4 pt-4">
-                <button onClick={onVoltar} className="w-1/2 rounded bg-gray-300 p-3 text-sm font-semibold text-gray-800">
-                    Voltar
-                </button>
-                <button
-                    onClick={() => (camposValidos() ? simular() : setErro('Preencha todos os campos obrigatórios'))}
-                    className="w-1/2 rounded bg-[#0153A5] p-3 text-sm font-semibold text-white"
-                >
-                    {loadingSimulacao ? 'Simulando...' : 'Ver Cotação'}
-                </button>
-            </div>
+            <div className="sticky bottom-0 flex w-full gap-4 bg-white p-4 border-t">
+        <button
+            onClick={onVoltar}
+            className="w-1/2 rounded bg-gray-300 p-3 text-sm font-semibold text-gray-800"
+        >
+            Voltar
+        </button>
+        <button
+            onClick={() => (camposValidos() ? simular() : setErro('Preencha todos os campos obrigatórios'))}
+            className="w-1/2 rounded bg-[#0153A5] p-3 text-sm font-semibold text-white"
+        >
+            {loadingSimulacao ? 'Simulando...' : 'Ver Cotação'}
+        </button>
+    </div>
         </div>
     );
 }

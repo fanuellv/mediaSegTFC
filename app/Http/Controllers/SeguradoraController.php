@@ -91,4 +91,6 @@ class SeguradoraController extends Controller
         'total_seguradora' => $total
     ]);
 }
+
+
 }

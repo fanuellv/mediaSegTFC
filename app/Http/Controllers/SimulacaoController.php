@@ -100,9 +100,19 @@ class SimulacaoController extends Controller
     ]);
 
     $email = $cliente->email;
-    Mail::send('email.notificacao', [], function ($message) use ($email) {
-        $message->to($email)->subject('Obrigado por realizares a simulação');
-    });
+
+// pega a última apólice do cliente (ou null se não existir)
+$apolice = ApoliceModel::where('cliente_id', $cliente->id)->latest()->first();
+
+Mail::send('email.simulacao', [
+    'user' => $cliente,
+    'apolice' => $apolice,
+    'plano_seguro' => $apolice->plano->nome, // pega o nome do plano
+], function ($message) use ($email) {
+    $message->to($email)->subject('Obrigado por realizares a simulação');
+});
+
+    
 
     return response()->json([
         'id' => $simulacao->id,

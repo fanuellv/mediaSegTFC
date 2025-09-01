@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('marca_modelo')->nullable();
             $table->string('matricula')->nullable();
             $table->decimal('valor_veiculo', 15, 2)->nullable();
-            $table->boolean('tem_franquia')->default(false);
+            $table->boolean('tem_franquia')->default(false)->nullable();
             $table->string('tipo_uso')->nullable();
             $table->integer('ano_veiculo')->nullable();
 

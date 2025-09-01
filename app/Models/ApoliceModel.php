@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApoliceModel extends Model
 {
-    protected $table = 'apolices'; // ou 'apolice', se for o nome correto
+    protected $table = 'apolices'; 
 
     protected $fillable = [
         'numero',
@@ -19,11 +19,12 @@ class ApoliceModel extends Model
     ];
 
     public function cliente() {
-        return $this->belongsTo(ClienteModel::class);
+        return $this->belongsTo(ClienteModel::class, 'cliente_id');
     }
-
+    
     public function plano() {
-        return $this->belongsTo(PlanoModel::class);
+        return $this->belongsTo(PlanoModel::class, 'plano_id');
     }
+    
 
 }

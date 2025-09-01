@@ -19,7 +19,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .header {
-            background-color: #0A8D48;
+            background-color: #0153A5;
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -41,7 +41,7 @@
             display: inline-block;
             margin-top: 20px;
             padding: 12px 25px;
-            background-color: #0A8D48;
+            background-color: #0153A5;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -58,7 +58,7 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>🎉 Obrigado por se inscrever as  notificações!</h1>
+            <h1>Obrigado por se inscrever as  notificações!</h1>
         </div>
         <div class="content">
             <p>Olá {{ $user->nome ?? 'usuário' }},</p>
