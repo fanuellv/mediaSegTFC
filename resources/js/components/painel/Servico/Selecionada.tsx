@@ -77,7 +77,7 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
     }
 
     return (
-        <div className="space-y-6 rounded">
+        <div className="w-full h-full space-y-6 bg-white  rounded p-4">
             <div className="flex items-center gap-4 border-b pb-4">
                 <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                     {seguradora.foto ? (
@@ -133,8 +133,8 @@ export default function Selecionada({ seguradora, adquirir, onVoltar, setPlanoSe
                 )}
             </div>
 
-            <div className="flex justify-end">
-                <button onClick={onVoltar} className="rounded bg-gray-200 px-4 py-2 text-sm hover:bg-gray-300">
+            <div className="mt-auto mb-0 flex gap-4  ">
+                <button onClick={onVoltar} className="rounded bg-gray-200 px-4 py-2 text-sm hover:text-white hover:bg-[#0153A5]">
                     Voltar
                 </button>
             </div>

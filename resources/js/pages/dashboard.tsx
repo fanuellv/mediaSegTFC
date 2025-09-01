@@ -224,8 +224,6 @@ useEffect(() => {
                                 {/* Exibe o componente Etapa apenas na rota /dashboard/seguros */}
                                 {url === '/dashboard/seguros' && <Etapa />}
 
-                                {/* Exibe o componente SelecionadaPorRota se a URL começar com /dashboard/seguros/seguradora 
-        Isso inclui URLs como /dashboard/seguros/seguradora?seguradora_id=1 */}
                                 {url.startsWith('/dashboard/seguros/seguradora') && <SelecionadaPorRota />}
                             </>
                         )}
