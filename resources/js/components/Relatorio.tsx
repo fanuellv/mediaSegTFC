@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
 
@@ -32,38 +31,56 @@ const Relatorio: React.FC = () => {
   useEffect(() => {
     const fetchTotais = async () => {
       try {
-        const response = await axios.get("/totalClientes", { withCredentials: true });
-        const responseSimulacao = await axios.get("/totalSimulacao", { withCredentials: true });
-        const responseSimulacaoTipo = await axios.get("/totalSimulacaoTipo", { withCredentials: true });
-        const responseSeguradora = await axios.get("/totalSeguradora", { withCredentials: true });
-        const responsePlaylist = await axios.get("/totalPlaylist", { withCredentials: true });
-        const responseQuiz = await axios.get("/totalQuiz", { withCredentials: true });
-        const responsePlanos = await axios.get("/total/por-seguradora", { withCredentials: true });
-        const responseVideo = await axios.get("/learning/total-videos", { withCredentials: true });
-        const responseJogo = await axios.get("/learning/total-quizzes", { withCredentials: true });
+        const getJSON = async (url: string) => {
+          const res = await fetch(url, { credentials: "include" });
+          if (!res.ok) throw new Error(`Erro ao buscar ${url}`);
+          return res.json();
+        };
+
+        const [
+          clientes,
+          simulacao,
+          simulacaoTipo,
+          seguradora,
+          playlist,
+          quiz,
+          planos,
+          videos,
+          jogos,
+        ] = await Promise.all([
+          getJSON("/totalClientes"),
+          getJSON("/totalSimulacao"),
+          getJSON("/totalSimulacaoTipo"),
+          getJSON("/totalSeguradora"),
+          getJSON("/totalPlaylist"),
+          getJSON("/totalQuiz"),
+          getJSON("/total/por-seguradora"),
+          getJSON("/learning/total-videos"),
+          getJSON("/learning/total-quizzes"),
+        ]);
 
         setDados({
-          totalClientes: response.data.total_clientes,
-          totalSimulacao: responseSimulacao.data.total_simulacao,
-          totalSeguradora: responseSeguradora.data.total_seguradora,
-          totalPlaylist: responsePlaylist.data.total_playlist,
-          totalQuiz: responseQuiz.data.total_quiz,
+          totalClientes: clientes.total_clientes,
+          totalSimulacao: simulacao.total_simulacao,
+          totalSeguradora: seguradora.total_seguradora,
+          totalPlaylist: playlist.total_playlist,
+          totalQuiz: quiz.total_quiz,
         });
 
-        if (responsePlanos.data.status === "success") {
-          setPlanosPorSeguradora(responsePlanos.data.data);
+        if (planos.status === "success") {
+          setPlanosPorSeguradora(planos.data);
         }
 
-        if (responseSimulacaoTipo.data.status === "success") {
-          setTotalTipo(responseSimulacaoTipo.data.data);
+        if (simulacaoTipo.status === "success") {
+          setTotalTipo(simulacaoTipo.data);
         }
 
-        if (responseVideo.data.total_videos_assistidos !== undefined) {
-          setTotalVideos(responseVideo.data.total_videos_assistidos);
+        if (videos.total_videos_assistidos !== undefined) {
+          setTotalVideos(videos.total_videos_assistidos);
         }
 
-        if (responseJogo.data.total_quizzes_jogadas !== undefined) {
-          setTotalQuizzes(responseJogo.data.total_quizzes_jogadas);
+        if (jogos.total_quizzes_jogadas !== undefined) {
+          setTotalQuizzes(jogos.total_quizzes_jogadas);
         }
       } catch (error) {
         console.error("Erro ao buscar relatório:", error);
@@ -134,7 +151,10 @@ const Relatorio: React.FC = () => {
                 label
               >
                 {planosPorSeguradora.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={["#4F46E5", "#EC4899", "#F59E0B", "#10B981", "#3B82F6"][index % 5]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={["#4F46E5", "#EC4899", "#F59E0B", "#10B981", "#3B82F6"][index % 5]}
+                  />
                 ))}
               </Pie>
               <Tooltip />
