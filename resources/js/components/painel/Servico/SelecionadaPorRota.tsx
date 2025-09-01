@@ -99,7 +99,7 @@ export default function SelecionadaPorRota() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
             {planos.map((plano) => (
-              <div key={plano.id} className="flex gap-4 rounded border-gray-50 bg-gray-100 p-4">
+              <div key={plano.id} className="flex gap-4 rounded  bg-gray-100 p-4">
                 <div className="h-20 w-20 overflow-hidden rounded bg-gray-100">
                   {plano.foto ? (
                     <img src={`/storage/${plano.foto}`} alt={plano.nome} className="h-full w-full object-contain" />
