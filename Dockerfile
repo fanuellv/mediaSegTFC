@@ -26,7 +26,7 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Configurar Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 RUN a2enmod rewrite
-COPY ./.htaccess /var/www/html/.htaccess
+#COPY ./.htaccess /var/www/html/.htaccess
 
 # Definir a porta dinamicamente via Render
 ENV PORT=8080
