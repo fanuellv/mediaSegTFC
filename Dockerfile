@@ -1,38 +1,36 @@
-# Dockerfile
+# Usar a imagem oficial do PHP com extensões necessárias
+FROM php:8.2-apache
 
-FROM php:8.2-fpm
-
-# Instala extensões necessárias
+# Instalar dependências do Laravel
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
     git \
-    curl \
-    libzip-dev \
-    libmcrypt-dev \
-    default-mysql-client \
-    nodejs \
-    npm \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    unzip \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Instala Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copiar os arquivos do projeto
+COPY . /var/www/html
 
+# Definir o diretório de trabalho
 WORKDIR /var/www/html
 
-COPY . .
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Instalar dependências do Laravel
 RUN composer install --no-dev --optimize-autoloader
-RUN npm install && npm run build
 
-EXPOSE 8000
+# Corrigir permissões
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+# Configurar Apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN a2enmod rewrite
+COPY ./.htaccess /var/www/html/.htaccess
 
+# Definir a porta dinamicamente via Render
+ENV PORT=8080
+EXPOSE 8080
 
+# Rodar o Laravel na porta do Render
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
