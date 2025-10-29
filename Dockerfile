@@ -1,43 +1,31 @@
+# Usa imagem PHP com Apache
 FROM php:8.2-apache
 
-# Instalar dependências do sistema
-RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+# Instala extensões necessárias
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Habilitar o mod_rewrite (necessário para Laravel)
+# Copia os arquivos do Laravel
+COPY . /var/www/html
+
+# Define permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage
+
+# Ativa o módulo rewrite do Apache
 RUN a2enmod rewrite
 
-# Copiar os arquivos do projeto para o container
-COPY . /var/www/html
+# Define o diretório público como raiz do Apache
 WORKDIR /var/www/html
+RUN echo "<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/public\n\
+    <Directory /var/www/html/public>\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 
-# Instalar o Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Expõe a porta
+EXPOSE 80
 
-# Instalar dependências do Laravel (sem dev)
-RUN composer install --no-dev --optimize-autoloader
-
-# Corrigir permissões
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
-
-# Alterar o DocumentRoot para /public
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-# Garantir que o mod_rewrite funcione dentro da pasta public
-RUN echo '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/laravel.conf \
-    && a2enconf laravel
-
-# Adicionar ServerName para remover warnings
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Expor a porta dinâmica (Render define via $PORT)
-EXPOSE 10000
-
-# Corrigir porta do Apache e iniciar
-CMD sed -i "s/80/\${PORT}/g" /etc/apache2/ports.conf && apache2-foreground
+# Inicia o Apache
+CMD ["apache2-foreground"]
