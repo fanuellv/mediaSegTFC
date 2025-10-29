@@ -1,23 +1,23 @@
 FROM php:8.2-apache
 
-# Instala dependências
-RUN docker-php-ext-install pdo pdo_mysql
+# Instalar dependências necessárias
+RUN apt-get update && apt-get install -y \
+    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git && \
+    docker-php-ext-install pdo_mysql && \
+    a2enmod rewrite
 
-# Define a porta
-ENV PORT=8080
-RUN echo "Listen ${PORT}" > /etc/apache2/ports.conf
-
-# Copia o código para o container
-COPY . /var/www/html
-
-# Configura o DocumentRoot para o Laravel
+# Configurar Apache para apontar para a pasta /public do Laravel
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Permissões
-RUN chown -R www-data:www-data /var/www/html
+# Copiar o projeto para dentro do container
+COPY . /var/www/html
 
-# Expõe a porta
+# Ajustar permissões para o Apache ler e executar
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+# Configurar porta padrão (Render usa 8080)
+ENV PORT=8080
+RUN echo "Listen ${PORT}" > /etc/apache2/ports.conf
 EXPOSE ${PORT}
 
-# Inicia o Apache
 CMD ["apache2-foreground"]
