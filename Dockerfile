@@ -32,13 +32,14 @@ RUN chown -R www-data:www-data /var/www/html \
 # Ativar mod_rewrite
 RUN a2enmod rewrite
 
-# Configurar Apache para apontar para /public
 RUN echo "<VirtualHost *:8080>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
         Require all granted\n\
     </Directory>\n\
+    ErrorLog /var/log/apache2/error.log\n\
+    CustomLog /var/log/apache2/access.log combined\n\
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 
 
