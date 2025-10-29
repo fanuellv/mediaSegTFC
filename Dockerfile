@@ -1,53 +1,46 @@
-# Etapa 1: imagem base PHP com Apache
+# Etapa 1 - PHP + Apache
 FROM php:8.2-apache
 
-# Instala extensões PHP necessárias para Laravel
+# Instalar dependências necessárias
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    git \
-    unzip \
-    curl \
-    libonig-dev \
-    libxml2-dev && \
-    docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+    git unzip zip libzip-dev libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo_mysql zip
 
-# Habilita módulos do Apache necessários
+# Ativar mod_rewrite do Apache
 RUN a2enmod rewrite
 
-# Define o diretório de trabalho correto
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Criar diretório de trabalho
 WORKDIR /var/www/laravel
 
-# Copia os arquivos do Laravel para dentro do container
+# Copiar o projeto Laravel
 COPY . .
 
-# Instala dependências do Laravel
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer && \
-    composer install --no-dev --optimize-autoloader
+# Instalar dependências PHP do Laravel
+RUN composer install --no-dev --optimize-autoloader
 
-# Ajusta permissões
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Dar permissões corretas
+RUN chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache
 
-# Configura o VirtualHost
+# ⚙️ Substituir configuração padrão do Apache
 RUN rm -f /etc/apache2/sites-enabled/000-default.conf && \
-    echo "<VirtualHost *:8080>
-    ServerName localhost
-    DocumentRoot /var/www/laravel/public
-    <Directory /var/www/laravel/public>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-    ErrorLog /var/log/apache2/error.log
-    CustomLog /var/log/apache2/access.log combined
+    echo "<VirtualHost *:8080>\n\
+    ServerName localhost\n\
+    DocumentRoot /var/www/laravel/public\n\
+    <Directory /var/www/laravel/public>\n\
+        Options Indexes FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+    ErrorLog /var/log/apache2/error.log\n\
+    CustomLog /var/log/apache2/access.log combined\n\
 </VirtualHost>" > /etc/apache2/sites-available/laravel.conf && \
     ln -s /etc/apache2/sites-available/laravel.conf /etc/apache2/sites-enabled/laravel.conf
 
-# Expõe a porta usada pelo Render
+# Garantir que o Apache use a porta 8080
 EXPOSE 8080
 
-# Inicia o Apache
+# Iniciar o Apache
 CMD ["apache2-foreground"]
