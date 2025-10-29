@@ -33,7 +33,7 @@ RUN chown -R www-data:www-data /var/www/html \
 RUN a2enmod rewrite
 
 # Configurar Apache para apontar para /public
-RUN echo "<VirtualHost *:80>\n\
+RUN echo "<VirtualHost *:8080>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
@@ -41,8 +41,9 @@ RUN echo "<VirtualHost *:80>\n\
     </Directory>\n\
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 
+
 # Expor porta 80
-EXPOSE 80
+EXPOSE 8080
 
 # Rodar Apache
 CMD ["apache2-foreground"]
