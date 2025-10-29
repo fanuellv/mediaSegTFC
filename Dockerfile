@@ -1,33 +1,36 @@
 FROM php:8.2-apache
 
-# Instala dependências
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev zip \
     && docker-php-ext-install pdo pdo_pgsql zip
 
-# Habilita mod_rewrite (para o Laravel)
+# Habilitar o mod_rewrite para o Laravel
 RUN a2enmod rewrite
 
-# Copia o projeto
+# Copiar os arquivos do projeto
 COPY . /var/www/html
 WORKDIR /var/www/html
 
-# Instala o Composer
+# Instalar o Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Instala dependências do Laravel
+# Instalar dependências do Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissões
+# Ajustar permissões
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Define a pasta pública como raiz do Apache
+# Configurar o Apache para apontar para a pasta 'public'
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Expõe a porta padrão do Render
+# Adicionar ServerName para evitar warnings
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Expor a porta do Render
 EXPOSE 10000
 
-# Corrige a porta dinamicamente e inicia o Apache
+# Corrigir porta dinâmica e iniciar o Apache
 CMD sed -i "s/80/\${PORT}/g" /etc/apache2/ports.conf && apache2-foreground
