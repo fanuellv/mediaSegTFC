@@ -1,32 +1,26 @@
-# Etapa base com PHP e Apache
 FROM php:8.2-apache
 
-# Instalar dependências essenciais
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
-    git unzip libpng-dev libjpeg-dev libfreetype6-dev zip \
-    && docker-php-ext-install pdo pdo_mysql
+    git unzip libpq-dev libzip-dev zip \
+    && docker-php-ext-install pdo pdo_pgsql zip
 
-# Ativar mod_rewrite e configurar Apache para Laravel
+# Habilitar mod_rewrite para Laravel
 RUN a2enmod rewrite
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Copiar o projeto Laravel
+# Copiar projeto
 COPY . /var/www/html
 
-# Permissões adequadas
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+# Definir diretório público do Laravel
+WORKDIR /var/www/html
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Instalar dependências do Laravel (sem dev)
-RUN composer install --no-dev --optimize-autoloader
+# Configuração do Apache
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Definir a porta dinâmica (Render usa variável $PORT)
-ENV PORT=8080
-RUN sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
-EXPOSE ${PORT}
-
-# Iniciar Apache
+EXPOSE 80
 CMD ["apache2-foreground"]
