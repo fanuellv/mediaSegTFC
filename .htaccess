@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redireciona se a aplicação estiver dentro de uma subpasta (opcional)
+    # RewriteBase /
+
+    # Se o arquivo ou diretório não existir, redireciona tudo para index.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
