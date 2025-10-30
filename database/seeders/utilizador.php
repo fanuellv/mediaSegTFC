@@ -36,9 +36,8 @@ class utilizador extends Seeder
             DB::table('clientes')->insert([
                 'nome' => $faker->firstName,
                 'sobrenome' => $faker->lastName,
-                'nome_usuario' => $faker->unique()->userName,
-
-                'email' => $faker->unique()->safeEmail,
+                'nome_usuario' => $faker->unique()->userName, // <- aqui
+    'email' => $faker->unique()->safeEmail,       // <- e aqui
                 'dataRegistro' => $faker->date('Y-m-d', 'now'),
                 'nif' => strtoupper($faker->unique()->bothify('########LA###')),
                 'senha' => Hash::make('Password*123'),
